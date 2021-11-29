@@ -24,8 +24,9 @@ public class BookDTO {
         return isbn;
     }
 
-    public void setIsbn(String isbn) {
+    public BookDTO setIsbn(String isbn) {
         this.isbn = isbn;
+        return this;
     }
 
     public String getTitle() {

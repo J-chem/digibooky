@@ -21,8 +21,8 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book getById() {
-        return null;
+    public Book getById(String id) {
+        return books.get(id);
     }
 
     @Override

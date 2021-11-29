@@ -29,22 +29,28 @@ public class BookController {
         return bookService.save(createBookDto);
     }
 
-    @GetMapping(produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public BookDTO getBookByTitle(@RequestParam String title){
-        if (title.equals("1")) {
-            BookDTO bookDto =  new BookDTO();
-            bookDto.setTitle("Umpa lumpa");
-            bookDto.setId("1");
-            bookDto.setAuthor(new Author("Jan", "D.P"));
-            return bookDto;
-        }
-        else throw  new ObjectNotFoundException("Could not find in Database");
-    }
+//    @GetMapping(produces = "application/json")
+//    @ResponseStatus(HttpStatus.OK)
+//    public BookDTO getBookByTitle(@RequestParam String title){
+//        if (title.equals("1")) {
+//            BookDTO bookDto =  new BookDTO();
+//            bookDto.setTitle("Umpa lumpa");
+//            bookDto.setId("1");
+//            bookDto.setAuthor(new Author("Jan", "D.P"));
+//            return bookDto;
+//        }
+//        else throw  new ObjectNotFoundException("Could not find in Database");
+//    }
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Collection<BookDTO> getAllBooks(){
         return bookService.convertListOfBookInBookDto(bookRepository.getAll());
+    }
+
+    @GetMapping(path = "/{id}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDTO getBookById(@PathVariable("id") String id){
+        return bookService.convertBookinBookDto(bookRepository.getById(id));
     }
 }

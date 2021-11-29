@@ -3,11 +3,9 @@ package com.switchfully.digibooky.services;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.services.dtos.BookDTO;
-
-import java.util.Collection;
-import java.util.List;
-
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
+
+import java.util.List;
 
 public interface BookService {
     Book convertCreateBookDtoInBook(CreateBookDTO createBookDTO);

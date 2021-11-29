@@ -18,14 +18,6 @@ public class RepositoryAspect {
     @Pointcut("execution(* com.switchfully.digibooky.repositories.*.get*(..))")
     public void allDataRetrievalRepos() {}
 
-//    @AfterThrowing(
-//            pointcut = "execution( * com.switchfully.digibooky.aop.*.allDataRetrievalRepos())",
-//            throwing ="exception" )
-//    public void log(JoinPoint joinPoint, Throwable exception) {
-//        String message = exception.getMessage();
-//        logger.warn(message);
-//    }
-
     @AfterThrowing(
             pointcut = "allDataRetrievalRepos()",
             throwing ="exception" )

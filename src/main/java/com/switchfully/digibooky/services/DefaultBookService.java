@@ -56,4 +56,9 @@ public class DefaultBookService implements BookService {
 //        }
         return bookRepository.lendBook(bookLentData);
     }
+
+    @Override
+    public Book getBookByTitle(String title) {
+        return null;
+    }
 }

@@ -14,5 +14,7 @@ public interface BookService {
     public Collection<BookDTO> convertListOfBookInBookDto(Collection<Book> booksList);
 
     String save(Book createBookDTO);
+
+    Book getBookByTitle(String title);
     String lendBook(User user, BookDTO bookDTO);
 }

@@ -1,10 +1,12 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.domain.Book;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class DefaultBookRepository implements BookRepository {
     private final ConcurrentHashMap<String, Book> books;
 
@@ -14,7 +16,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Collection<Book> getAll() {
-        return null;
+        return books.values();
     }
 
     @Override

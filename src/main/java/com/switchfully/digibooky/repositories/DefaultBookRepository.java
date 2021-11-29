@@ -1,12 +1,12 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.domain.Book;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+@Repository
 public class DefaultBookRepository implements BookRepository {
     private final ConcurrentHashMap<String, Book> books;
 
@@ -40,7 +40,8 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book save() {
-        return null;
+    public String save(Book book) {
+        books.put(book.getId(), book);
+        return book.getId();
     }
 }

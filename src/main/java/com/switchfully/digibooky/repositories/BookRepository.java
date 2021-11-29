@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface BookRepository {
     Collection<Book> getAll();
-    Book getById();
+    Book getById(String id);
     Book getByISBN();
     Book getByTitle();
     Book getByAuthor();

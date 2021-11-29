@@ -1,9 +1,7 @@
 package com.switchfully.digibooky.services.dtos;
 
 import com.switchfully.digibooky.domain.Author;
-import com.switchfully.digibooky.domain.Book;
 
-import java.util.UUID;
 
 public class BookDTO {
     private String id;

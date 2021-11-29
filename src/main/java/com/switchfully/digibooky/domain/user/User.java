@@ -1,11 +1,11 @@
 package com.switchfully.digibooky.domain.user;
 
 public abstract class User {
-    private String socialSecurityNumber;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private Address address;
+    private final String socialSecurityNumber;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final Address address;
 
     public User(String socialSecurityNumber, String firstName, String lastName, String email, Address address) {
         this.socialSecurityNumber = socialSecurityNumber;

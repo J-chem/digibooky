@@ -21,27 +21,27 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Collection<Book> getAll() {
-        return null;
+        throw new UnsupportedOperationException("getAll not implemented");
     }
 
     @Override
     public Book getById() {
-        return null;
+        throw new UnsupportedOperationException("getById not implemented");
     }
 
     @Override
     public Book getByISBN() {
-        return null;
+        throw new UnsupportedOperationException("getByISBN not implemented");
     }
 
     @Override
     public Book getByTitle() {
-        return null;
+        throw new UnsupportedOperationException("getByTitle not implemented");
     }
 
     @Override
     public Book getByAuthor() {
-        return null;
+        throw new UnsupportedOperationException("getByAuthor not implemented");
     }
 
     @Override

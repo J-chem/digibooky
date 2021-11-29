@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.repositories;
 
+import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Book;
 import org.springframework.stereotype.Repository;
 
@@ -21,8 +22,8 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book getById() {
-        return null;
+    public Book getById(String id) {
+        return books.get(id);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Book getByTitle() {
-        return null;
+        throw new ObjectNotFoundException("");
     }
 
     @Override

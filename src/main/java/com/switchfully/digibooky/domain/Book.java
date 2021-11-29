@@ -17,13 +17,6 @@ public class Book {
         this.author = author;
     }
 
-//    public Book(BookDTO bookDTO){
-//        this.id = bookDTO.getId();
-//        this.isbn = bookDTO.getIsbn();
-//        this.title = bookDTO.getTitle();
-//        this.author = bookDTO.getAuthor();
-//    }
-
     public String getId() {
         return id;
     }

@@ -22,6 +22,7 @@ public class DefaultBookService implements BookService {
         return new BookDTO()
                 .setId(book.getId())
                 .setTitle(book.getTitle())
+                .setIsbn(book.getIsbn())
                 .setAuthor(book.getAuthor());
     }
 

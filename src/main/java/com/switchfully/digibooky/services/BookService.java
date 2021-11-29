@@ -11,9 +11,10 @@ import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 public interface BookService {
     BookDTO convertBookinBookDto(Book book);
     Book convertBookDtoInBook(BookDTO bookDTO);
+    Book convertCreateBookDtoInBook(CreateBookDTO createBookDTO);
     Collection<BookDTO> convertListOfBookInBookDto(Collection<Book> booksList);
 
-    String save(Book createBookDTO);
+    BookDTO save(CreateBookDTO createBookDTO);
 
     Book getBookByTitle(String title);
     String lendBook(User user, BookDTO bookDTO);

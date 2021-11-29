@@ -6,6 +6,7 @@ import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.repositories.DefaultBookRepository;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.dtos.BookDTO;
+import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class BookController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public String postNewBook(@RequestBody Book createBookDto){
+    public BookDTO postNewBook(@RequestBody CreateBookDTO createBookDto){
         return bookService.save(createBookDto);
     }
 

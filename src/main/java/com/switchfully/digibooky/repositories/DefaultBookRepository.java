@@ -43,9 +43,9 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public String save(Book book) {
+    public Book save(Book book) {
         books.put(book.getId(), book);
-        return book.getId();
+        return book;
     }
 
     @Override

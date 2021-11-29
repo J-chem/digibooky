@@ -11,6 +11,6 @@ public interface BookRepository {
     Book getByISBN();
     Book getByTitle();
     Book getByAuthor();
-    String save(Book book);
+    Book save(Book book);
     String lendBook(BookLentData bookLentData);
 }

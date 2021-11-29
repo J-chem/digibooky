@@ -1,9 +1,11 @@
 package com.switchfully.digibooky.repositories;
 
+import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Book;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -16,12 +18,12 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Collection<Book> getAll() {
-        return null;
+        return books.values();
     }
 
     @Override
-    public Book getById() {
-        return null;
+    public Book getById(String id) {
+        return books.get(id);
     }
 
     @Override
@@ -31,7 +33,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Book getByTitle() {
-        return null;
+        throw new ObjectNotFoundException("");
     }
 
     @Override

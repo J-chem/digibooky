@@ -5,4 +5,6 @@ import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 
 public interface BookService {
     String save(Book createBookDTO);
+
+    Book getBookByTitle(String title);
 }

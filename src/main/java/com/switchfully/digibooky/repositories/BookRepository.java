@@ -4,6 +4,7 @@ import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 
 import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface BookRepository {
     Collection<Book> getAll();

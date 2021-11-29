@@ -26,25 +26,25 @@ class BookControllerTest {
     @Test
     void saveBookTest() {
 
-//        CreateBookDTO book = new CreateBookDTO();
-//        book.setAuthor(new Author("test", "test"));
-//        book.setIsbn("test");
-//        book.setTitle("test");
-//
-//        BookDTO id =  RestAssured
-//                .given()
-//                .body(book)
-//                .accept(JSON)
-//                .contentType(JSON)
-//                .when()
-//                .port(8080)
-//                .post("/books")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.CREATED.value())
-//                .extract()
-//                .as(BookDTO.class); // The problem will be here, we need to have the DTO class
-//
+        CreateBookDTO book = new CreateBookDTO();
+        book.setAuthor(new Author("test", "test"));
+        book.setIsbn("test");
+        book.setTitle("test");
+
+        BookDTO id =  RestAssured
+                .given()
+                .body(book)
+                .accept(JSON)
+                .contentType(JSON)
+                .when()
+                .port(8080)
+                .post("/books")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(BookDTO.class); // The problem will be here, we need to have the DTO class
+
 //        assertThat(book.getIsbn()).isEqualTo(id);
     }
 }

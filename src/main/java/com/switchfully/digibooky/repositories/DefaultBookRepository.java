@@ -12,9 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class DefaultBookRepository implements BookRepository {
     private final ConcurrentHashMap<String, Book> books;
+    private final ConcurrentHashMap<String, BookLentData> lentData;
+
 
     public DefaultBookRepository() {
         books = new ConcurrentHashMap<>();
+        lentData = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -42,6 +45,7 @@ public class DefaultBookRepository implements BookRepository {
         return null;
     }
 
+
     @Override
     public Book save(Book book) {
         books.put(book.getId(), book);
@@ -50,6 +54,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public String lendBook(BookLentData bookLentData) {
-        return null;
+        lentData.put(bookLentData.getLendingId(), bookLentData);
+        return bookLentData.getLendingId();
     }
 }

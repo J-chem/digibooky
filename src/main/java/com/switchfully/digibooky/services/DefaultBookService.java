@@ -12,6 +12,7 @@ import com.switchfully.digibooky.services.dtos.BookDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +44,7 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public Collection<BookDTO> convertListOfBookInBookDto(Collection<Book> booksList) {
+    public List<BookDTO> convertListOfBookInBookDto(List<Book> booksList) {
         return booksList.stream()
                 .map(book -> convertBookinBookDto(book))
                 .collect(Collectors.toList());

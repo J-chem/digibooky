@@ -27,7 +27,7 @@ class DefaultBookRepositoryTest {
     @Test
     void whenSavingABook_thenReturnBookId() {
         var id = idOfBook1();
-        assertThat(bookRepository.save(book1)).isEqualTo(id);
+        assertThat(bookRepository.save(book1)).isEqualTo(book1);
     }
 
     private String idOfBook1() {

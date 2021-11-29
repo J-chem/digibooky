@@ -1,17 +1,13 @@
 package com.switchfully.digibooky.services;
 
-import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.repositories.BookRepository;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
-import com.switchfully.digibooky.services.dtos.BookDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,7 +1,45 @@
 package com.switchfully.digibooky.api;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.switchfully.digibooky.domain.Author;
+import com.switchfully.digibooky.domain.Book;
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+
+import static io.restassured.http.ContentType.JSON;
+import static org.assertj.core.api.Assertions.*;
 
 class BookControllerTest {
 
+    @Value("${server.port}")
+    private int port;
+
+    @BeforeEach
+    void beforeEach() {
+
+    }
+
+    @Test
+    void saveBookTest() {
+
+//        Book book = new Book("test", "test", new Author("test", "test"));
+//
+//        String id =  RestAssured
+//                .given()
+//                .body(book)
+//                .accept(JSON)
+//                .contentType(JSON)
+//                .when()
+//                .port(8080)
+//                .post("/books")
+//                .then()
+//                .assertThat()
+//                .statusCode(HttpStatus.CREATED.value())
+//                .extract()
+//                .as(String.class); // The problem will be here, we need to have the DTO class
+//
+//        assertThat(book.getId()).isEqualTo(id);
+    }
 }

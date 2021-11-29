@@ -1,16 +1,12 @@
 package com.switchfully.digibooky.api;
 
-import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.repositories.DefaultBookRepository;
 import com.switchfully.digibooky.services.BookService;
-import com.switchfully.digibooky.services.dtos.BookDTO;
+import com.switchfully.digibooky.services.dtos.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -26,32 +22,25 @@ public class BookController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public String postNewBook(@RequestBody Book createBookDto){
+    public BookDTO postNewBook(@RequestBody CreateBookDTO createBookDto) {
         return bookService.save(createBookDto);
     }
 
-//    @GetMapping(produces = "application/json")
-//    @ResponseStatus(HttpStatus.OK)
-//    public BookDTO getBookByTitle(@RequestParam String title){
-//        if (title.equals("1")) {
-//            BookDTO bookDto =  new BookDTO();
-//            bookDto.setTitle("Umpa lumpa");
-//            bookDto.setId("1");
-//            bookDto.setAuthor(new Author("Jan", "D.P"));
-//            return bookDto;
-//        }
-//        else throw  new ObjectNotFoundException("Could not find in Database");
-//    }
-
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getAllBooks(){
-        return bookService.convertListOfBookInBookDto(bookRepository.getAll());
+    public Book getBookByTitle(@RequestParam String title) {
+        return bookRepository.getByTitle();
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public BookDTO getBookById(@PathVariable("id") String id){
+    public BookDTO getBookById(@PathVariable("id") String id) {
         return bookService.convertBookinBookDto(bookRepository.getById(id));
+    }
+
+    @GetMapping(produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getAllBooks() {
+        return bookService.convertListOfBookInBookDto(bookRepository.getAll());
     }
 }

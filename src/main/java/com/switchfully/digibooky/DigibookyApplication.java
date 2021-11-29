@@ -9,11 +9,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class DigibookyApplication {
 
     public static void main(String[] args) {
-
         SpringApplication.run(DigibookyApplication.class, args);
-
-
-
     }
 
 }

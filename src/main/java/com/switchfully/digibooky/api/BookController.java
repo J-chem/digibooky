@@ -42,8 +42,6 @@ public class BookController {
         else throw  new ObjectNotFoundException("Could not find in Database");
     }
 
-
-
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Collection<BookDTO> getAllBooks(){

@@ -1,14 +1,13 @@
 package com.switchfully.digibooky.domain;
 
-import com.switchfully.digibooky.services.dtos.BookDTO;
-
 import java.util.UUID;
 
 public class Book {
-    private String id;
-    private String isbn;
-    private String title;
-    private Author author;
+    private final String id;
+    private final String isbn;
+    private final String title;
+    private final Author author;
+    private boolean isLentOut;
 
     public Book(String isbn, String title, Author author) {
         this.id = UUID.randomUUID().toString();
@@ -23,6 +22,10 @@ public class Book {
 
     public String getIsbn() {
         return isbn;
+    }
+
+    public void setLentOut(boolean isLentOut) {
+        this.isLentOut = isLentOut;
     }
 
     public String getTitle() {

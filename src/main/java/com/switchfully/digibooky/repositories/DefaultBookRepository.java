@@ -2,6 +2,7 @@ package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Book;
+import com.switchfully.digibooky.domain.BookLentData;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
@@ -42,8 +43,13 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public String save(Book book) {
+    public Book save(Book book) {
         books.put(book.getId(), book);
-        return book.getId();
+        return book;
+    }
+
+    @Override
+    public String lendBook(BookLentData bookLentData) {
+        return null;
     }
 }

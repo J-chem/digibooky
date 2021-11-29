@@ -2,6 +2,8 @@ package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
+import com.switchfully.digibooky.services.dtos.BookDTO;
+import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,9 +26,12 @@ class BookControllerTest {
     @Test
     void saveBookTest() {
 
-//        Book book = new Book("test", "test", new Author("test", "test"));
+//        CreateBookDTO book = new CreateBookDTO();
+//        book.setAuthor(new Author("test", "test"));
+//        book.setIsbn("test");
+//        book.setTitle("test");
 //
-//        String id =  RestAssured
+//        BookDTO id =  RestAssured
 //                .given()
 //                .body(book)
 //                .accept(JSON)
@@ -38,8 +43,8 @@ class BookControllerTest {
 //                .assertThat()
 //                .statusCode(HttpStatus.CREATED.value())
 //                .extract()
-//                .as(String.class); // The problem will be here, we need to have the DTO class
+//                .as(BookDTO.class); // The problem will be here, we need to have the DTO class
 //
-//        assertThat(book.getId()).isEqualTo(id);
+//        assertThat(book.getIsbn()).isEqualTo(id);
     }
 }

@@ -17,8 +17,8 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Collection<Book> getAll() {
-        return books.values();
+    public List<Book> getAll() {
+        return books.values().stream().toList();
     }
 
     @Override

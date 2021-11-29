@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/books")
@@ -44,7 +45,7 @@ public class BookController {
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<BookDTO> getAllBooks(){
+    public List<BookDTO> getAllBooks(){
         return bookService.convertListOfBookInBookDto(bookRepository.getAll());
     }
 

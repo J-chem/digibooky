@@ -18,7 +18,7 @@ public class BookController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public String postNewBook(Book createBookDto){
+    public String postNewBook(@RequestBody Book createBookDto){
         return bookService.save(createBookDto);
     }
 }

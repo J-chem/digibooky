@@ -5,11 +5,11 @@ import com.switchfully.digibooky.domain.Book;
 import java.util.Collection;
 
 public interface BookRepository {
-    public Collection<Book> getAll();
-    public Book getById();
-    public Book getByISBN();
-    public Book getByTitle();
-    public Book getByAuthor();
-    public Book save();
+    Collection<Book> getAll();
+    Book getById();
+    Book getByISBN();
+    Book getByTitle();
+    Book getByAuthor();
+    String save(Book book);
 
 }

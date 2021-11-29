@@ -11,26 +11,13 @@ public class BookDTO {
     private String title;
     private Author author;
 
-    public BookDTO(String id, String isbn, String title, Author author) {
-        this.id = id;
-        this.isbn = isbn;
-        this.title = title;
-        this.author = author;
-    }
-
-    public BookDTO(Book book){
-        this.id = book.getId();
-        this.isbn = book.getIsbn();
-        this.title = book.getTitle();
-        this.author = book.getAuthor();
-    }
-
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public BookDTO setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getIsbn() {
@@ -45,15 +32,17 @@ public class BookDTO {
         return title;
     }
 
-    public void setTitle(String title) {
+    public BookDTO setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public BookDTO setAuthor(Author author) {
         this.author = author;
+        return this;
     }
 }

@@ -1,10 +1,12 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.domain.Book;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class DefaultBookRepository implements BookRepository {
     private final ConcurrentHashMap<String, Book> books;
 

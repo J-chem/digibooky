@@ -14,4 +14,8 @@ public abstract class User {
         this.email = email;
         this.address = address;
     }
+
+    public String getId() {
+        return socialSecurityNumber;
+    }
 }

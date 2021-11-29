@@ -5,6 +5,7 @@ import com.switchfully.digibooky.domain.Book;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -17,12 +18,12 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Collection<Book> getAll() {
-        return null;
+        return books.values();
     }
 
     @Override
-    public Book getById() {
-        return null;
+    public Book getById(String id) {
+        return books.get(id);
     }
 
     @Override

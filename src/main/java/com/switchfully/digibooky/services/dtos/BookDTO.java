@@ -1,6 +1,7 @@
 package com.switchfully.digibooky.services.dtos;
 
 import com.switchfully.digibooky.domain.Author;
+import com.switchfully.digibooky.domain.Book;
 
 import java.util.UUID;
 
@@ -14,31 +15,35 @@ public class BookDTO {
         return id;
     }
 
-    public void setId(String id) {
+    public BookDTO setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(String isbn) {
+    public BookDTO setIsbn(String isbn) {
         this.isbn = isbn;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public BookDTO setTitle(String title) {
         this.title = title;
+        return this;
     }
 
     public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public BookDTO setAuthor(Author author) {
         this.author = author;
+        return this;
     }
 }

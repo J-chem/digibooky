@@ -3,8 +3,10 @@ package com.switchfully.digibooky.services;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.repositories.BookRepository;
 import com.switchfully.digibooky.services.dtos.BookDTO;
-import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultBookService implements BookService {
@@ -15,8 +17,25 @@ public class DefaultBookService implements BookService {
         this.bookRepository = bookRepository;
     }
 
-    public Book getBookByTitle(String title){
-        return bookRepository.getByTitle();
+    @Override
+    public BookDTO convertBookinBookDto(Book book) {
+        return new BookDTO()
+                .setId(book.getId())
+                .setTitle(book.getTitle())
+                .setIsbn(book.getIsbn())
+                .setAuthor(book.getAuthor());
+    }
+
+    @Override
+    public Book convertBookDtoInBook(BookDTO bookDTO) {
+        return new Book(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor());
+    }
+
+    @Override
+    public Collection<BookDTO> convertListOfBookInBookDto(Collection<Book> booksList) {
+        return booksList.stream()
+                .map(book -> convertBookinBookDto(book))
+                .collect(Collectors.toList());
     }
 
     @Override

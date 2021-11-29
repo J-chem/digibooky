@@ -7,9 +7,9 @@ import java.util.Collection;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 
 public interface BookService {
-    public BookDTO convertBookinBookDto(Book book);
-    public Book convertBookDtoInBook(BookDTO bookDTO);
-    public Collection<BookDTO> convertListOfBookInBookDto(Collection<Book> booksList);
+    BookDTO convertBookinBookDto(Book book);
+    Book convertBookDtoInBook(BookDTO bookDTO);
+    Collection<BookDTO> convertListOfBookInBookDto(Collection<Book> booksList);
 
     String save(Book createBookDTO);
 

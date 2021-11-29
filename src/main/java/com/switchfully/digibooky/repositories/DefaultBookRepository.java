@@ -33,7 +33,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Book getByTitle() {
-        throw new ObjectNotFoundException("");
+        throw new ObjectNotFoundException();
     }
 
     @Override

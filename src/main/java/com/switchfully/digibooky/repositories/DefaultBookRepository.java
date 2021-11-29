@@ -5,8 +5,6 @@ import com.switchfully.digibooky.domain.BookLentData;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -21,7 +19,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Collection<Book> getAll() {
-        throw new UnsupportedOperationException("getAll not implemented");
+        return books.values();
     }
 
     @Override

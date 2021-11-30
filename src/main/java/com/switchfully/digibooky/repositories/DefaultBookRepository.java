@@ -4,6 +4,7 @@ import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import com.switchfully.digibooky.exceptions.EmptyBooksListException;
+import org.apache.el.stream.Stream;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -63,7 +64,10 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public String lendBook(BookLentData bookLentData) {
         lentData.put(bookLentData.getLendingId(), bookLentData);
-        // update isLentOut
+        var lentBook = books.entrySet()
+                .stream()
+                .filter(book -> book.getValue().getIsbn().equals(bookLentData.getIsbn()));
+
         return bookLentData.getLendingId();
     }
 }

@@ -5,15 +5,14 @@ import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class DefaultBookRepository implements BookRepository {
+
     private final ConcurrentHashMap<String, Book> books;
     private final ConcurrentHashMap<String, BookLentData> lentData;
-
 
     public DefaultBookRepository() {
         books = new ConcurrentHashMap<>();
@@ -21,7 +20,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Book> getAll() {
+    public List<Book> getAllBooks() {
         return books.values().stream().toList();
     }
 
@@ -31,20 +30,19 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book getByISBN() {
-        return null;
-    }
-
-    @Override
-    public Book getByTitle() {
+    public Book getByTitle(String title) {
         throw new ObjectNotFoundException();
     }
 
     @Override
-    public Book getByAuthor() {
-        return null;
+    public Book getByISBN() {
+        throw new UnsupportedOperationException("not implemented: getByISBN");
     }
 
+    @Override
+    public Book getByAuthor() {
+        throw new UnsupportedOperationException("not implemented: getByAuthor");
+    }
 
     @Override
     public Book save(Book book) {

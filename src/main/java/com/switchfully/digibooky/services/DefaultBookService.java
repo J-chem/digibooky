@@ -9,49 +9,42 @@ import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DefaultBookService implements BookService {
 
     private final BookRepository bookRepository;
+    private final BookConverter bookConverter;
 
-    public DefaultBookService(BookRepository bookRepository) {
+    public DefaultBookService(BookRepository bookRepository, BookConverter bookConverter) {
         this.bookRepository = bookRepository;
+        this.bookConverter = bookConverter;
     }
 
     @Override
-    public BookDTO convertBookinBookDto(Book book) {
-        return new BookDTO()
-                .setId(book.getId())
-                .setTitle(book.getTitle())
-                .setIsbn(book.getIsbn())
-                .setAuthor(book.getAuthor());
+    public List<BookDTO> getAllBooks() {
+        List<Book> books = bookRepository.getAllBooks();
+        return bookConverter.convertListOfBookInBookDto(books);
     }
 
     @Override
-    public Book convertBookDtoInBook(BookDTO bookDTO) {
-        return new Book(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor());
+    public BookDTO getById(String id) {
+        Book book = bookRepository.getById(id);
+        return bookConverter.convertBookToBookDTO(book);
     }
 
     @Override
-    public Book convertCreateBookDtoInBook(CreateBookDTO createBookDTO) {
-        return new Book(createBookDTO.getIsbn(), createBookDTO.getTitle(), createBookDTO.getAuthor());
-    }
-
-    @Override
-    public List<BookDTO> convertListOfBookInBookDto(List<Book> booksList) {
-        return booksList.stream()
-                .map(book -> convertBookinBookDto(book))
-                .collect(Collectors.toList());
+    public BookDTO getBookByTitle(String title) {
+        Book book = bookRepository.getByTitle(title);
+        return bookConverter.convertBookToBookDTO(book);
     }
 
     @Override
     public BookDTO save(CreateBookDTO createBookDTO) {
-        Book newBook = convertCreateBookDtoInBook(createBookDTO);
-        return convertBookinBookDto(bookRepository.save(newBook));
+        Book newBook = bookConverter.convertCreateBookDTOToBook(createBookDTO);
+        Book savedBook = bookRepository.save(newBook);
+        return bookConverter.convertBookToBookDTO(savedBook);
     }
-
 
     @Override
     public String lendBook(User user, BookDTO bookDTO) {
@@ -62,8 +55,5 @@ public class DefaultBookService implements BookService {
         return bookRepository.lendBook(bookLentData);
     }
 
-    @Override
-    public Book getBookByTitle(String title) {
-        return null;
-    }
+
 }

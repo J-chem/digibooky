@@ -18,8 +18,6 @@ public class DefaultBookRepository implements BookRepository {
     private final ConcurrentHashMap<String, Book> books;
     private final ConcurrentHashMap<String, BookLentData> lentData;
 
-
-
     public DefaultBookRepository() {
         books = new ConcurrentHashMap<>();
         lentData = new ConcurrentHashMap<>();

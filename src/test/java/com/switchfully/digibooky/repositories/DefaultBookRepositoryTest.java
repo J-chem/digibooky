@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -139,7 +140,7 @@ class DefaultBookRepositoryTest {
         void whenGetByISBN_thenReturnBook1() {
             bookRepository.save(book1);
             String isbn = book1.getIsbn();
-            assertThat(bookRepository.getByISBN(isbn)).isEqualTo(book1);
+            assertThat(bookRepository.getByISBN(isbn)).isEqualTo(List.of(book1));
         }
 
         @Test
@@ -147,9 +148,7 @@ class DefaultBookRepositoryTest {
         void whenGetByISBN_bookDoesntExist_trows() {
             bookRepository.save(book2);
             String isbn = book1.getIsbn();
-            assertThatThrownBy(() -> bookRepository.getByISBN(isbn))
-                    .isInstanceOf(NoSuchElementException.class)
-                    .hasMessage("This book doesn't exist");
+            assertThat(bookRepository.getByISBN(isbn)).isEmpty();
         }
 
         @Test

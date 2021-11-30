@@ -35,6 +35,12 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
+    public List<BookDTO> getByAuthor(String firstname, String lastname){
+        List<Book> books = bookRepository.getByAuthor(firstname, lastname);
+        return bookConverter.convertListOfBookInBookDto(books);
+    }
+
+    @Override
     public List<BookDTO> getBookByTitle(String title) {
         List<Book> books = bookRepository.getByTitle(title);
         return bookConverter.convertListOfBookInBookDto(books);

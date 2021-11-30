@@ -49,6 +49,13 @@ public class BookController {
         return bookService.getByISBN(isbn);
     }
 
+    @GetMapping(produces = "application/json", params = {"lastname", "firstname"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getByAuthor(@RequestParam(required = false, name = "lastname") String lastname,
+                                     @RequestParam(required = false, name = "firstname") String firstname) {
+        return bookService.getByAuthor(firstname, lastname);
+    }
+
     // POST MAPPINGS
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)

@@ -11,7 +11,7 @@ public interface BookRepository {
     Book getById(String id);
     List<Book> getByTitle(String title);
     List<Book> getByISBN(String isbn);
-    Book getByAuthor(Author author);
+    List<Book> getByAuthor(String firstname, String lastname);
     Book save(Book book);
     String lendBook(BookLentData bookLentData);
     void updateLendOutStatus(String id);

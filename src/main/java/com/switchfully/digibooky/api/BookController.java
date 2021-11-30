@@ -16,11 +16,9 @@ import java.util.List;
 @RequestMapping(path = "/books")
 public class BookController {
 
-    private final DefaultBookRepository bookRepository;
     private final BookService bookService;
 
-    public BookController(DefaultBookRepository bookRepository, BookService bookService) {
-        this.bookRepository = bookRepository;
+    public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 

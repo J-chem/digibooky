@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.repositories;
 
+import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
@@ -60,6 +61,7 @@ class DefaultBookRepositoryTest {
 
     @Test
     void whenLendingABook_thenReturnsLendingID() {
+        bookRepository.save(book1);
         BookLentData bookLentData = new BookLentData("test", "test");
         String lendingId = bookLentData.getLendingId();
         assertThat(bookRepository.lendBook(bookLentData)).isEqualTo(lendingId);
@@ -76,7 +78,7 @@ class DefaultBookRepositoryTest {
     void whenGetByISBN_bookDoesntExist_trows() {
         String isbn = book1.getIsbn();
         assertThatThrownBy(() -> bookRepository.getByISBN(isbn))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("This book doesn't exist");
+                .isInstanceOf(EmptyBooksListException.class)
+                .hasMessage("List of books is empty");
     }
 }

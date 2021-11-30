@@ -1,15 +1,18 @@
 package com.switchfully.digibooky.repositories;
 
+import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
-import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
+import com.switchfully.digibooky.repositories.validators.Validator;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.switchfully.digibooky.repositories.validators.Validator.*;
 
 @Repository
 public class DefaultBookRepository implements BookRepository {
@@ -17,7 +20,10 @@ public class DefaultBookRepository implements BookRepository {
     private final ConcurrentHashMap<String, Book> books;
     private final ConcurrentHashMap<String, BookLentData> lentData;
 
+
+
     public DefaultBookRepository() {
+
         books = new ConcurrentHashMap<>();
         lentData = new ConcurrentHashMap<>();
     }
@@ -31,7 +37,7 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public Book getById(String id) {
         assertBooksIsEmpty();
-        assertStringNotNull(id, " id ");
+        assertStringNotNull(id, "id");
         if (!books.containsKey(id)){
             throw new ObjectNotFoundException("Book not found");
         }
@@ -41,14 +47,14 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public Book getByTitle(String title) {
         assertBooksIsEmpty();
-        assertStringNotNull(title, " title ");
+        assertStringNotNull(title, "title");
         throw new ObjectNotFoundException();
     }
 
     @Override
     public Book getByISBN(String isbn) {
         assertBooksIsEmpty();
-        assertStringNotNull(isbn, " isbn ");
+        assertStringNotNull(isbn, "isbn");
         return books.values()
                 .stream()
                 .filter(book -> book.getIsbn().equals(isbn))
@@ -77,20 +83,15 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public void updateLendOutStatus(String id) {
         assertBooksIsEmpty();
-        assertStringNotNull(id, " id ");
+        assertStringNotNull(id, "id");
         Book book = books.get(id);
         book.setLentOut(!book.isLentOut());
     }
 
-    private void assertStringNotNull(String id, String param) {
-        if (id == null){
-            throw new IllegalArgumentException("The" + param + "can't be null");
-        }
-    }
-
-    private void assertBooksIsEmpty() {
+    public void assertBooksIsEmpty() {
         if (books.isEmpty()){
             throw new EmptyBooksListException("List of books is empty");
         }
     }
+
 }

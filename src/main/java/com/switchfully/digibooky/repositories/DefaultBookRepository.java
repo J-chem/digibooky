@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.repositories;
 
+import com.switchfully.digibooky.custom.exceptions.BookIsNotAvailableException;
 import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Author;
@@ -23,7 +24,6 @@ public class DefaultBookRepository implements BookRepository {
 
 
     public DefaultBookRepository() {
-
         books = new ConcurrentHashMap<>();
         lentData = new ConcurrentHashMap<>();
     }
@@ -93,5 +93,7 @@ public class DefaultBookRepository implements BookRepository {
             throw new EmptyBooksListException("List of books is empty");
         }
     }
+
+
 
 }

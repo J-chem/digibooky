@@ -23,16 +23,11 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public BookDTO postNewBook(@RequestBody CreateBookDTO createBookDto) {
-        return bookService.save(createBookDto);
-    }
-
-    @GetMapping(path = "?title={title}", produces = "application/json")
+    // GET MAPPINGS
+    @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public BookDTO getBookByTitle(@PathVariable String title) {
-        return bookService.getBookByTitle(title);
+    public List<BookDTO> getAllBooks() {
+        return bookService.getAllBooks();
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
@@ -41,15 +36,30 @@ public class BookController {
         return bookService.getById(id);
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(produces = "application/json", params = {"title"})
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getAllBooks() {
-        return bookService.getAllBooks();
+    // List return
+    public BookDTO getBookByTitle(@RequestParam String title) {
+        return bookService.getBookByTitle(title);
     }
 
-    @PostMapping(path = "?isbn={ISBN}",consumes = "application/json", produces = "application/json")
+    @GetMapping(produces = "application/json", params = {"isbn"})
+    @ResponseStatus(HttpStatus.OK)
+    // List return
+    public BookDTO getByISBN(@RequestParam String isbn) {
+        return bookService.getByISBN(isbn);
+    }
+
+    // POST MAPPINGS
+    @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public String lendABook(@RequestParam String ISBN) {
+    public BookDTO postNewBook(@RequestBody CreateBookDTO createBookDto) {
+        return bookService.save(createBookDto);
+    }
+
+    @PostMapping(path = "/{id}/lendOut", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String lendABook(@PathVariable("id") String id) {
         var user = new Member(
                 "test",
                 "test",
@@ -60,6 +70,6 @@ public class BookController {
                         0,
                         0,
                         "test"));
-        return bookService.lendBook(user, ISBN);
+        return bookService.lendBook(user, id);
     }
 }

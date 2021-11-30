@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.services;
 
+import com.switchfully.digibooky.custom.exceptions.BookIsNotAvailableException;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import com.switchfully.digibooky.domain.user.User;
@@ -53,20 +54,17 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public String lendBook(User user, String isbn) {
-        Book book = bookRepository.getByISBN(isbn);
-        assertLentOutStatus(book.isLentOut());
-
-        bookRepository.updateLendOutStatus(book.getId());
-        BookLentData bookLentData = new BookLentData(user.getId(), isbn);
+    public String lendBook(User user, String id) {
+        assertLentOutStatus(bookRepository.getById(id).isLentOut());
+        bookRepository.updateLendOutStatus(id);
+        BookLentData bookLentData = new BookLentData(user.getId(), id);
         return bookRepository.lendBook(bookLentData);
     }
 
     private void assertLentOutStatus(boolean isLentOut) {
         if(isLentOut) {
-           throw new UnsupportedOperationException("Implement this in Service LendBook");
+            throw new BookIsNotAvailableException("Sorry but this book is not available");
         }
     }
-
 
 }

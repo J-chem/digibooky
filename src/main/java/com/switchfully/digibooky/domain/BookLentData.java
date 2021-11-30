@@ -7,13 +7,13 @@ public class BookLentData {
 
     private final String lendingId;
     private final String userId;
-    private final String isbn;
+    private final String bookId;
     private final LocalDate dueDate;
 
-    public BookLentData(String userId, String isbn) {
+    public BookLentData(String userId, String bookId) {
         this.lendingId = UUID.randomUUID().toString();
         this.userId = userId;
-        this.isbn = isbn;
+        this.bookId = bookId;
         this.dueDate = LocalDate.now().plusWeeks(3);
     }
 
@@ -25,8 +25,8 @@ public class BookLentData {
         return userId;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public String getBookId() {
+        return bookId;
     }
 
     public LocalDate getDueDate() {

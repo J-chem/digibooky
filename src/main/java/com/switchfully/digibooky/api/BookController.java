@@ -1,8 +1,9 @@
 package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.domain.user.Address;
-import com.switchfully.digibooky.domain.user.Member;
+import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.repositories.DefaultBookRepository;
+import com.switchfully.digibooky.security.Role;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
@@ -50,16 +51,15 @@ public class BookController {
     @PostMapping(path = "?isbn={ISBN}",consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public String lendABook(@RequestParam String ISBN) {
-        var user = new Member(
-                "test",
-                "test",
-                "test",
-                "test",
-                new Address(
-                        "test",
-                        0,
-                        0,
-                        "test"));
+        User user = new User.Builder("test", "test",
+                new Address.Builder()
+                        .withCity("NY")
+                        .withPostalCode(2000)
+                        .withStreetName("lala")
+                        .withStreetNumber(48)
+                        .build(),
+                        Role.MEMBER).build();
+
         return bookService.lendBook(user, ISBN);
     }
 }

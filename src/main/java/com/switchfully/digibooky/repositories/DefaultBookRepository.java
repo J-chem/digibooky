@@ -1,6 +1,7 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
+import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import org.apache.el.stream.Stream;
@@ -41,7 +42,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book getByAuthor() {
+    public Book getByAuthor(Author author) {
         throw new UnsupportedOperationException("not implemented: getByAuthor");
     }
 
@@ -54,10 +55,12 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public String lendBook(BookLentData bookLentData) {
         lentData.put(bookLentData.getLendingId(), bookLentData);
-        var lentBook = books.entrySet()
-                .stream()
-                .filter(book -> book.getValue().getIsbn().equals(bookLentData.getIsbn()));
-
         return bookLentData.getLendingId();
+    }
+
+    @Override
+    public void updateLendOutStatus(String id) {
+        Book book = books.get(id);
+        book.setLentOut(!book.isLentOut());
     }
 }

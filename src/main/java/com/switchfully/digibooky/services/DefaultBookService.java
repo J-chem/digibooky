@@ -40,6 +40,12 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
+    public BookDTO getByISBN(String isbn) {
+        Book book = bookRepository.getByISBN(isbn);
+        return bookConverter.convertBookToBookDTO(book);
+    }
+
+    @Override
     public BookDTO save(CreateBookDTO createBookDTO) {
         Book newBook = bookConverter.convertCreateBookDTOToBook(createBookDTO);
         Book savedBook = bookRepository.save(newBook);
@@ -48,11 +54,18 @@ public class DefaultBookService implements BookService {
 
     @Override
     public String lendBook(User user, String isbn) {
-//        if(bookRepository.getByISBN(isbn).isLentOut()) {
-//           throw new UnsupportedOperationException("Implement this in Service LendBook");
-//        }
+        Book book = bookRepository.getByISBN(isbn);
+        assertLentOutStatus(book.isLentOut());
+
+        bookRepository.updateLendOutStatus(book.getId());
         BookLentData bookLentData = new BookLentData(user.getId(), isbn);
         return bookRepository.lendBook(bookLentData);
+    }
+
+    private void assertLentOutStatus(boolean isLentOut) {
+        if(isLentOut) {
+           throw new UnsupportedOperationException("Implement this in Service LendBook");
+        }
     }
 
 

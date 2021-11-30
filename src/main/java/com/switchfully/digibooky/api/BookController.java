@@ -68,6 +68,5 @@ public class BookController {
                         .build(),
                         Role.MEMBER).build();
             return bookService.lendBook(user, id);
-
     }
 }

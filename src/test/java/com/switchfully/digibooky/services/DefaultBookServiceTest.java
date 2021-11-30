@@ -14,7 +14,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 //@ExtendWith(Mockito.class)
 class DefaultBookServiceTest {
+    @Test
+    void lendBook() {
 
+    }
 //  private Book book;
 // // @Mock
 //  private DefaultBookService defaultBookService;

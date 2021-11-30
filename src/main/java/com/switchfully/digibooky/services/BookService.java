@@ -11,8 +11,8 @@ public interface BookService {
     List<BookDTO> getAllBooks();
     BookDTO getById(String id);
     BookDTO getBookByTitle(String title);
-//    BookDTO getByISBN();
-//    BookDTO getByAuthor();
+//    BookDTO getByISBN(String isbn);
+//    BookDTO getByAuthor(Author author);
     BookDTO save(CreateBookDTO createBookDTO);
     String lendBook(User user, String ISBN);
 }

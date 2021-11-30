@@ -1,12 +1,14 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
+import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -45,12 +47,16 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book getByISBN() {
-        throw new UnsupportedOperationException("not implemented: getByISBN");
+    public Book getByISBN(String isbn) {
+        return books.values()
+                .stream()
+                .filter(book -> book.getIsbn().equals(isbn))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("This book doesn't exist"));
     }
 
     @Override
-    public Book getByAuthor() {
+    public Book getByAuthor(Author author) {
         throw new UnsupportedOperationException("not implemented: getByAuthor");
     }
 
@@ -63,10 +69,12 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public String lendBook(BookLentData bookLentData) {
         lentData.put(bookLentData.getLendingId(), bookLentData);
-        var lentBook = books.entrySet()
-                .stream()
-                .filter(book -> book.getValue().getIsbn().equals(bookLentData.getIsbn()));
-
         return bookLentData.getLendingId();
+    }
+
+    @Override
+    public void updateLendOutStatus(String id) {
+        Book book = books.get(id);
+        book.setLentOut(!book.isLentOut());
     }
 }

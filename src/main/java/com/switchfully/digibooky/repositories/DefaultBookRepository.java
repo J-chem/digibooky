@@ -3,8 +3,7 @@ package com.switchfully.digibooky.repositories;
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
-import com.switchfully.digibooky.exceptions.EmptyBooksListException;
-import org.apache.el.stream.Stream;
+import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

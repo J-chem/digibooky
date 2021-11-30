@@ -15,4 +15,5 @@ public interface BookRepository {
     Book save(Book book);
     String lendBook(BookLentData bookLentData);
     void updateLendOutStatus(String id);
+    String returnBook(String lendId);
 }

@@ -1,6 +1,7 @@
 package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
+import com.switchfully.digibooky.custom.exceptions.NotUniqueException;
 import com.switchfully.digibooky.custom.exceptions.UnauthorizedException;
 import com.switchfully.digibooky.custom.exceptions.UnknownUserException;
 import com.switchfully.digibooky.custom.exceptions.WrongPasswordException;
@@ -52,6 +53,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     protected void wrongPassword (WrongPasswordException wpe,
                                   HttpServletResponse response) throws IOException{
         response.sendError(NOT_FOUND.value(), wpe.getMessage());
+    }
+
+    @ExceptionHandler(NotUniqueException.class)
+    protected void securityNumberAlreadyExists (NotUniqueException ssnrae,
+                                                HttpServletResponse response) throws IOException{
+        response.sendError(BAD_REQUEST.value(), ssnrae.getMessage());
     }
 
 }

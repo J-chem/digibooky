@@ -63,7 +63,7 @@ public class BookController {
         return bookService.save(createBookDto);
     }
 
-    @PostMapping(path = "/{id}/lendOut", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/{id}/lendOut", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public String lendABook(@PathVariable("id") String id) {
             User user = new User.Builder("test", "test",
@@ -75,5 +75,11 @@ public class BookController {
                         .build(),
                         Role.MEMBER).build();
             return bookService.lendBook(user, id);
+    }
+
+    @PostMapping(path = "/{lendId}/returnBook", produces = "application/json")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String returnBook(@PathVariable String lendId) {
+        return bookService.returnBook(lendId);
     }
 }

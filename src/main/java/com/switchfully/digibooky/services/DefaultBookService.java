@@ -67,6 +67,11 @@ public class DefaultBookService implements BookService {
         return bookRepository.lendBook(bookLentData);
     }
 
+    @Override
+    public String returnBook(String lendId) {
+        return bookRepository.returnBook(lendId);
+    }
+
     private void assertLentOutStatus(boolean isLentOut) {
         if(isLentOut) {
             throw new BookIsNotAvailableException("Sorry but this book is not available");

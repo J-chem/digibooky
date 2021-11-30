@@ -13,7 +13,7 @@ public class Validator {
         }
     }
 
-    public static <T, E> void assertBooksIsEmpty(ConcurrentHashMap<T, E> map) {
+    public static <T, E> void assertDataManagementMapIsNotEmpty(ConcurrentHashMap<T, E> map) {
         if (map.isEmpty()){
             throw new EmptyBooksListException("List of books is empty");
         }

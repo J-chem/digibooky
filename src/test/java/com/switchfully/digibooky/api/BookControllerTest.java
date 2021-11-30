@@ -2,6 +2,7 @@ package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
+import com.switchfully.digibooky.repositories.DefaultBookRepository;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import io.restassured.RestAssured;
@@ -57,4 +58,13 @@ class BookControllerTest {
         assertThat(bookDTO.getIsbn()).isEqualTo("test");
         assertThat(bookDTO.getAuthor()).isEqualTo(author);
     }
+
+//    @Test
+//    void givenAList_getById() {
+//        DefaultBookRepository defaultBookRepository = new DefaultBookRepository();
+//        Book book = new Book("pjfie", "Harry Potter", author)
+//        defaultBookRepository.save(book);
+//        assertThat(defaultBookRepository.getById(book.getId())).isEqualTo(book);
+//    }
+
 }

@@ -38,14 +38,14 @@ public class BookController {
     @GetMapping(produces = "application/json", params = {"title"})
     @ResponseStatus(HttpStatus.OK)
     // List return
-    public BookDTO getBookByTitle(@RequestParam String title) {
+    public List<BookDTO> getBookByTitle(@RequestParam String title) {
         return bookService.getBookByTitle(title);
     }
 
     @GetMapping(produces = "application/json", params = {"isbn"})
     @ResponseStatus(HttpStatus.OK)
     // List return
-    public BookDTO getByISBN(@RequestParam String isbn) {
+    public List<BookDTO> getByISBN(@RequestParam String isbn) {
         return bookService.getByISBN(isbn);
     }
 

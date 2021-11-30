@@ -45,21 +45,23 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book getByTitle(String title) {
+    public List<Book> getByTitle(String title) {
         assertBooksIsEmpty(books);
         assertStringNotNull(title, "title");
-        throw new ObjectNotFoundException();
+        return books.values()
+                .stream()
+                .filter(book -> book.getTitle().contains(title))
+                .toList();
     }
 
     @Override
-    public Book getByISBN(String isbn) {
+    public List<Book> getByISBN(String isbn) {
         assertBooksIsEmpty(books);
         assertStringNotNull(isbn, "isbn");
         return books.values()
                 .stream()
-                .filter(book -> book.getIsbn().equals(isbn))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("This book doesn't exist"));
+                .filter(book -> book.getIsbn().contains(isbn))
+                .toList();
     }
 
     @Override

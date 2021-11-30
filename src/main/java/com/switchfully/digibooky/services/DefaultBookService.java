@@ -35,15 +35,15 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public BookDTO getBookByTitle(String title) {
-        Book book = bookRepository.getByTitle(title);
-        return bookConverter.convertBookToBookDTO(book);
+    public List<BookDTO> getBookByTitle(String title) {
+        List<Book> books = bookRepository.getByTitle(title);
+        return bookConverter.convertListOfBookInBookDto(books);
     }
 
     @Override
-    public BookDTO getByISBN(String isbn) {
-        Book book = bookRepository.getByISBN(isbn);
-        return bookConverter.convertBookToBookDTO(book);
+    public List<BookDTO> getByISBN(String isbn) {
+        List<Book> books = bookRepository.getByISBN(isbn);
+        return bookConverter.convertListOfBookInBookDto(books);
     }
 
     @Override

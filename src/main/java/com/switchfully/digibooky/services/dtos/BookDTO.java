@@ -2,7 +2,6 @@ package com.switchfully.digibooky.services.dtos;
 
 import com.switchfully.digibooky.domain.Author;
 
-
 public class BookDTO {
     private String id;
     private String isbn;

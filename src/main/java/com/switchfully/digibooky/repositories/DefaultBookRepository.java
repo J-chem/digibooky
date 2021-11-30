@@ -30,13 +30,13 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public List<Book> getAllBooks() {
-        assertBooksIsEmpty();
+        assertBooksIsEmpty(books);
         return books.values().stream().toList();
     }
 
     @Override
     public Book getById(String id) {
-        assertBooksIsEmpty();
+        assertBooksIsEmpty(books);
         assertStringNotNull(id, "id");
         if (!books.containsKey(id)){
             throw new ObjectNotFoundException("Book not found");
@@ -46,14 +46,14 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Book getByTitle(String title) {
-        assertBooksIsEmpty();
+        assertBooksIsEmpty(books);
         assertStringNotNull(title, "title");
         throw new ObjectNotFoundException();
     }
 
     @Override
     public Book getByISBN(String isbn) {
-        assertBooksIsEmpty();
+        assertBooksIsEmpty(books);
         assertStringNotNull(isbn, "isbn");
         return books.values()
                 .stream()
@@ -75,24 +75,24 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public String lendBook(BookLentData bookLentData) {
-        assertBooksIsEmpty();
+        assertBooksIsEmpty(books);
         lentData.put(bookLentData.getLendingId(), bookLentData);
         return bookLentData.getLendingId();
     }
 
     @Override
     public void updateLendOutStatus(String id) {
-        assertBooksIsEmpty();
+        assertBooksIsEmpty(books);
         assertStringNotNull(id, "id");
         Book book = books.get(id);
         book.setLentOut(!book.isLentOut());
     }
 
-    public void assertBooksIsEmpty() {
-        if (books.isEmpty()){
-            throw new EmptyBooksListException("List of books is empty");
-        }
-    }
+//    public void assertBooksIsEmpty() {
+//        if (books.isEmpty()){
+//            throw new EmptyBooksListException("List of books is empty");
+//        }
+//    }
 
 
 

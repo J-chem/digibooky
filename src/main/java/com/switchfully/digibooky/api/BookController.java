@@ -1,5 +1,7 @@
 package com.switchfully.digibooky.api;
 
+import com.switchfully.digibooky.domain.user.Address;
+import com.switchfully.digibooky.domain.user.Member;
 import com.switchfully.digibooky.repositories.DefaultBookRepository;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.dtos.BookDTO;
@@ -47,7 +49,17 @@ public class BookController {
 
     @PostMapping(path = "?isbn={ISBN}",consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDTO lentABook(@RequestParam String ISBN) {
-        throw new UnsupportedOperationException();
+    public String lendABook(@RequestParam String ISBN) {
+        var user = new Member(
+                "test",
+                "test",
+                "test",
+                "test",
+                new Address(
+                        "test",
+                        0,
+                        0,
+                        "test"));
+        return bookService.lendBook(user, ISBN);
     }
 }

@@ -40,6 +40,12 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
+    public BookDTO getByISBN(String isbn) {
+        Book book = bookRepository.getByISBN(isbn);
+        return bookConverter.convertBookToBookDTO(book);
+    }
+
+    @Override
     public BookDTO save(CreateBookDTO createBookDTO) {
         Book newBook = bookConverter.convertCreateBookDTOToBook(createBookDTO);
         Book savedBook = bookRepository.save(newBook);

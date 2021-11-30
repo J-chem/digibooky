@@ -1,9 +1,9 @@
 package com.switchfully.digibooky.api;
 
-import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.repositories.DefaultBookRepository;
 import com.switchfully.digibooky.services.BookService;
-import com.switchfully.digibooky.services.dtos.*;
+import com.switchfully.digibooky.services.dtos.BookDTO;
+import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/books")
 public class BookController {
+
     private final DefaultBookRepository bookRepository;
     private final BookService bookService;
 
@@ -26,21 +27,21 @@ public class BookController {
         return bookService.save(createBookDto);
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(path = "/title/{title}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Book getBookByTitle(@RequestParam String title) {
-        return bookRepository.getByTitle();
+    public BookDTO getBookByTitle(@PathVariable String title) {
+        return bookService.getBookByTitle(title);
     }
 
-//    @GetMapping(path = "/{id}", produces = "application/json")
-//    @ResponseStatus(HttpStatus.OK)
-//    public BookDTO getBookById(@PathVariable("id") String id) {
-//        return bookService.convertBookinBookDto(bookRepository.getById(id));
-//    }
-//
-//    @GetMapping(produces = "application/json")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<BookDTO> getAllBooks() {
-//        return bookService.convertListOfBookInBookDto(bookRepository.getAll());
-//    }
+    @GetMapping(path = "/{id}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDTO getBookById(@PathVariable("id") String id) {
+        return bookService.getById(id);
+    }
+
+    @GetMapping(produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getAllBooks() {
+        return bookService.getAllBooks();
+    }
 }

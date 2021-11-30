@@ -11,23 +11,26 @@ public class CreateBookDTO {
         return isbn;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public CreateBookDTO setIsbn(String isbn) {
+        this.isbn = isbn;
+        return this;
+    }
+
+    public CreateBookDTO setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public CreateBookDTO setAuthor(Author author) {
         this.author = author;
+        return this;
     }
 }

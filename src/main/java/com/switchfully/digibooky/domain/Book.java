@@ -14,6 +14,7 @@ public class Book {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
+        this.isLentOut = false;
     }
 
     public String getId() {

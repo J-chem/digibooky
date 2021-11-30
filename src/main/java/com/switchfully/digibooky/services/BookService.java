@@ -8,13 +8,11 @@ import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import java.util.List;
 
 public interface BookService {
-    Book convertCreateBookDtoInBook(CreateBookDTO createBookDTO);
-    BookDTO convertBookinBookDto(Book book);
-    Book convertBookDtoInBook(BookDTO bookDTO);
-    List<BookDTO> convertListOfBookInBookDto(List<Book> booksList);
-
+    List<BookDTO> getAllBooks();
+    BookDTO getById(String id);
+    BookDTO getBookByTitle(String title);
+//    BookDTO getByISBN();
+//    BookDTO getByAuthor();
     BookDTO save(CreateBookDTO createBookDTO);
     String lendBook(User user, BookDTO bookDTO);
-
-    Book getBookByTitle(String title);
 }

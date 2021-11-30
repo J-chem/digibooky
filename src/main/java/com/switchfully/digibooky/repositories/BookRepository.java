@@ -3,13 +3,13 @@ package com.switchfully.digibooky.repositories;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface BookRepository {
-    Collection<Book> getAll();
+    List<Book> getAllBooks();
     Book getById(String id);
+    Book getByTitle(String title);
     Book getByISBN();
-    Book getByTitle();
     Book getByAuthor();
     Book save(Book book);
     String lendBook(BookLentData bookLentData);

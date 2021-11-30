@@ -7,44 +7,52 @@ import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
 import static io.restassured.http.ContentType.JSON;
 import static org.assertj.core.api.Assertions.*;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class BookControllerTest {
-
     @Value("${server.port}")
     private int port;
 
+    private Author author;
+    private CreateBookDTO createBookDTO;
+
     @BeforeEach
     void beforeEach() {
-
+        author = new Author("test", "test");
+        createBookDTO = new CreateBookDTO()
+                .setAuthor(author)
+                .setIsbn("test")
+                .setTitle("test");
     }
 
     @Test
     void saveBookTest() {
+        BookDTO bookDTO = RestAssured
+                .given()
+                .body(createBookDTO)
+                .accept(JSON)
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .post("/books")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(BookDTO.class);
 
-//        CreateBookDTO book = new CreateBookDTO();
-//        book.setAuthor(new Author("test", "test"));
-//        book.setIsbn("test");
-//        book.setTitle("test");
-//
-//        BookDTO id =  RestAssured
-//                .given()
-//                .body(book)
-//                .accept(JSON)
-//                .contentType(JSON)
-//                .when()
-//                .port(8080)
-//                .post("/books")
-//                .then()
-//                .assertThat()
-//                .statusCode(HttpStatus.CREATED.value())
-//                .extract()
-//                .as(BookDTO.class); // The problem will be here, we need to have the DTO class
-//
-////        assertThat(book.getIsbn()).isEqualTo(id);
+        assertThat(bookDTO.getId()).isNotBlank();
+        assertThat(bookDTO.getTitle()).isEqualTo("test");
+        assertThat(bookDTO.getIsbn()).isEqualTo("test");
+        assertThat(bookDTO.getAuthor()).isEqualTo(author);
     }
 }

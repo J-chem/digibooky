@@ -15,7 +15,8 @@ public class BookConverter {
                 .setId(book.getId())
                 .setTitle(book.getTitle())
                 .setIsbn(book.getIsbn())
-                .setAuthor(book.getAuthor());
+                .setAuthor(book.getAuthor())
+                .setLentOut(book.isLentOut());
     }
 
     public Book convertCreateBookDTOToBook(CreateBookDTO createBookDTO) {
@@ -30,23 +31,4 @@ public class BookConverter {
                 .map(this::convertBookToBookDTO)
                 .toList();
     }
-
-
-
-
-
-
-
-
-
-
-
-    // I DON'T THINK WE WILL NEED THIS ONE,
-    // AS BookDTO is Return type, and
-    // CreateBookDTO is (argument)/Parameter type
-
-//    public Book convertBookDTOToBook(BookDTO bookDTO) {
-//        return new Book(bookDTO.getIsbn(), bookDTO.getTitle(), bookDTO.getAuthor());
-//    }
-
 }

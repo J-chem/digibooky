@@ -27,7 +27,7 @@ public class BookController {
         return bookService.save(createBookDto);
     }
 
-    @GetMapping(path = "/title/{title}", produces = "application/json")
+    @GetMapping(path = "?title={title}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public BookDTO getBookByTitle(@PathVariable String title) {
         return bookService.getBookByTitle(title);
@@ -43,5 +43,11 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getAllBooks() {
         return bookService.getAllBooks();
+    }
+
+    @PostMapping(path = "?isbn={ISBN}",consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDTO lentABook(@RequestParam String ISBN) {
+        throw new UnsupportedOperationException();
     }
 }

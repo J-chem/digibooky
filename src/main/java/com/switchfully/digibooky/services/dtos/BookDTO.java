@@ -8,9 +8,26 @@ public class BookDTO {
     private String isbn;
     private String title;
     private Author author;
+    private boolean isLentOut;
 
     public String getId() {
         return id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public boolean isLentOut() {
+        return isLentOut;
     }
 
     public BookDTO setId(String id) {
@@ -18,17 +35,9 @@ public class BookDTO {
         return this;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
     public BookDTO setIsbn(String isbn) {
         this.isbn = isbn;
         return this;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public BookDTO setTitle(String title) {
@@ -36,12 +45,13 @@ public class BookDTO {
         return this;
     }
 
-    public Author getAuthor() {
-        return author;
-    }
-
     public BookDTO setAuthor(Author author) {
         this.author = author;
+        return this;
+    }
+
+    public BookDTO setLentOut(boolean lentOut) {
+        isLentOut = lentOut;
         return this;
     }
 }

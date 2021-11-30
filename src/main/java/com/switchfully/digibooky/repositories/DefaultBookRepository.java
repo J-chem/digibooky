@@ -53,6 +53,7 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public String lendBook(BookLentData bookLentData) {
         lentData.put(bookLentData.getLendingId(), bookLentData);
+        // update isLentOut
         return bookLentData.getLendingId();
     }
 }

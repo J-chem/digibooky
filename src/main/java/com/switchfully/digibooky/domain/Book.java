@@ -25,15 +25,19 @@ public class Book {
         return isbn;
     }
 
-    public void setLentOut(boolean isLentOut) {
-        this.isLentOut = isLentOut;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public Author getAuthor() {
         return author;
+    }
+
+    public boolean isLentOut() {
+        return isLentOut;
+    }
+
+    public void setLentOut(boolean isLentOut) {
+        this.isLentOut = isLentOut;
     }
 }

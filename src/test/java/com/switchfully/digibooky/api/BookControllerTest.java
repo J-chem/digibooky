@@ -20,8 +20,6 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
-//    @Value("${server.port}")
-//    private int port;
 
     @LocalServerPort
     private int port;

@@ -1,5 +1,7 @@
 package com.switchfully.digibooky.domain.user;
 
+import java.util.Objects;
+
 public abstract class User {
     private final String socialSecurityNumber;
     private final String firstName;
@@ -17,5 +19,22 @@ public abstract class User {
 
     public String getId() {
         return socialSecurityNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return socialSecurityNumber.equals(user.socialSecurityNumber) &&
+                firstName.equals(user.firstName) &&
+                lastName.equals(user.lastName) &&
+                email.equals(user.email) &&
+                address.equals(user.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(socialSecurityNumber, firstName, lastName, email, address);
     }
 }

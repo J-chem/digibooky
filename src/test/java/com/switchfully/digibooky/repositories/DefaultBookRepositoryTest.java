@@ -1,9 +1,13 @@
 package com.switchfully.digibooky.repositories;
 
+import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
+import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -34,49 +38,116 @@ class DefaultBookRepositoryTest {
         return book1.getId();
     }
 
-    @Test
-    void whenSavingABook_thenReturnBookId() {
-        assertThat(bookRepository.save(book1)).isEqualTo(book1);
+    @Nested
+    @DisplayName("Create a book")
+    class CreateABook {
+        @Test
+        @DisplayName("Create a book")
+        void whenSavingABook_thenReturnBookId() {
+            assertThat(bookRepository.save(book1)).isEqualTo(book1);
+        }
     }
 
-    @Test
-    void whenGetById_thenReturnIdFromBook1() {
-        bookRepository.save(book1);
-        assertThat(bookRepository.getById(id1)).isEqualTo(book1);
+    @Nested
+    @DisplayName("Get by id")
+    class GetById {
+        @Test
+        @DisplayName("Id is in the list of books")
+        void whenGetById_thenReturnIdFromBook1() {
+            bookRepository.save(book1);
+            assertThat(bookRepository.getById(id1)).isEqualTo(book1);
+        }
+
+        @Test
+        @DisplayName("Id is null")
+        void whenGetByIdWithNullId_thenThrowsIllegalArgumentException() {
+            bookRepository.save(book1);
+            assertThatThrownBy(() -> bookRepository.getById(null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("The id can't be null");
+        }
+
+        @Test
+        @DisplayName("Id is not in the list of books")
+        void whenGetByIdWithNoExistingId_thenThrowsObjectNotFoundException() {
+            bookRepository.save(book1);
+            assertThatThrownBy(() -> bookRepository.getById("njnfjnfj"))
+                    .isInstanceOf(ObjectNotFoundException.class)
+                    .hasMessage("Book not found");
+        }
     }
 
-    @Test
-    void whenUpdateLendStatus_thenBookDBIsUpdated() {
-        bookRepository.save(book1);
 
-        bookRepository.updateLendOutStatus(id1);
-        Book book = bookRepository.getById(id1);
-        assertThat(book.isLentOut()).isTrue();
+    @Nested
+    @DisplayName("Get all books")
+    class GetAllBooks {
+        @Test
+        @DisplayName("Get all books")
+        void whenGetAllBooks_thenReturnsAListWithAllBooks() {
+            bookRepository.save(book1);
+            bookRepository.save(book2);
+            assertThat(bookRepository.getAllBooks()).containsOnly(book1, book2);
+        }
 
-        bookRepository.updateLendOutStatus(id1);
-        book = bookRepository.getById(id1);
-        assertThat(book.isLentOut()).isFalse();
+        @Test
+        @DisplayName("List of books is empty")
+        void whenGetAllBooksWithEmptyListOfBooks_thenThrowsEmptyBooksListException() {
+            assertThatThrownBy(() -> bookRepository.getAllBooks())
+                    .isInstanceOf(EmptyBooksListException.class)
+                    .hasMessage("List of books is empty");
+        }
     }
 
-    @Test
-    void whenLendingABook_thenReturnsLendingID() {
-        BookLentData bookLentData = new BookLentData("test", "test");
-        String lendingId = bookLentData.getLendingId();
-        assertThat(bookRepository.lendBook(bookLentData)).isEqualTo(lendingId);
+
+    @Nested
+    @DisplayName("Update a book")
+    class UpdateBook {
+        @Test
+        @DisplayName("Update a book")
+        void whenUpdateLendStatus_thenBookDBIsUpdated() {
+            bookRepository.save(book1);
+
+            bookRepository.updateLendOutStatus(id1);
+            Book book = bookRepository.getById(id1);
+            assertThat(book.isLentOut()).isTrue();
+
+            bookRepository.updateLendOutStatus(id1);
+            book = bookRepository.getById(id1);
+            assertThat(book.isLentOut()).isFalse();
+        }
     }
 
-    @Test
-    void whenGetByISBN_thenReturnBook1() {
-        bookRepository.save(book1);
-        String isbn = book1.getIsbn();
-        assertThat(bookRepository.getByISBN(isbn)).isEqualTo(book1);
+    @Nested
+    @DisplayName("Lending a book")
+    class LendingBook {
+        @Test
+        @DisplayName("Lending a book")
+        void whenLendingABook_thenReturnsLendingID() {
+            BookLentData bookLentData = new BookLentData("test", "test");
+            String lendingId = bookLentData.getLendingId();
+            assertThat(bookRepository.lendBook(bookLentData)).isEqualTo(lendingId);
+        }
     }
 
-    @Test
-    void whenGetByISBN_bookDoesntExist_trows() {
-        String isbn = book1.getIsbn();
-        assertThatThrownBy(() -> bookRepository.getByISBN(isbn))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("This book doesn't exist");
+    @Nested
+    @DisplayName("Get books by ISBN")
+    class GetByISBN {
+        @Test
+        @DisplayName("Get by ISBN")
+        void whenGetByISBN_thenReturnBook1() {
+            bookRepository.save(book1);
+            String isbn = book1.getIsbn();
+            assertThat(bookRepository.getByISBN(isbn)).isEqualTo(book1);
+        }
+
+        @Test
+        @DisplayName("Book doesn't exist")
+        void whenGetByISBN_bookDoesntExist_trows() {
+            String isbn = book1.getIsbn();
+            assertThatThrownBy(() -> bookRepository.getByISBN(isbn))
+                    .isInstanceOf(NoSuchElementException.class)
+                    .hasMessage("This book doesn't exist");
+        }
     }
+
 }

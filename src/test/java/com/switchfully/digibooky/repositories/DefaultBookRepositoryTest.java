@@ -2,6 +2,7 @@ package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
+import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
@@ -123,6 +124,7 @@ class DefaultBookRepositoryTest {
         @Test
         @DisplayName("Lending a book")
         void whenLendingABook_thenReturnsLendingID() {
+            bookRepository.save(book1);
             BookLentData bookLentData = new BookLentData("test", "test");
             String lendingId = bookLentData.getLendingId();
             assertThat(bookRepository.lendBook(bookLentData)).isEqualTo(lendingId);
@@ -143,10 +145,20 @@ class DefaultBookRepositoryTest {
         @Test
         @DisplayName("Book doesn't exist")
         void whenGetByISBN_bookDoesntExist_trows() {
+            bookRepository.save(book2);
             String isbn = book1.getIsbn();
             assertThatThrownBy(() -> bookRepository.getByISBN(isbn))
                     .isInstanceOf(NoSuchElementException.class)
                     .hasMessage("This book doesn't exist");
+        }
+
+        @Test
+        @DisplayName("List of books empty")
+        void whenGetByISBN_listOfBooksIsEmpty_trows() {
+            String isbn = book1.getIsbn();
+            assertThatThrownBy(() -> bookRepository.getByISBN(isbn))
+                    .isInstanceOf(EmptyBooksListException.class)
+                    .hasMessage("List of books is empty");
         }
     }
 

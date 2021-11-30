@@ -32,9 +32,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Book getById(String id) {
-        if (id == null){
-            throw new IllegalArgumentException("The id can't be null");
-        }
+        assertStringNotNull(id, " id ");
         if (!books.containsKey(id)){
             throw new ObjectNotFoundException("Book not found");
         }
@@ -43,11 +41,13 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public Book getByTitle(String title) {
+        assertStringNotNull(title, " title ");
         throw new ObjectNotFoundException();
     }
 
     @Override
     public Book getByISBN(String isbn) {
+        assertStringNotNull(isbn, " isbn ");
         return books.values()
                 .stream()
                 .filter(book -> book.getIsbn().equals(isbn))
@@ -74,7 +74,14 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public void updateLendOutStatus(String id) {
+        assertStringNotNull(id, " id ");
         Book book = books.get(id);
         book.setLentOut(!book.isLentOut());
+    }
+
+    private void assertStringNotNull(String id, String param) {
+        if (id == null){
+            throw new IllegalArgumentException("The" + param + "can't be null");
+        }
     }
 }

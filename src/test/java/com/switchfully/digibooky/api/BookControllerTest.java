@@ -59,12 +59,15 @@ class BookControllerTest {
         assertThat(bookDTO.getAuthor()).isEqualTo(author);
     }
 
-//    @Test
-//    void givenAList_getById() {
+    @Test
+    void givenAList_getById() {
 //        DefaultBookRepository defaultBookRepository = new DefaultBookRepository();
-//        Book book = new Book("pjfie", "Harry Potter", author)
+//        Book book = new Book("pjfie", "Harry Potter", author);
 //        defaultBookRepository.save(book);
-//        assertThat(defaultBookRepository.getById(book.getId())).isEqualTo(book);
-//    }
+//
+//        String id = book.getId();
+//
+////        assertThat(defaultBookRepository.getById(book.getId())).isEqualTo(book);
+    }
 
 }

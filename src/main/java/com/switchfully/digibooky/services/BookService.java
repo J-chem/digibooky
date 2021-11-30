@@ -14,5 +14,5 @@ public interface BookService {
 //    BookDTO getByISBN();
 //    BookDTO getByAuthor();
     BookDTO save(CreateBookDTO createBookDTO);
-    String lendBook(User user, BookDTO bookDTO);
+    String lendBook(User user, String ISBN);
 }

@@ -47,11 +47,11 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public String lendBook(User user, BookDTO bookDTO) {
-        BookLentData bookLentData = new BookLentData(user.getId(), bookDTO.getIsbn());
-//        if(bookRepository.getByISBN(bookDTO.getIsbn()).isLentOut()) {
-//            throw new ObjectNotFoundException();
+    public String lendBook(User user, String isbn) {
+//        if(bookRepository.getByISBN(isbn).isLentOut()) {
+//           throw new UnsupportedOperationException("Implement this in Service LendBook");
 //        }
+        BookLentData bookLentData = new BookLentData(user.getId(), isbn);
         return bookRepository.lendBook(bookLentData);
     }
 

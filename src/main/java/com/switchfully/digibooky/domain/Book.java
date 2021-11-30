@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.domain;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Book {

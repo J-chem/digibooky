@@ -32,15 +32,15 @@ public class BookController {
         return bookRepository.getByTitle();
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public BookDTO getBookById(@PathVariable("id") String id) {
-        return bookService.convertBookinBookDto(bookRepository.getById(id));
-    }
-
-    @GetMapping(produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getAllBooks() {
-        return bookService.convertListOfBookInBookDto(bookRepository.getAll());
-    }
+//    @GetMapping(path = "/{id}", produces = "application/json")
+//    @ResponseStatus(HttpStatus.OK)
+//    public BookDTO getBookById(@PathVariable("id") String id) {
+//        return bookService.convertBookinBookDto(bookRepository.getById(id));
+//    }
+//
+//    @GetMapping(produces = "application/json")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<BookDTO> getAllBooks() {
+//        return bookService.convertListOfBookInBookDto(bookRepository.getAll());
+//    }
 }

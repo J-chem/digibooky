@@ -3,6 +3,8 @@ package com.switchfully.digibooky.services.dtos;
 import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.security.Role;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class CreateUserDTO {

@@ -28,15 +28,12 @@ public class SecurityService {
         SecureUser usernamePassword = getUsernamePassword(authorization);
         User user = userRepository.getUser(usernamePassword.getUsername());
         if(user == null) {
-            logger.error("Unknown user" + usernamePassword.getUsername());
             throw new UnknownUserException();
         }
         if(!doesPasswordMatch(usernamePassword.getPassword(), user.getPassword())) {
-            logger.error("Password does not match for user " + usernamePassword.getUsername());
             throw new WrongPasswordException();
         }
         if(!canHaveAccessTo(feature, user.getRole())) {
-            logger.error("User " + usernamePassword.getUsername() + " does not have access to " + feature);
             throw new UnauthorizedException();
         }
         return user;

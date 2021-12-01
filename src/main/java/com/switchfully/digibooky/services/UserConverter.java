@@ -17,6 +17,6 @@ public class UserConverter {
     }
 
     public UserDTO convertUserToUserDTO(User savedUser) {
-        return new UserDTO(savedUser.getFirstName(), savedUser.getLastName(), savedUser.getRole());
+        return new UserDTO(savedUser.getId(), savedUser.getFirstName(), savedUser.getLastName(), savedUser.getRole());
     }
 }

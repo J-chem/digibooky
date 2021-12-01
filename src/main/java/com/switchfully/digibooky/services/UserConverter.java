@@ -11,6 +11,8 @@ public class UserConverter {
         return new User.Builder(createUserDto.getFirstName(),createUserDto.getLastName(),createUserDto.getAddress(),createUserDto.getRole() )
                 .withEmail(createUserDto.getEmail())
                 .withSocialSecurityNumber(createUserDto.getSocialSecurityNumber())
+                .withPassword(createUserDto.getPassword())
+                .withUsername(createUserDto.getUsername())
                 .build();
     }
 

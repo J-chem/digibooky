@@ -1,19 +1,19 @@
 package com.switchfully.digibooky.security;
 
-import com.switchfully.digibooky.domain.user.User;
-
 public class SecureUser {
-    private final User user;
+    private final String username;
+    private final String password;
 
-    public SecureUser(User user) {
-        this.user = user;
+    public SecureUser(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public String getUsername() {
-        return user.getUsername();
+        return username;
     }
 
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 }

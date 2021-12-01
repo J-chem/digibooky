@@ -2,12 +2,12 @@ package com.switchfully.digibooky.api;
 
 import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.domain.user.User;
-import com.switchfully.digibooky.repositories.DefaultBookRepository;
+import com.switchfully.digibooky.security.Features;
 import com.switchfully.digibooky.security.Role;
 import com.switchfully.digibooky.services.BookService;
+import com.switchfully.digibooky.services.SecurityService;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +17,11 @@ import java.util.List;
 @RequestMapping(path = "/books")
 public class BookController {
 
+    private final SecurityService securityService;
     private final BookService bookService;
 
-    public BookController(BookService bookService) {
+    public BookController(SecurityService securityService, BookService bookService) {
+        this.securityService = securityService;
         this.bookService = bookService;
     }
 
@@ -60,7 +62,9 @@ public class BookController {
     // POST MAPPINGS
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDTO postNewBook(@RequestBody CreateBookDTO createBookDto) {
+    public BookDTO postNewBook(@RequestBody CreateBookDTO createBookDto,
+                               @RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Features.REGISTER_NEW_BOOK);
         return bookService.save(createBookDto);
     }
 

@@ -33,7 +33,7 @@ public class DefaultBookRepository implements BookRepository {
     public Book getById(String id) {
         assertDataManagementMapIsNotEmpty(books);
         assertStringNotNull(id, "id");
-        if (!books.containsKey(id)){
+        if (!books.containsKey(id)) {
             throw new ObjectNotFoundException("Book not found");
         }
         return books.get(id);
@@ -65,7 +65,7 @@ public class DefaultBookRepository implements BookRepository {
         if (lastname == null || firstname == null) {
             return books.values()
                     .stream()
-                    .filter(book -> book.getAuthor().getFirstName().contains(firstname) || book.getAuthor().getLastName().contains(lastname))
+                    .filter(book -> book.getAuthor().getFirstName().contains(firstname) || book.getAuthor().getFirstName().contains(lastname))
                     .toList();
         }
         return books.values()
@@ -73,6 +73,7 @@ public class DefaultBookRepository implements BookRepository {
                 .filter((book -> book.getAuthor().getFirstName().contains(firstname) && book.getAuthor().getLastName().contains(lastname)))
                 .toList();
     }
+
 
     @Override
     public Book save(Book book) {

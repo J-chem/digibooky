@@ -7,6 +7,7 @@ import com.switchfully.digibooky.security.Role;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,9 +52,9 @@ public class BookController {
 
     @GetMapping(produces = "application/json", params = {"lastname", "firstname"})
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getByAuthor(@RequestParam(required = false, name = "lastname") String lastname,
-                                     @RequestParam(required = false, name = "firstname") String firstname) {
-        return bookService.getByAuthor(firstname, lastname);
+    public List<BookDTO> getByAuthor(@RequestParam(required = false, name="lastname") String lastname,
+                                     @RequestParam(required = false, name="firstname")  String firstname) {
+       return bookService.getByAuthor(firstname, lastname);
     }
 
     // POST MAPPINGS

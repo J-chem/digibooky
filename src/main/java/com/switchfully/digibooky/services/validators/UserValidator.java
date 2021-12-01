@@ -23,7 +23,9 @@ public class UserValidator {
                 .values()
                 .stream()
                 .map(getEmailUser)
-                .noneMatch(email -> email.equals(userToCheck.getEmail()));
+                .noneMatch(email -> email.equals(userToCheck.getEmail()
+                        .replaceAll("\\s+", "")
+                        .toLowerCase()));
     }
 
     private boolean checkUserSocialSecurityNumber(CreateUserDTO userToCheck, UserRepository userRepository) {

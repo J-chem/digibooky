@@ -34,8 +34,8 @@ public class DefaultUserService implements UserService {
             User savedUser = defaultUserRepository.save(user);
             return userConverter.convertUserToUserDTO(savedUser);
         }
-        throw new NotUniqueException("Social security number or email is not correct: "
-                + createUserDTO.getSocialSecurityNumber() + " " + createUserDTO.getEmail());
+        throw new NotUniqueException("Social security number:" + createUserDTO.getSocialSecurityNumber() +
+                "\n or email is not correct: " + createUserDTO.getEmail());
     }
 
     @Override
@@ -45,5 +45,4 @@ public class DefaultUserService implements UserService {
                 .map(userConverter::convertUserToUserDTO)
                 .collect(Collectors.toList());
     }
-
 }

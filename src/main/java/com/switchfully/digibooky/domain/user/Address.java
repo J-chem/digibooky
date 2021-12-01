@@ -15,11 +15,14 @@ public class Address {
         this.city = builder.city;
     }
 
+    /**
+     * Created an extra private constructor, otherwise Postman can't read the JSON.
+     */
     private Address(String streetName, int streetNumber, int postalCode, String city) {
         this.streetName = streetName;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
-        this.city = city;
+        this.city = Objects.requireNonNull(city);
     }
 
     public static class Builder {

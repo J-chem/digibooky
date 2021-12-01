@@ -7,20 +7,24 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 
 @Aspect
 @Component
 public class RepositoryAspect {
-    private final Logger logger = LoggerFactory.getLogger(Repository.class);
+    private final Logger logger = LoggerFactory.getLogger(RepositoryAspect.class);
+
+    @Pointcut("execution(* com.switchfully.digibooky.repositories.*.get*(..))")
+    public void allDataRetrievalRepos() {};
 
     @AfterThrowing(
-            pointcut = "com.switchfully.digibooky.aop.PointCutters.allDataRetrievalRepos()",
+            pointcut = "allDataRetrievalRepos()",
             throwing ="exception" )
     public void log(JoinPoint joinPoint, Throwable exception) {
         String message = exception.getMessage();
         String method = joinPoint.getSignature().toString();
         logger.warn(message.concat("\nThis for the method: ").concat(method));
     }
+
+
 }

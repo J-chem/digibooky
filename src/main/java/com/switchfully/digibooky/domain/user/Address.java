@@ -15,6 +15,13 @@ public class Address {
         this.city = builder.city;
     }
 
+    private Address(String streetName, int streetNumber, int postalCode, String city) {
+        this.streetName = streetName;
+        this.streetNumber = streetNumber;
+        this.postalCode = postalCode;
+        this.city = city;
+    }
+
     public static class Builder {
         private String streetName;
         private int streetNumber;

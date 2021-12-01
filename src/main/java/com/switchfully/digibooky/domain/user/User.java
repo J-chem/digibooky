@@ -3,6 +3,7 @@ package com.switchfully.digibooky.domain.user;
 import com.switchfully.digibooky.security.Role;
 import com.switchfully.digibooky.services.dtos.CreateUserDTO;
 
+import javax.validation.constraints.Email;
 import java.util.Objects;
 import java.util.UUID;
 

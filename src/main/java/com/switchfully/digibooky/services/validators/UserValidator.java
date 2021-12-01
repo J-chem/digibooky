@@ -30,7 +30,7 @@ public class UserValidator {
                 .noneMatch(ssn -> userToCheck.getSocialSecurityNumber().equals(ssn));
     }
 
-    private boolean validateEmail(CreateUserDTO createUserDTO) {//TODO test
+    private boolean validateEmail(CreateUserDTO createUserDTO) {
         return UserPattern.emailPattern.matcher(createUserDTO.getEmail()).matches();
     }
 

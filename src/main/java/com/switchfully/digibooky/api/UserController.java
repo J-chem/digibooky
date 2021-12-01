@@ -36,6 +36,4 @@ public class UserController {
     public UserDTO createNewUser(@RequestBody CreateUserDTO createUserDTO){
         return userService.save(createUserDTO);
     }
-
-
 }

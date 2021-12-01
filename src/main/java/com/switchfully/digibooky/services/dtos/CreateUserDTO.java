@@ -20,6 +20,9 @@ public class CreateUserDTO {
         this.role = builder.role;
     }
 
+    /**
+     * Created an extra private constructor, otherwise Postman can't read the JSON.
+     */
     private CreateUserDTO(Role role, Address address, String socialSecurityNumber, String firstName, String lastName, String email) {
         this.role = role;
         this.address = address;

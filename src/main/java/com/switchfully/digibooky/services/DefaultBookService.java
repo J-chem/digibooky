@@ -32,7 +32,11 @@ public class DefaultBookService implements BookService {
     @Override
     public BookDTO getById(String id) {
         Book book = bookRepository.getById(id);
-        return bookConverter.convertBookToBookDTO(book);
+        BookDTO bookDTO = bookConverter.convertBookToBookDTO(book);
+        if(bookDTO.isLentOut()){
+            bookDTO.setDueDate(bookRepository.getDueDate(bookDTO.getId()));
+        }
+        return bookDTO;
     }
 
     @Override

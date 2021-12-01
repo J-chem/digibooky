@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 public class RepositoryAspect {
     private final Logger logger = LoggerFactory.getLogger(RepositoryAspect.class);
 
-    @Pointcut("execution(* com.switchfully.digibooky.repositories.*.get*(..))")
-    public void allDataRetrievalRepos() {};
+    @Pointcut("execution(* com.switchfully.digibooky.*.*.*(..))")
+    public void allDataRetrievalRepos() {}
 
     @AfterThrowing(
             pointcut = "allDataRetrievalRepos()",

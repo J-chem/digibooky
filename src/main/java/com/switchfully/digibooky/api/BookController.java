@@ -58,6 +58,13 @@ public class BookController {
         return bookService.getByAuthor(firstname, lastname);
     }
 
+    @GetMapping(produces = "application/json", params = "lendOutByUser")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser, @RequestHeader String authorization){
+
+        return bookService.getAllBooksLendOutByUser(lendOutByUser);
+    }
+
     // POST MAPPINGS
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -81,9 +88,5 @@ public class BookController {
         return bookService.returnBook(lendId);
     }
 
-    @GetMapping(produces = "application/json", params = "lendOutByUser")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser){
-        return bookService.getAllBooksLendOutByUser(lendOutByUser);
-    }
+
 }

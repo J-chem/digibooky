@@ -4,6 +4,7 @@ import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface BookRepository {
@@ -19,4 +20,5 @@ public interface BookRepository {
     String returnBookIdFromLendData(String lendId);
 
     List<String> getAllLendedBooksIDByUser(String lendOutByUser);
+    LocalDate getDueDate(String bookId);
 }

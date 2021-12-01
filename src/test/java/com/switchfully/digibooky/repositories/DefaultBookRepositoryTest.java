@@ -239,4 +239,24 @@ class DefaultBookRepositoryTest {
             assertThat(bookRepository.getAllLendedBooksIDByUser("anotherUser")).isEmpty();
         }
     }
+
+    @Nested
+    @DisplayName("Get due date")
+    class GetDueDate{
+        @BeforeEach
+        void setup(){
+            bookRepository.save(book1);
+            bookRepository.lendBook(new BookLentData("User1", book1.getId()));
+        }
+
+        @Test
+        void getDueDateForLentBook(){
+            assertThat(bookRepository.getDueDate(book1.getId())).isEqualTo(LocalDate.now().plusDays(21));
+        }
+
+        @Test
+        void getNullDueDateForNoLentBook(){
+            assertThatThrownBy(() -> bookRepository.getDueDate(book2.getId())).isInstanceOf(NoSuchElementException.class).hasMessage("Due date not find.");
+        }
+    }
 }

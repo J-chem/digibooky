@@ -31,11 +31,9 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PostMapping(path = "/register", consumes = "application/json")
+    @PostMapping(path = "/register-user", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO createNewUser(@RequestBody CreateUserDTO createUserDTO){
         return userService.save(createUserDTO);
     }
-
-
 }

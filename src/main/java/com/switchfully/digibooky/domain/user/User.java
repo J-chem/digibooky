@@ -3,6 +3,7 @@ package com.switchfully.digibooky.domain.user;
 import com.switchfully.digibooky.security.Role;
 import com.switchfully.digibooky.services.dtos.CreateUserDTO;
 
+import javax.validation.constraints.Email;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,13 +32,18 @@ public class User {
         this.password = builder.password;
     }
 
+    /**
+     * all final variables inside this static class Builder, are obligated from a <strong>functional</strong> point of view.
+     * This says to the application, you cannot make a user without a firstName, a lastname, a role and an address.
+     * Everything not final is optional.
+     */
     public static class Builder {
-        private final String firstName;
+        private final String firstName; //obligated
         private final String lastName;
         private final Address address;
         private final Role role;
 
-        private String socialSecurityNumber;
+        private String socialSecurityNumber; //optional
         private String email;
         private String username;
         private String password;

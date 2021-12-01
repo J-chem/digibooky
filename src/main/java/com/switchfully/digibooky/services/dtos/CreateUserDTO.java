@@ -6,7 +6,6 @@ import com.switchfully.digibooky.security.Role;
 public class CreateUserDTO {
     private final Role role;
     private final Address address;
-
     private final String socialSecurityNumber;
     private final String firstName;
     private final String lastName;
@@ -19,6 +18,18 @@ public class CreateUserDTO {
         this.email = builder.email;
         this.address = builder.address;
         this.role = builder.role;
+    }
+
+    /**
+     * Created an extra private constructor, otherwise Postman can't read the JSON.
+     */
+    private CreateUserDTO(Role role, Address address, String socialSecurityNumber, String firstName, String lastName, String email) {
+        this.role = role;
+        this.address = address;
+        this.socialSecurityNumber = socialSecurityNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
     }
 
     public static class Builder {

@@ -1,22 +1,40 @@
 package com.switchfully.digibooky.repositories;
 
-import com.switchfully.digibooky.custom.exceptions.NotUniqueException;
+import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.domain.user.User;
+import com.switchfully.digibooky.security.Role;
 import org.springframework.stereotype.Repository;
 
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
+
+import static com.switchfully.digibooky.repositories.validators.Validator.assertDataManagementMapIsNotEmpty;
 
 
 @Repository
-public class DefaultUserRepository {
+public class DefaultUserRepository implements UserRepository {
 
     private final ConcurrentHashMap<String, User> usersById;
 
     public DefaultUserRepository() {
         usersById = new ConcurrentHashMap<>();
+        //creating dummy data
+        User user = new User.Builder("Maxim",
+                "Verbeeck",
+                new Address.Builder()
+                        .withCity("NY")
+                        .withPostalCode(2000)
+                        .withStreetNumber(13)
+                        .withStreetName("Walibi")
+                        .build(),
+                Role.ADMIN)
+                .withEmail("banana@hotmail.com")
+                .withSocialSecurityNumber("12345")
+                .withPassword("monkey")
+                .withUsername("HulaBaloo")
+                .build();
+        usersById.put(user.getId(), user);
     }
 
     public User save(User user) {
@@ -24,7 +42,14 @@ public class DefaultUserRepository {
             return user;
     }
 
+    @Override
     public ConcurrentHashMap<String, User> getUsersById() {
         return usersById;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        assertDataManagementMapIsNotEmpty(usersById);
+        return new ArrayList<>(usersById.values());
     }
 }

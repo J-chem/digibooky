@@ -10,7 +10,7 @@ public class CreateUserDTO {
     private final String socialSecurityNumber;
     private final String firstName;
     private final String lastName;
-    private final String email; //TODO validation check
+    private final String email;
 
     private CreateUserDTO(Builder builder) {
         this.socialSecurityNumber = builder.socialSecurityNumber;

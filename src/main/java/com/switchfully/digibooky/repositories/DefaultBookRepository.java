@@ -60,8 +60,18 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book getByAuthor(Author author) {
-        throw new UnsupportedOperationException("not implemented: getByAuthor");
+    public List<Book> getByAuthor(String firstname, String lastname) {
+        assertDataManagementMapIsNotEmpty(books);
+        if (lastname == null || firstname == null) {
+            return books.values()
+                    .stream()
+                    .filter(book -> book.getAuthor().getFirstName().contains(firstname) || book.getAuthor().getLastName().contains(lastname))
+                    .toList();
+        }
+        return books.values()
+                .stream()
+                .filter((book -> book.getAuthor().getFirstName().contains(firstname) && book.getAuthor().getLastName().contains(lastname)))
+                .toList();
     }
 
     @Override

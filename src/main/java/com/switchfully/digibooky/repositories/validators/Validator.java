@@ -1,6 +1,7 @@
 package com.switchfully.digibooky.repositories.validators;
 
 import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
+import com.switchfully.digibooky.domain.Author;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -19,5 +20,4 @@ public class Validator {
             throw new EmptyBooksListException("List of books is empty");
         }
     }
-
 }

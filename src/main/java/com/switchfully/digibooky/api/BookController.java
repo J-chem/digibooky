@@ -81,9 +81,11 @@ public class BookController {
         return bookService.returnBook(lendId);
     }
 
-    @GetMapping(produces = "application/json", params = "lendOutByUser")
+    @GetMapping(params = "lendOutByUser")
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser){
+    public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser,
+                                                   @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Features.CONSULT_LENDINGS);
         return bookService.getAllBooksLendOutByUser(lendOutByUser);
     }
 }

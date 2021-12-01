@@ -63,7 +63,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public List<Book> getByAuthor(String firstname, String lastname) {
-        assertBooksIsEmpty(books);
+        assertDataManagementMapIsNotEmpty(books);
         if (lastname == null || firstname == null) {
             return books.values()
                     .stream()

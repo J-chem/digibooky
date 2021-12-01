@@ -44,7 +44,6 @@ public class BookController {
 
     @GetMapping(produces = "application/json", params = {"isbn"})
     @ResponseStatus(HttpStatus.OK)
-    // List return
     public List<BookDTO> getByISBN(@RequestParam String isbn) {
         return bookService.getByISBN(isbn);
     }

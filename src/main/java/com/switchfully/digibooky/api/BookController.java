@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/books")
+@RequestMapping(path = "/books", produces = "application/json")
 public class BookController {
 
     private final SecurityService securityService;
@@ -27,33 +27,33 @@ public class BookController {
     }
 
     // GET MAPPINGS
-    @GetMapping(produces = "application/json")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getAllBooks() {
         return bookService.getAllBooks();
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
+    @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public BookDTO getBookById(@PathVariable("id") String id) {
         return bookService.getById(id);
     }
 
-    @GetMapping(produces = "application/json", params = {"title"})
+    @GetMapping(params = {"title"})
     @ResponseStatus(HttpStatus.OK)
     // List return
     public List<BookDTO> getBookByTitle(@RequestParam String title) {
         return bookService.getBookByTitle(title);
     }
 
-    @GetMapping(produces = "application/json", params = {"isbn"})
+    @GetMapping(params = {"isbn"})
     @ResponseStatus(HttpStatus.OK)
     // List return
     public List<BookDTO> getByISBN(@RequestParam String isbn) {
         return bookService.getByISBN(isbn);
     }
 
-    @GetMapping(produces = "application/json", params = {"lastname", "firstname"})
+    @GetMapping(params = {"lastname", "firstname"})
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getByAuthor(@RequestParam(required = false, name = "lastname") String lastname,
                                      @RequestParam(required = false, name = "firstname") String firstname) {
@@ -61,7 +61,7 @@ public class BookController {
     }
 
     // POST MAPPINGS
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public BookDTO postNewBook(@RequestBody CreateBookDTO createBookDto,
                                @RequestHeader String authorization) {
@@ -69,7 +69,7 @@ public class BookController {
         return bookService.save(createBookDto);
     }
 
-    @PostMapping(path = "/{id}/lendOut", produces = "application/json")
+    @PostMapping(path = "/{id}/lendOut")
     @ResponseStatus(HttpStatus.CREATED)
     public String lendABook(@PathVariable("id") String id,
                             @RequestHeader String authorization) {
@@ -77,7 +77,7 @@ public class BookController {
         return bookService.lendBook(user, id);
     }
 
-    @PostMapping(path = "/{lendId}/returnBook", produces = "application/json")
+    @PostMapping(path = "/{lendId}/returnBook")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String returnBook(@PathVariable String lendId) {
         return bookService.returnBook(lendId);

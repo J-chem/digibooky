@@ -24,7 +24,7 @@ public class SecurityService {
         this.userRepository = userRepository;
     }
 
-    public void validateAuthorization(String authorization, Features feature) {
+    public User validateAuthorization(String authorization, Features feature) {
         SecureUser usernamePassword = getUsernamePassword(authorization);
         User user = userRepository.getUser(usernamePassword.getUsername());
         if(user == null) {
@@ -39,6 +39,7 @@ public class SecurityService {
             logger.error("User " + usernamePassword.getUsername() + " does not have access to " + feature);
             throw new UnauthorizedException();
         }
+        return user;
     }
 
     private boolean canHaveAccessTo(Features feature, Role role) {

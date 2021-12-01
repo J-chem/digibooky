@@ -4,6 +4,7 @@ import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.security.Features;
 import com.switchfully.digibooky.security.Role;
+import com.switchfully.digibooky.security.SecureUser;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.SecurityService;
 import com.switchfully.digibooky.services.dtos.BookDTO;
@@ -54,9 +55,9 @@ public class BookController {
 
     @GetMapping(produces = "application/json", params = {"lastname", "firstname"})
     @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getByAuthor(@RequestParam(required = false, name="lastname") String lastname,
-                                     @RequestParam(required = false, name="firstname")  String firstname) {
-       return bookService.getByAuthor(firstname, lastname);
+    public List<BookDTO> getByAuthor(@RequestParam(required = false, name = "lastname") String lastname,
+                                     @RequestParam(required = false, name = "firstname") String firstname) {
+        return bookService.getByAuthor(firstname, lastname);
     }
 
     // POST MAPPINGS
@@ -70,16 +71,10 @@ public class BookController {
 
     @PostMapping(path = "/{id}/lendOut", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public String lendABook(@PathVariable("id") String id) {
-            User user = new User.Builder("test", "test",
-                new Address.Builder()
-                        .withCity("NY")
-                        .withPostalCode(2000)
-                        .withStreetName("lala")
-                        .withStreetNumber(48)
-                        .build(),
-                        Role.MEMBER).build();
-            return bookService.lendBook(user, id);
+    public String lendABook(@PathVariable("id") String id,
+                            @RequestHeader String authorization) {
+        User user = securityService.validateAuthorization(authorization, Features.LEND_A_BOOK);
+        return bookService.lendBook(user, id);
     }
 
     @PostMapping(path = "/{lendId}/returnBook", produces = "application/json")

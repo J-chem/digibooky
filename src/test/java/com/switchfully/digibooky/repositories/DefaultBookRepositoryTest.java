@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -131,6 +132,16 @@ class DefaultBookRepositoryTest {
             String lendingId = bookLentData.getLendingId();
             assertThat(bookRepository.lendBook(bookLentData)).isEqualTo(lendingId);
         }
+
+        @Test
+        @DisplayName("Lending a book")
+        void whenLendingABook_thenReturnsLendingID_noBooksInTheCollection() {
+            BookLentData bookLentData = new BookLentData("test", "test");
+            String lendingId = bookLentData.getLendingId();
+            assertThatThrownBy(() -> bookRepository.lendBook(bookLentData))
+                    .isInstanceOf(EmptyBooksListException.class)
+                    .hasMessage("List of books is empty");
+        }
     }
 
     @Nested
@@ -163,6 +174,73 @@ class DefaultBookRepositoryTest {
         }
     }
 
+    @Nested
+    @DisplayName("Return a book")
+    class returnABook{
+
+        @Test
+        void returnABookOnTime() {
+            bookRepository.save(book1);
+            String lendingId = bookRepository.lendBook(new BookLentData("UserId", book1.getId()));
+
+            assertThat(bookRepository.returnBook(lendingId)).isEqualTo("You're on time");
+        }
+
+        @Test
+        void returnABookToLate() {
+            bookRepository.save(book1);
+            BookLentData lendingBookData = new BookLentData("UserId", book1.getId());
+            lendingBookData.setDate(LocalDate.now().minusDays(21));
+            String lendingId = bookRepository.lendBook(lendingBookData);
+
+            assertThat(bookRepository.returnBook(lendingId)).isEqualTo("You are late whit your books");
+        }
+    }
+
+    @Nested
+    @DisplayName("return book id from lend data")
+    class returnBookIdFromLendData{
+        String lendId;
+        @BeforeEach
+        void setup(){
+            bookRepository.save(book1);
+            lendId = bookRepository.lendBook(new BookLentData("User1", book1.getId()));
+        }
+
+        @Test
+        void getBookId() {
+            assertThat(bookRepository.returnBookIdFromLendData(lendId)).isEqualTo(book1.getId());
+        }
+
+        @Test
+        void getBookId_LenderIdDoesntExist() {
+            assertThatThrownBy(() -> bookRepository.returnBookIdFromLendData("someId"))
+                    .isInstanceOf(NoSuchElementException.class)
+                    .hasMessage("There are no books to show");
+        }
+    }
+
+    @Nested
+    @DisplayName("get all lended books by UserID")
+    class GetLendedBooksByUserId{
+        @BeforeEach
+        void setup(){
+            bookRepository.save(book1);
+            bookRepository.lendBook(new BookLentData("User1", book1.getId()));
+        }
+
+        @Test
+        @DisplayName("Get all lended books by UserId")
+        void givenUserGetAllLendedBooks(){
+            assertThat(bookRepository.getAllLendedBooksIDByUser("User1")).contains(book1.getId());
+        }
+
+        @Test
+        @DisplayName("Get all lended books by UserId no books are lent out by user")
+        void givenUserGetAllLendedBooks_NoBooksAreLedOutByUser(){
+            assertThat(bookRepository.getAllLendedBooksIDByUser("anotherUser")).isEmpty();
+        }
+    }
     @Nested
     @DisplayName("Get books by author")
     class GetByAuthor {

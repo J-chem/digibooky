@@ -10,6 +10,7 @@ import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DefaultBookService implements BookService {
@@ -69,7 +70,17 @@ public class DefaultBookService implements BookService {
 
     @Override
     public String returnBook(String lendId) {
+        bookRepository.updateLendOutStatus(bookRepository.returnBookIdFromLendData(lendId));
         return bookRepository.returnBook(lendId);
+    }
+
+    @Override
+    public List<BookDTO> getAllBooksLendOutByUser(String lendOutByUser) {
+        List<String> lendBookId = bookRepository.getAllLendedBooksIDByUser(lendOutByUser);
+        return lendBookId.stream()
+                .map(bookId -> bookRepository.getById(bookId))
+                .map(book -> bookConverter.convertBookToBookDTO(book))
+                .collect(Collectors.toList());
     }
 
     private void assertLentOutStatus(boolean isLentOut) {
@@ -77,5 +88,4 @@ public class DefaultBookService implements BookService {
             throw new BookIsNotAvailableException("Sorry but this book is not available");
         }
     }
-
 }

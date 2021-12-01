@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.repositories;
 
+import com.switchfully.digibooky.custom.exceptions.UnknownUserException;
 import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.security.Role;
@@ -51,5 +52,14 @@ public class DefaultUserRepository implements UserRepository {
     public List<User> getAllUsers() {
         assertDataManagementMapIsNotEmpty(usersById);
         return new ArrayList<>(usersById.values());
+    }
+
+    @Override
+    public User getUser(String username) {
+        return usersById.values()
+                .stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst()
+                .orElseThrow(UnknownUserException::new);
     }
 }

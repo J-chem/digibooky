@@ -8,4 +8,5 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface UserRepository {
     ConcurrentHashMap<String, User> getUsersById();
     List<User> getAllUsers();
+    User getUser(String username);
 }

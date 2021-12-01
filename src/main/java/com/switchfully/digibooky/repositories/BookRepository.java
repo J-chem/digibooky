@@ -16,4 +16,7 @@ public interface BookRepository {
     String lendBook(BookLentData bookLentData);
     void updateLendOutStatus(String id);
     String returnBook(String lendId);
+    String returnBookIdFromLendData(String lendId);
+
+    List<String> getAllLendedBooksIDByUser(String lendOutByUser);
 }

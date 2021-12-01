@@ -5,7 +5,7 @@ import java.util.List;
 public enum Role {
     ADMIN(List.of()),
     LIBRARIAN(List.of(Features.REGISTER_NEW_BOOK)),
-    MEMBER(List.of());
+    MEMBER(List.of(Features.LEND_A_BOOK));
 
     private List<Features> listOfFeatures;
 

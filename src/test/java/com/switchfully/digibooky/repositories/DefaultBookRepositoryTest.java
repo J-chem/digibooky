@@ -6,6 +6,7 @@ import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -156,10 +157,11 @@ class DefaultBookRepositoryTest {
 
         @Test
         @DisplayName("Book doesn't exist")
-        void whenGetByISBN_bookDoesntExist_trows() {
+        void whenGetByISBN_bookDoesntExist_trows() { //todo: naming!
             bookRepository.save(book2);
-            String isbn = book1.getIsbn();
-            assertThat(bookRepository.getByISBN(isbn)).isEmpty();
+            //String isbn = book1.getIsbn();
+            //assertThat(bookRepository.getByISBN(isbn)).isEmpty();
+            assertThat(bookRepository.getByISBN("somethingthatdoesntexist").isEmpty());
         }
 
         @Test
@@ -237,6 +239,53 @@ class DefaultBookRepositoryTest {
         @DisplayName("Get all lended books by UserId no books are lent out by user")
         void givenUserGetAllLendedBooks_NoBooksAreLedOutByUser(){
             assertThat(bookRepository.getAllLendedBooksIDByUser("anotherUser")).isEmpty();
+        }
+    }
+    @Nested
+    @DisplayName("Get books by author")
+    class GetByAuthor {
+        @BeforeEach
+        void beforeEach() {
+            bookRepository.save(book1);
+            bookRepository.save(book2);
+        }
+
+        @Test
+        @DisplayName("Get by first and last name (parameters are not null)")
+        void whenGettingABookByFirstAndLastnameNotNull__returnListOfBooksDTO() {
+            assertThat(bookRepository.getByAuthor("test", "2")).isEqualTo(List.of(book2));
+        }
+
+        @Test
+        @DisplayName("Get by first and last name (both params are null)")
+        void whenGettingABookByFirstAndLastnameAreNull__returnEmptyList() {
+            assertThatThrownBy(() -> bookRepository.getByAuthor(null, null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Both params can't be null!");
+        }
+
+        @Test
+        @DisplayName("Get by firstname (lastname is null")
+        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist() {
+            assertThat(bookRepository.getByAuthor("test2", null)).isEqualTo(List.of(book2));
+        }
+
+        @Test
+        @DisplayName("Get by lastname (firstname is null")
+        void whenGettingABookByLastName_fistNameIsNull_returnExpectedBookList() {
+            assertThat(bookRepository.getByAuthor(null, "test2")).isEqualTo(List.of(book2));
+        }
+    }
+
+    @Nested
+    @DisplayName("Get by author when list of books empty")
+    class emptyBookList {
+        @Test
+        @DisplayName("Get by author when list of books empty")
+        void whenGetByAuthor_listOfBooksIsEmpty_trows() {
+            assertThatThrownBy(() -> bookRepository.getByAuthor("test", "test"))
+                    .isInstanceOf(EmptyBooksListException.class)
+                    .hasMessage("List of books is empty");
         }
     }
 

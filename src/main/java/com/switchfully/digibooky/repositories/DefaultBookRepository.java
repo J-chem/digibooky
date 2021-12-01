@@ -65,10 +65,20 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> getByAuthor(String firstname, String lastname) {
         assertDataManagementMapIsNotEmpty(books);
-        if (lastname == null || firstname == null) {
+
+        if(lastname == null && firstname == null){
+            throw new IllegalArgumentException("Both params can't be null!");
+        }
+        if (lastname == null) {
             return books.values()
                     .stream()
-                    .filter(book -> book.getAuthor().getFirstName().contains(firstname) || book.getAuthor().getFirstName().contains(lastname))
+                    .filter(book -> book.getAuthor().getFirstName().contains(firstname))
+                    .toList();
+        }
+        if (firstname == null) {
+            return books.values()
+                    .stream()
+                    .filter(book -> book.getAuthor().getLastName().contains(lastname))
                     .toList();
         }
         return books.values()

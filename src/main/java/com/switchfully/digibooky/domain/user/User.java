@@ -121,11 +121,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id.equals(user.id) && Objects.equals(socialSecurityNumber, user.socialSecurityNumber);
+        return id.equals(user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, socialSecurityNumber);
+        return Objects.hash(id);
     }
 }

@@ -2,17 +2,21 @@ package com.switchfully.digibooky.services.validators;
 
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.repositories.UserRepository;
+import com.switchfully.digibooky.services.UserConverter;
 import com.switchfully.digibooky.services.dtos.CreateUserDTO;
 import com.switchfully.digibooky.services.regex.UserPattern;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 @Component
 public class UserValidator {
-    private final Function<User, String> getSsnUser = user -> user.getSocialSecurityNumber().trim().toLowerCase();
-    private final Function<User, String> getEmailUser = user -> user.getEmail().trim().toLowerCase();
+    private final Function<User, String> getSsnUser = user -> user.getSocialSecurityNumber()
+            .replaceAll("\\s+","")
+            .toLowerCase();
+    private final Function<User, String> getEmailUser = user -> user.getEmail()
+            .replaceAll("\\s+","")
+            .toLowerCase();
 
     private boolean checkEmailUser(CreateUserDTO userToCheck, UserRepository userRepository) {
         return userRepository.getUsersById()
@@ -27,7 +31,9 @@ public class UserValidator {
                 .values()
                 .stream()
                 .map(getSsnUser)
-                .noneMatch(ssn -> userToCheck.getSocialSecurityNumber().equals(ssn));
+                .noneMatch(ssn -> ssn.equals(userToCheck.getSocialSecurityNumber()
+                                    .replaceAll("\\s+","")
+                                    .toLowerCase()));
     }
 
     private boolean validateEmail(CreateUserDTO createUserDTO) {

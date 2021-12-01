@@ -6,11 +6,13 @@ import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -130,6 +132,16 @@ class DefaultBookRepositoryTest {
             String lendingId = bookLentData.getLendingId();
             assertThat(bookRepository.lendBook(bookLentData)).isEqualTo(lendingId);
         }
+
+        @Test
+        @DisplayName("Lending a book")
+        void whenLendingABook_thenReturnsLendingID_noBooksInTheCollection() {
+            BookLentData bookLentData = new BookLentData("test", "test");
+            String lendingId = bookLentData.getLendingId();
+            assertThatThrownBy(() -> bookRepository.lendBook(bookLentData))
+                    .isInstanceOf(EmptyBooksListException.class)
+                    .hasMessage("List of books is empty");
+        }
     }
 
     @Nested
@@ -145,10 +157,11 @@ class DefaultBookRepositoryTest {
 
         @Test
         @DisplayName("Book doesn't exist")
-        void whenGetByISBN_bookDoesntExist_trows() {
+        void whenGetByISBN_bookDoesntExist_trows() { //todo: naming!
             bookRepository.save(book2);
-            String isbn = book1.getIsbn();
-            assertThat(bookRepository.getByISBN(isbn)).isEmpty();
+            //String isbn = book1.getIsbn();
+            //assertThat(bookRepository.getByISBN(isbn)).isEmpty();
+            assertThat(bookRepository.getByISBN("somethingthatdoesntexist").isEmpty());
         }
 
         @Test
@@ -161,4 +174,118 @@ class DefaultBookRepositoryTest {
         }
     }
 
+    @Nested
+    @DisplayName("Return a book")
+    class returnABook{
+
+        @Test
+        void returnABookOnTime() {
+            bookRepository.save(book1);
+            String lendingId = bookRepository.lendBook(new BookLentData("UserId", book1.getId()));
+
+            assertThat(bookRepository.returnBook(lendingId)).isEqualTo("You're on time");
+        }
+
+        @Test
+        void returnABookToLate() {
+            bookRepository.save(book1);
+            BookLentData lendingBookData = new BookLentData("UserId", book1.getId());
+            lendingBookData.setDate(LocalDate.now().minusDays(21));
+            String lendingId = bookRepository.lendBook(lendingBookData);
+
+            assertThat(bookRepository.returnBook(lendingId)).isEqualTo("You are late whit your books");
+        }
+    }
+
+    @Nested
+    @DisplayName("return book id from lend data")
+    class returnBookIdFromLendData{
+        String lendId;
+        @BeforeEach
+        void setup(){
+            bookRepository.save(book1);
+            lendId = bookRepository.lendBook(new BookLentData("User1", book1.getId()));
+        }
+
+        @Test
+        void getBookId() {
+            assertThat(bookRepository.returnBookIdFromLendData(lendId)).isEqualTo(book1.getId());
+        }
+
+        @Test
+        void getBookId_LenderIdDoesntExist() {
+            assertThatThrownBy(() -> bookRepository.returnBookIdFromLendData("someId"))
+                    .isInstanceOf(NoSuchElementException.class)
+                    .hasMessage("There are no books to show");
+        }
+    }
+
+    @Nested
+    @DisplayName("get all lended books by UserID")
+    class GetLendedBooksByUserId{
+        @BeforeEach
+        void setup(){
+            bookRepository.save(book1);
+            bookRepository.lendBook(new BookLentData("User1", book1.getId()));
+        }
+
+        @Test
+        @DisplayName("Get all lended books by UserId")
+        void givenUserGetAllLendedBooks(){
+            assertThat(bookRepository.getAllLendedBooksIDByUser("User1")).contains(book1.getId());
+        }
+
+        @Test
+        @DisplayName("Get all lended books by UserId no books are lent out by user")
+        void givenUserGetAllLendedBooks_NoBooksAreLedOutByUser(){
+            assertThat(bookRepository.getAllLendedBooksIDByUser("anotherUser")).isEmpty();
+        }
+    }
+    @Nested
+    @DisplayName("Get books by author")
+    class GetByAuthor {
+        @BeforeEach
+        void beforeEach() {
+            bookRepository.save(book1);
+            bookRepository.save(book2);
+        }
+
+        @Test
+        @DisplayName("Get by first and last name (parameters are not null)")
+        void whenGettingABookByFirstAndLastnameNotNull__returnListOfBooksDTO() {
+            assertThat(bookRepository.getByAuthor("test", "2")).isEqualTo(List.of(book2));
+        }
+
+        @Test
+        @DisplayName("Get by first and last name (both params are null)")
+        void whenGettingABookByFirstAndLastnameAreNull__returnEmptyList() {
+            assertThatThrownBy(() -> bookRepository.getByAuthor(null, null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("Both params can't be null!");
+        }
+
+        @Test
+        @DisplayName("Get by firstname (lastname is null")
+        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist() {
+            assertThat(bookRepository.getByAuthor("test2", null)).isEqualTo(List.of(book2));
+        }
+
+        @Test
+        @DisplayName("Get by lastname (firstname is null")
+        void whenGettingABookByLastName_fistNameIsNull_returnExpectedBookList() {
+            assertThat(bookRepository.getByAuthor(null, "test2")).isEqualTo(List.of(book2));
+        }
+    }
+
+    @Nested
+    @DisplayName("Get by author when list of books empty")
+    class emptyBookList {
+        @Test
+        @DisplayName("Get by author when list of books empty")
+        void whenGetByAuthor_listOfBooksIsEmpty_trows() {
+            assertThatThrownBy(() -> bookRepository.getByAuthor("test", "test"))
+                    .isInstanceOf(EmptyBooksListException.class)
+                    .hasMessage("List of books is empty");
+        }
+    }
 }

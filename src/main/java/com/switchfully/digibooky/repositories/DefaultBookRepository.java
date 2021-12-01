@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static com.switchfully.digibooky.repositories.validators.Validator.*;
 
@@ -100,8 +102,25 @@ public class DefaultBookRepository implements BookRepository {
     public String returnBook(String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
-        updateLendOutStatus(bookLentData.getBookId());
-        return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "ok" : "niet ok";
+        return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "You're on time" : "You are late whit your books";
+    }
+
+    @Override
+    public String returnBookIdFromLendData(String lendId){
+        assertDataManagementMapIsNotEmpty(lentData);
+        BookLentData bookLentData = lentData.get(lendId);
+        if(bookLentData ==null){
+            throw new NoSuchElementException("There are no books to show");
+        }
+        return bookLentData.getBookId();
+    }
+
+    @Override
+    public List<String> getAllLendedBooksIDByUser(String lendOutByUser) {
+        return lentData.values().stream()
+                .filter(data -> data.getUserId().equals(lendOutByUser))
+                .map(book -> book.getBookId())
+                .collect(Collectors.toList());
     }
 
 //    public void assertBooksIsEmpty() {

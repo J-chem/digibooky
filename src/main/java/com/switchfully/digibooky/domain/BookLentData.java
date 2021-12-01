@@ -8,7 +8,7 @@ public class BookLentData {
     private final String lendingId;
     private final String userId;
     private final String bookId;
-    private final LocalDate dueDate;
+    private LocalDate dueDate;
 
     public BookLentData(String userId, String bookId) {
         this.lendingId = UUID.randomUUID().toString();
@@ -31,5 +31,9 @@ public class BookLentData {
 
     public LocalDate getDueDate() {
         return dueDate;
+    }
+
+    public void setDate(LocalDate date) {
+        dueDate = date;
     }
 }

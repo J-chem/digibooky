@@ -38,7 +38,6 @@ public class BookController {
 
     @GetMapping(produces = "application/json", params = {"title"})
     @ResponseStatus(HttpStatus.OK)
-    // List return
     public List<BookDTO> getBookByTitle(@RequestParam String title) {
         return bookService.getBookByTitle(title);
     }
@@ -82,5 +81,11 @@ public class BookController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String returnBook(@PathVariable String lendId) {
         return bookService.returnBook(lendId);
+    }
+
+    @GetMapping(produces = "application/json", params = "lendOutByUser")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser){
+        return bookService.getAllBooksLendOutByUser(lendOutByUser);
     }
 }

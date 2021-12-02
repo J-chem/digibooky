@@ -69,12 +69,15 @@ public class DefaultBookService implements BookService {
         assertLentOutStatus(bookRepository.getById(bookid).isLentOut());
         bookRepository.updateLendOutStatus(bookid);
         BookLentData bookLentData = new BookLentData(user.getId(), bookid);
+        bookRepository.updateDueDate(bookid, bookLentData.getDueDate());
         return bookRepository.lendBook(bookLentData);
     }
 
     @Override
     public String returnBook(String lendId) {
-        bookRepository.updateLendOutStatus(bookRepository.returnBookIdFromLendData(lendId));
+        var bookId = bookRepository.returnBookIdFromLendData(lendId);
+        bookRepository.updateLendOutStatus(bookId);
+        bookRepository.updateDueDate(bookId, null);
         return bookRepository.returnBook(lendId);
     }
 

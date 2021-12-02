@@ -1,7 +1,6 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import org.springframework.stereotype.Repository;
@@ -119,14 +118,14 @@ public class DefaultBookRepository implements BookRepository {
     public String returnBook(String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
-        return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "You're on time" : "You are late with your books";
+        return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "You're on time" : "You are late whit your books";
     }
 
     @Override
-    public String returnBookIdFromLendData(String lendId){
+    public String returnBookIdFromLendData(String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
-        if(bookLentData ==null){
+        if (bookLentData == null) {
             throw new NoSuchElementException("There are no books to show");
         }
         return bookLentData.getBookId();
@@ -145,7 +144,7 @@ public class DefaultBookRepository implements BookRepository {
         return lentData.values()
                 .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))
-                .map(lentData -> lentData.getDueDate())
+                .map(BookLentData::getDueDate)
                 .sorted()
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Due date not found"));
@@ -153,23 +152,17 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public List<Book> getBy(boolean isOverDue) {
-        Map<Boolean, List<BookLentData>> dueAndOverDueBooks = collectByOverDueAndNotOverDue();
-        return getBooksByDueAndNotOverDue(isOverDue, dueAndOverDueBooks);
-    }
-
-    private List<Book> getBooksByDueAndNotOverDue(boolean isOverDue, Map<Boolean, List<BookLentData>> dueAndOverDueBooks) {
-        return dueAndOverDueBooks.get(isOverDue)
+        return books.values()
                 .stream()
-                .map(BookLentData::getBookId)
-                .flatMap(id -> books.values()
-                                    .stream()
-                                    .filter(book -> book.getId().equals(id)))
+                .filter(Book::isLentOut)
+                .filter(book -> book.getDueDate().compareTo(LocalDate.now()) < 0)
                 .toList();
     }
 
-    private Map<Boolean, List<BookLentData>> collectByOverDueAndNotOverDue() {
-        return lentData.values()
-                .stream()
-                .collect(Collectors.partitioningBy(date -> date.getDueDate().compareTo(LocalDate.now()) < 0));
+    @Override
+    public void updateDueDate(String bookId, LocalDate dueDate) {
+        var book = books.get(bookId);
+        book.setDueDate(dueDate);
+        books.put(bookId, book);
     }
 }

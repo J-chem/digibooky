@@ -3,9 +3,9 @@ package com.switchfully.digibooky.security;
 import java.util.List;
 
 public enum Role {
-    ADMIN(List.of()),
+    ADMIN(List.of( Features.REGISTER_NEW_LIBRARIAN)),
     LIBRARIAN(List.of(Features.REGISTER_NEW_BOOK, Features.CONSULT_LENDINGS)),
-    MEMBER(List.of(Features.LEND_A_BOOK));
+    MEMBER(List.of(Features.LEND_A_BOOK, Features.REGISTER_NEW_MEMBER));
 
     private List<Features> listOfFeatures;
 

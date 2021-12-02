@@ -32,6 +32,10 @@ public class BookDTO {
         return isLentOut;
     }
 
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
     public BookDTO setId(String id) {
         this.id = id;
         return this;

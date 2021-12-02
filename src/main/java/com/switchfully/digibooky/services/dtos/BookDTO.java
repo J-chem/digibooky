@@ -14,7 +14,6 @@ public class BookDTO {
     private String title;
     private Author author;
     private boolean isLentOut;
-    private boolean isSoftDeleted;
     private LocalDate dueDate;
 
 
@@ -48,8 +47,4 @@ public class BookDTO {
         return this;
     }
 
-    public BookDTO setSoftDeleted(boolean softDeleted) {
-        isSoftDeleted = softDeleted;
-        return this;
-    }
 }

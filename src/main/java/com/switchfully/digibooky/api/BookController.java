@@ -99,16 +99,16 @@ public class BookController {
     @PostMapping(path = "/{id}/delete")
     @ResponseStatus(HttpStatus.OK)
     public BookDTO softDeleteBook(@PathVariable("id") String id,
-                                 @RequestHeader String authorisation){
-        securityService.validateAuthorization(authorisation, Features.DELETE_A_BOOK);
+                                  @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Features.DELETE_A_BOOK);
         return bookService.deleteBook(id);
     }
 
     @PostMapping(path = "/{id}/restore")
     @ResponseStatus(HttpStatus.OK)
     public BookDTO restoreDeletedBook(@PathVariable("id") String id,
-                                  @RequestHeader String authorisation){
-        securityService.validateAuthorization(authorisation, Features.RESTORE_A_BOOK);
+                                  @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Features.RESTORE_A_BOOK);
         return bookService.restoreBook(id);
     }
 

@@ -1,9 +1,13 @@
 package com.switchfully.digibooky.services.dtos;
 
 import com.switchfully.digibooky.domain.Author;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class BookDTO {
     private String id;
     private String isbn;
@@ -30,10 +34,6 @@ public class BookDTO {
 
     public boolean isLentOut() {
         return isLentOut;
-    }
-
-    public LocalDate getDueDate() {
-        return dueDate;
     }
 
     public BookDTO setId(String id) {

@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class RepositoryAspect {
-    private final Logger logger = LoggerFactory.getLogger(RepositoryAspect.class);
+public class Aspects {
+    private final Logger logger = LoggerFactory.getLogger(org.aspectj.lang.annotation.Aspect.class);
 
     @Pointcut("execution(* com.switchfully.digibooky.*.*.*(..))")
-    public void allDataRetrievalRepos() {}
+    public void allDataRetrievalRepos() {};
 
     @AfterThrowing(
             pointcut = "allDataRetrievalRepos()",
@@ -23,7 +23,7 @@ public class RepositoryAspect {
     public void log(JoinPoint joinPoint, Throwable exception) {
         String message = exception.getMessage();
         String method = joinPoint.getSignature().toString();
-        logger.warn(message.concat("\nThis for the method: ").concat(method));
+        logger.warn(message.concat("This for the method: ").concat(method));
     }
 
 

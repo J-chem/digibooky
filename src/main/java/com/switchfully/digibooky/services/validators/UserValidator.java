@@ -2,7 +2,6 @@ package com.switchfully.digibooky.services.validators;
 
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.repositories.UserRepository;
-import com.switchfully.digibooky.services.UserConverter;
 import com.switchfully.digibooky.services.dtos.CreateUserDTO;
 import com.switchfully.digibooky.services.regex.UserPattern;
 import org.springframework.stereotype.Component;

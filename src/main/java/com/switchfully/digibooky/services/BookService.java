@@ -16,4 +16,5 @@ public interface BookService {
     String lendBook(User user, String ISBN);
     String returnBook(String lendId);
     List<BookDTO> getAllBooksLendOutByUser(String lendOutByUser);
+    List<BookDTO> getBy(boolean isOverDue);
 }

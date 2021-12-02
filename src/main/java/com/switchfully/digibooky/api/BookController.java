@@ -1,10 +1,7 @@
 package com.switchfully.digibooky.api;
 
-import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.security.Features;
-import com.switchfully.digibooky.security.Role;
-import com.switchfully.digibooky.security.SecureUser;
 import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.SecurityService;
 import com.switchfully.digibooky.services.dtos.BookDTO;
@@ -61,10 +58,19 @@ public class BookController {
     @GetMapping(params = "lendOutByUser")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser,
-                                                   @RequestHeader String authorization){
+                                                   @RequestHeader String authorization) {
         securityService.validateAuthorization(authorization, Features.CONSULT_LENDINGS);
         return bookService.getAllBooksLendOutByUser(lendOutByUser);
     }
+
+    @GetMapping(params = "isOverDue")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getOverDue(@RequestParam boolean isOverDue,
+                                    @RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Features.GET_OVERDUE);
+        return bookService.getBy(isOverDue);
+    }
+
 
     // POST MAPPINGS
     @PostMapping(consumes = "application/json")
@@ -75,12 +81,12 @@ public class BookController {
         return bookService.save(createBookDto);
     }
 
-    @PostMapping(path = "/{id}/lendOut")
+    @PostMapping(path = "/{bookid}/lendOut")
     @ResponseStatus(HttpStatus.CREATED)
-    public String lendABook(@PathVariable("id") String id,
+    public String lendABook(@PathVariable("bookid") String bookid,
                             @RequestHeader String authorization) {
         User user = securityService.validateAuthorization(authorization, Features.LEND_A_BOOK);
-        return bookService.lendBook(user, id);
+        return bookService.lendBook(user, bookid);
     }
 
     @PostMapping(path = "/{lendId}/returnBook")

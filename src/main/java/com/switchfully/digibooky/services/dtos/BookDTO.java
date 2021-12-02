@@ -16,25 +16,6 @@ public class BookDTO {
     private boolean isLentOut;
     private LocalDate dueDate;
 
-    public String getId() {
-        return id;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public boolean isLentOut() {
-        return isLentOut;
-    }
 
     public BookDTO setId(String id) {
         this.id = id;

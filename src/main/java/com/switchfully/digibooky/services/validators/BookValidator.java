@@ -1,7 +1,7 @@
 package com.switchfully.digibooky.services.validators;
 
 import com.switchfully.digibooky.custom.exceptions.BookIsNotAvailableException;
-import com.switchfully.digibooky.domain.Book;
+import com.switchfully.digibooky.domain.book.Book;
 import org.springframework.stereotype.Component;
 
 @Component

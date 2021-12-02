@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,7 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public Book getById(String id) {
         assertDataManagementMapIsNotEmpty(books);
+        assertAllParamsNotNull(id);
 
         if (!books.containsKey(id)) {
             throw new ObjectNotFoundException("Book not found");
@@ -46,6 +48,7 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> getByTitle(String title) {
         assertDataManagementMapIsNotEmpty(books);
+        assertAllParamsNotNull(title);
 
         return books.values()
                 .stream()
@@ -56,6 +59,7 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> getByISBN(String isbn) {
         assertDataManagementMapIsNotEmpty(books);
+        assertAllParamsNotNull(isbn);
 
         return books.values()
                 .stream()
@@ -110,8 +114,8 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public void updateDueDate(@NonNull String bookId,
-                              @NonNull LocalDate dueDate) {
+    public void updateDueDate( String bookId,
+                               LocalDate dueDate) {
         assertDataManagementMapIsNotEmpty(books);
 
         var book = books.get(bookId);
@@ -123,7 +127,7 @@ public class DefaultBookRepository implements BookRepository {
 
 
     @Override
-    public String returnBook(@NonNull String lendId) {
+    public String returnBook( String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
 
         BookLentData bookLentData = lentData.get(lendId);
@@ -131,7 +135,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public String returnBookIdFromLendData(@NonNull String lendId) {
+    public String returnBookIdFromLendData( String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
 
         BookLentData bookLentData = lentData.get(lendId);
@@ -142,7 +146,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public List<String> getAllLendedBooksIDByUser(@NonNull String lendOutByUser) {
+    public List<String> getAllLendedBooksIDByUser( String lendOutByUser) {
         return lentData.values().stream()
                 .filter(data -> data.getUserId().equals(lendOutByUser))
                 .map(BookLentData::getBookId)
@@ -150,7 +154,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public LocalDate getDueDate(@NonNull String bookId) {
+    public LocalDate getDueDate( String bookId) {
         return lentData.values()
                 .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))

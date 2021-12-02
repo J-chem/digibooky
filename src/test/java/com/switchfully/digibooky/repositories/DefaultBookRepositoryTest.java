@@ -33,10 +33,8 @@ class DefaultBookRepositoryTest {
     private User user;
     private Book book1;
     private Book book2;
-    //private Book book3;
     private Author author1;
     private Author author2;
-    //private Author author3;
     private String id1;
 
     @BeforeEach
@@ -97,7 +95,7 @@ class DefaultBookRepositoryTest {
             bookRepository.save(book1);
             assertThatThrownBy(() -> bookRepository.getById(null))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("The id can't be null");
+                    .hasMessage("All parameters can't be null");
         }
 
         @Test
@@ -306,7 +304,7 @@ class DefaultBookRepositoryTest {
         void whenGettingABookByFirstAndLastnameAreNull__returnEmptyList() {
             assertThatThrownBy(() -> bookRepository.getByAuthor(null, null))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage("Both params can't be null!");
+                    .hasMessage("All parameters can't be null");
         }
 
         @Test
@@ -364,7 +362,7 @@ class DefaultBookRepositoryTest {
 
         @Test
         void getNullDueDateForNoLentBook() {
-            assertThatThrownBy(() -> bookRepository.getDueDate(book2.getId())).isInstanceOf(NoSuchElementException.class).hasMessage("Due date not find.");
+            assertThatThrownBy(() -> bookRepository.getDueDate(book2.getId())).isInstanceOf(NoSuchElementException.class).hasMessage("Due date not found");
         }
     }
 

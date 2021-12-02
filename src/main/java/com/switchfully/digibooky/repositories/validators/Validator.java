@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Component
 public class Validator {
-    public static <T> void assertAllParamsNotNull(T... args) {
+    public static void assertAllParamsNotNull(Object... args) {
         if (Arrays.stream(args).allMatch(Objects::isNull)) {
             throw new IllegalArgumentException("All parameters can't be null");
         }

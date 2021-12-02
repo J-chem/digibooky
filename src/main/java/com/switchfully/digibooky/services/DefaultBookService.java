@@ -33,14 +33,14 @@ public class DefaultBookService implements BookService {
     public BookDTO getById(String id) {
         Book book = bookRepository.getById(id);
         BookDTO bookDTO = bookConverter.convertBookToBookDTO(book);
-        if(bookDTO.isLentOut()){
+        if (bookDTO.isLentOut()) {
             bookDTO.setDueDate(bookRepository.getDueDate(bookDTO.getId()));
         }
         return bookDTO;
     }
 
     @Override
-    public List<BookDTO> getByAuthor(String firstname, String lastname){
+    public List<BookDTO> getByAuthor(String firstname, String lastname) {
         List<Book> books = bookRepository.getByAuthor(firstname, lastname);
         return bookConverter.convertListOfBookInBookDto(books);
     }
@@ -65,10 +65,10 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public String lendBook(User user, String id) {
-        assertLentOutStatus(bookRepository.getById(id).isLentOut());
-        bookRepository.updateLendOutStatus(id);
-        BookLentData bookLentData = new BookLentData(user.getId(), id);
+    public String lendBook(User user, String bookid) {
+        assertLentOutStatus(bookRepository.getById(bookid).isLentOut());
+        bookRepository.updateLendOutStatus(bookid);
+        BookLentData bookLentData = new BookLentData(user.getId(), bookid);
         return bookRepository.lendBook(bookLentData);
     }
 
@@ -82,13 +82,19 @@ public class DefaultBookService implements BookService {
     public List<BookDTO> getAllBooksLendOutByUser(String lendOutByUser) {
         List<String> lendBookId = bookRepository.getAllLendedBooksIDByUser(lendOutByUser);
         return lendBookId.stream()
-                .map(bookId -> bookRepository.getById(bookId))
-                .map(book -> bookConverter.convertBookToBookDTO(book))
+                .map(bookRepository::getById)
+                .map(bookConverter::convertBookToBookDTO)
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<BookDTO> getBy(boolean isOverDue) {
+        List<Book> books = bookRepository.getBy(isOverDue);
+        return bookConverter.convertListOfBookInBookDto(books);
+    }
+
     private void assertLentOutStatus(boolean isLentOut) {
-        if(isLentOut) {
+        if (isLentOut) {
             throw new BookIsNotAvailableException("Sorry but this book is not available");
         }
     }

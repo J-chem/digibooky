@@ -1,18 +1,17 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
+import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.switchfully.digibooky.repositories.validators.Validator.assertDataManagementMapIsNotEmpty;
-import static com.switchfully.digibooky.repositories.validators.Validator.assertStringNotNull;
+import static com.switchfully.digibooky.repositories.validators.Validator.*;
 
 @Repository
 public class DefaultBookRepository implements BookRepository {
@@ -47,7 +46,7 @@ public class DefaultBookRepository implements BookRepository {
         assertStringNotNull(title, "title");
         return books.values()
                 .stream()
-                .filter(book -> book.getTitle().contains(title))
+                .filter(book -> transformToLowerCaseAndNoSpaces(book.getTitle()).contains(transformToLowerCaseAndNoSpaces(title)))
                 .toList();
     }
 
@@ -64,28 +63,36 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> getByAuthor(String firstname, String lastname) {
         assertDataManagementMapIsNotEmpty(books);
-
-        if(lastname == null && firstname == null){
+        if (lastname == null && firstname == null) {
             throw new IllegalArgumentException("Both params can't be null!");
         }
+
         if (lastname == null) {
             return books.values()
                     .stream()
-                    .filter(book -> book.getAuthor().getFirstName().contains(firstname))
+                    .filter(book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getFirstName())
+                            .contains(transformToLowerCaseAndNoSpaces(firstname)))
                     .toList();
         }
         if (firstname == null) {
             return books.values()
                     .stream()
-                    .filter(book -> book.getAuthor().getLastName().contains(lastname))
+                    .filter(book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getLastName())
+                            .contains(transformToLowerCaseAndNoSpaces(lastname)))
                     .toList();
         }
         return books.values()
                 .stream()
-                .filter((book -> book.getAuthor().getFirstName().contains(firstname) && book.getAuthor().getLastName().contains(lastname)))
+                .filter((book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getFirstName())
+                        .contains(transformToLowerCaseAndNoSpaces(firstname)) &&
+                        transformToLowerCaseAndNoSpaces(book.getAuthor().getLastName())
+                        .contains(transformToLowerCaseAndNoSpaces(lastname))))
                 .toList();
     }
 
+    private String transformToLowerCaseAndNoSpaces(String param) {
+        return param.toLowerCase().replaceAll("\\s", "");
+    }
 
     @Override
     public Book save(Book book) {
@@ -129,13 +136,14 @@ public class DefaultBookRepository implements BookRepository {
     public List<String> getAllLendedBooksIDByUser(String lendOutByUser) {
         return lentData.values().stream()
                 .filter(data -> data.getUserId().equals(lendOutByUser))
-                .map(book -> book.getBookId())
+                .map(BookLentData::getBookId)
                 .collect(Collectors.toList());
     }
 
     @Override
     public LocalDate getDueDate(String bookId) {
-        return lentData.values().stream()
+        return lentData.values()
+                .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))
                 .map(lentData -> lentData.getDueDate())
                 .sorted()
@@ -143,12 +151,25 @@ public class DefaultBookRepository implements BookRepository {
                 .orElseThrow(() -> new NoSuchElementException("Due date not found"));
     }
 
-//    public void assertBooksIsEmpty() {
-//        if (books.isEmpty()){
-//            throw new EmptyBooksListException("List of books is empty");
-//        }
-//    }
+    @Override
+    public List<Book> getBy(boolean isOverDue) {
+        Map<Boolean, List<BookLentData>> dueAndOverDueBooks = collectByOverDueAndNotOverDue();
+        return getBooksByDueAndNotOverDue(isOverDue, dueAndOverDueBooks);
+    }
 
+    private List<Book> getBooksByDueAndNotOverDue(boolean isOverDue, Map<Boolean, List<BookLentData>> dueAndOverDueBooks) {
+        return dueAndOverDueBooks.get(isOverDue)
+                .stream()
+                .map(BookLentData::getBookId)
+                .flatMap(id -> books.values()
+                        .stream()
+                        .filter(book -> book.getId().equals(id)))
+                .toList();
+    }
 
-
+    private Map<Boolean, List<BookLentData>> collectByOverDueAndNotOverDue() {
+        return lentData.values()
+                .stream()
+                .collect(Collectors.partitioningBy(date -> date.getDueDate().compareTo(LocalDate.now()) < 0));
+    }
 }

@@ -13,8 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,7 +39,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     protected void userNotAuthenticated(UnauthorizedException ue,
                                         HttpServletResponse response) throws IOException {
-        response.sendError(NOT_FOUND.value(), ue.getMessage());
+        response.sendError(FORBIDDEN.value(), ue.getMessage());
     }
 
     @ExceptionHandler(UnknownUserException.class)

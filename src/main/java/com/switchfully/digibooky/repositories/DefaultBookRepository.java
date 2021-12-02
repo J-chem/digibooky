@@ -1,19 +1,18 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.switchfully.digibooky.repositories.validators.Validator.*;
+import static com.switchfully.digibooky.repositories.validators.Validator.assertDataManagementMapIsNotEmpty;
+import static com.switchfully.digibooky.repositories.validators.Validator.assertStringNotNull;
 
 @Repository
 public class DefaultBookRepository implements BookRepository {
@@ -113,7 +112,7 @@ public class DefaultBookRepository implements BookRepository {
     public String returnBook(String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
-        return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "You're on time" : "You are late whit your books";
+        return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "You're on time" : "You are late with your books";
     }
 
     @Override
@@ -141,7 +140,7 @@ public class DefaultBookRepository implements BookRepository {
                 .map(lentData -> lentData.getDueDate())
                 .sorted()
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Due date not find."));
+                .orElseThrow(() -> new NoSuchElementException("Due date not found"));
     }
 
 //    public void assertBooksIsEmpty() {

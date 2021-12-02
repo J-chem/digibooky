@@ -156,6 +156,12 @@ public class DefaultBookRepository implements BookRepository {
         return getBooksByDueAndNotOverDue(isOverDue, dueAndOverDueBooks);
     }
 
+    @Override
+    public Book updateBook(Book bookToBeUpdated) {
+        books.put(bookToBeUpdated.getId(), bookToBeUpdated);
+        return bookToBeUpdated;
+    }
+
     private List<Book> getBooksByDueAndNotOverDue(boolean isOverDue, Map<Boolean, List<BookLentData>> dueAndOverDueBooks) {
         return dueAndOverDueBooks.get(isOverDue)
                 .stream()

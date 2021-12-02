@@ -20,7 +20,7 @@ public class DefaultBookService implements BookService {
     private final BookConverter bookConverter;
     private final BookValidator bookValidator;
 
-    public DefaultBookService(BookRepository bookRepository, BookConverter bookConverter) {
+    public DefaultBookService(BookRepository bookRepository, BookConverter bookConverter, BookValidator bookValidator) {
         this.bookRepository = bookRepository;
         this.bookConverter = bookConverter;
         this.bookValidator = bookValidator;

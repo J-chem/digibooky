@@ -3,6 +3,7 @@ package com.switchfully.digibooky.repositories;
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
+import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -26,13 +27,14 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> getAllBooks() {
         assertDataManagementMapIsNotEmpty(books);
+
         return books.values().stream().toList();
     }
 
     @Override
-    public Book getById(String id) {
+    public Book getById(@NonNull String id) {
         assertDataManagementMapIsNotEmpty(books);
-        assertStringNotNull(id, "id");
+
         if (!books.containsKey(id)) {
             throw new ObjectNotFoundException("Book not found");
         }
@@ -40,9 +42,9 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Book> getByTitle(String title) {
+    public List<Book> getByTitle(@NonNull String title) {
         assertDataManagementMapIsNotEmpty(books);
-        assertStringNotNull(title, "title");
+
         return books.values()
                 .stream()
                 .filter(book -> transformToLowerCaseAndNoSpaces(book.getTitle()).contains(transformToLowerCaseAndNoSpaces(title)))
@@ -50,9 +52,9 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Book> getByISBN(String isbn) {
+    public List<Book> getByISBN(@NonNull String isbn) {
         assertDataManagementMapIsNotEmpty(books);
-        assertStringNotNull(isbn, "isbn");
+
         return books.values()
                 .stream()
                 .filter(book -> book.getIsbn().contains(isbn))
@@ -62,9 +64,7 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> getByAuthor(String firstname, String lastname) {
         assertDataManagementMapIsNotEmpty(books);
-        if (lastname == null && firstname == null) {
-            throw new IllegalArgumentException("Both params can't be null!");
-        }
+        assertAllParamsNotNull(firstname, lastname);
 
         if (lastname == null) {
             return books.values()
@@ -85,7 +85,7 @@ public class DefaultBookRepository implements BookRepository {
                 .filter((book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getFirstName())
                         .contains(transformToLowerCaseAndNoSpaces(firstname)) &&
                         transformToLowerCaseAndNoSpaces(book.getAuthor().getLastName())
-                        .contains(transformToLowerCaseAndNoSpaces(lastname))))
+                                .contains(transformToLowerCaseAndNoSpaces(lastname))))
                 .toList();
     }
 
@@ -102,14 +102,16 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public String lendBook(BookLentData bookLentData) {
         assertDataManagementMapIsNotEmpty(books);
+
         lentData.put(bookLentData.getLendingId(), bookLentData);
         return bookLentData.getLendingId();
     }
 
     @Override
-    public void updateDueDate(String bookId, LocalDate dueDate) {
+    public void updateDueDate(@NonNull String bookId,
+                              @NonNull LocalDate dueDate) {
         assertDataManagementMapIsNotEmpty(books);
-        assertStringNotNull(bookId, "book_id");
+
         updateLendOutStatus(bookId);
         var book = books.get(bookId);
         book.setDueDate(dueDate);
@@ -117,23 +119,25 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public void updateLendOutStatus(String bookId) {
+    public void updateLendOutStatus(@NonNull String bookId) {
+        assertDataManagementMapIsNotEmpty(books);
+
         Book book = books.get(bookId);
         book.setLentOut(!book.isLentOut());
     }
 
     @Override
-    public String returnBook(String lendId) {
-        assertStringNotNull(lendId, "lending_id");
+    public String returnBook(@NonNull String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
+
         BookLentData bookLentData = lentData.get(lendId);
         return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "You're on time" : "You are late whit your books";
     }
 
     @Override
-    public String returnBookIdFromLendData(String lendId) {
-        assertStringNotNull(lendId, "lending_id");
+    public String returnBookIdFromLendData(@NonNull String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
+
         BookLentData bookLentData = lentData.get(lendId);
         if (bookLentData == null) {
             throw new NoSuchElementException("There are no books to show");
@@ -142,7 +146,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public List<String> getAllLendedBooksIDByUser(String lendOutByUser) {
+    public List<String> getAllLendedBooksIDByUser(@NonNull String lendOutByUser) {
         return lentData.values().stream()
                 .filter(data -> data.getUserId().equals(lendOutByUser))
                 .map(BookLentData::getBookId)
@@ -150,8 +154,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public LocalDate getDueDate(String bookId) {
-        assertStringNotNull(bookId, "book_id");
+    public LocalDate getDueDate(@NonNull String bookId) {
         return lentData.values()
                 .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))

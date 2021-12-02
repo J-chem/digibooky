@@ -11,6 +11,7 @@ import com.switchfully.digibooky.domain.user.User.Builder;
 import com.switchfully.digibooky.security.Role;
 import com.switchfully.digibooky.services.BookConverter;
 import com.switchfully.digibooky.services.DefaultBookService;
+import com.switchfully.digibooky.services.validators.BookValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,6 +28,7 @@ class DefaultBookRepositoryTest {
 
     private DefaultBookRepository bookRepository;
     private DefaultBookService bookService;
+    private BookValidator bookValidator;
     private BookConverter bookConverter;
     private User user;
     private Book book1;
@@ -55,7 +57,8 @@ class DefaultBookRepositoryTest {
                 .build();
         bookConverter = new BookConverter();
         bookRepository = new DefaultBookRepository();
-        bookService = new DefaultBookService(bookRepository, bookConverter);
+        bookValidator = new BookValidator();
+        bookService = new DefaultBookService(bookRepository, bookConverter, bookValidator);
                 author1 = new Author("test", "test");
         author2 = new Author("tEst2", "test2");
 

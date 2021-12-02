@@ -2,10 +2,21 @@ package com.switchfully.digibooky.security;
 
 import java.util.List;
 
+import static com.switchfully.digibooky.security.Features.*;
+
 public enum Role {
-    ADMIN(List.of( Features.REGISTER_NEW_LIBRARIAN, Features.GET_ALL_MEMBERS)),
-    LIBRARIAN(List.of(Features.REGISTER_NEW_BOOK, Features.CONSULT_LENDINGS, Features.UPDATE_A_BOOK,Features.DELETE_A_BOOK, Features.RESTORE_A_BOOK)),
-    MEMBER(List.of(Features.LEND_A_BOOK, Features.REGISTER_NEW_MEMBER));
+    ADMIN(List.of(
+            REGISTER_NEW_LIBRARIAN,
+            GET_ALL_MEMBERS)),
+    LIBRARIAN(List.of(
+            REGISTER_NEW_BOOK,
+            CONSULT_LENDINGS,
+            UPDATE_A_BOOK,
+            DELETE_A_BOOK,
+            RESTORE_A_BOOK)),
+    MEMBER(List.of(
+            LEND_A_BOOK,
+            REGISTER_NEW_MEMBER));
 
     private List<Features> listOfFeatures;
 

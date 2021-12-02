@@ -17,6 +17,7 @@ public class BookConverter {
                 .setIsbn(book.getIsbn())
                 .setAuthor(book.getAuthor())
                 .setLentOut(book.isLentOut())
+                .setDueDate(book.getDueDate())
                 .setSoftDeleted(book.isSoftDeleted());
     }
 

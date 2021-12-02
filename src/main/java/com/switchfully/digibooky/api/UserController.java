@@ -27,14 +27,15 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> getAllUsers() {
+    public List<UserDTO> getAllUsers(@RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Features.GET_ALL_MEMBERS);
         return userService.getAllUsers();
     }
 
     @PostMapping(path = "/register-user", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO createNewUser(@RequestBody CreateUserDTO createUserDTO,
-                                @RequestHeader String authorization){
+                                 @RequestHeader(required = false) String authorization){
         if(createUserDTO.getRole().equals(Role.LIBRARIAN)){
             securityService.validateAuthorization(authorization, Features.REGISTER_NEW_LIBRARIAN);
         }

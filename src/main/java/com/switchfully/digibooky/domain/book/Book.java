@@ -26,12 +26,12 @@ public class Book {
         this.dueDate = null;
     }
 
-    public boolean isSoftDeleted() {
-        return isSoftDeleted;
-    }
-
     public void setLentOut(boolean isLentOut) {
         this.isLentOut = isLentOut;
+    }
+
+    public boolean isSoftDeleted() {
+        return isSoftDeleted;
     }
 
     public void setSoftDeleted(boolean softDeleted) {

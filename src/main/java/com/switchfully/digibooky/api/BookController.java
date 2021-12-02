@@ -64,6 +64,13 @@ public class BookController {
         return bookService.getAllBooksLendOutByUser(lendOutByUser);
     }
 
+    @GetMapping(params = "isOverDue")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getOverDue(@RequestParam boolean isOverDue,
+                                    @RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Features.GET_OVERDUE);
+        return bookService.getBy(isOverDue);
+    }
 
     // POST MAPPINGS
     @PostMapping(consumes = "application/json")
@@ -103,6 +110,20 @@ public class BookController {
                                   @RequestHeader String authorisation){
         securityService.validateAuthorization(authorisation, Features.RESTORE_A_BOOK);
         return bookService.restoreBook(id);
+    }
+
+    //PUT MAPPING
+    @PutMapping(path = "/{bookId}", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDTO putBook(@PathVariable String bookId,
+                           @RequestBody UpdateBookDTO updateBookDTO,
+                           @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Features.UPDATE_A_BOOK);
+        if(!updateBookDTO.getId().equals(bookId)){
+            throw new IllegalArgumentException("Book id don't corresponds whit the book");
+        }
+
+        return bookService.updateBook(updateBookDTO);
     }
 
 }

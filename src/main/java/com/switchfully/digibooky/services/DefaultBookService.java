@@ -80,6 +80,7 @@ public class DefaultBookService implements BookService {
         return bookConverter.convertBookToBookDTO(savedBook);
     }
 
+    //bookId
     @Override
     public String lendBook(User user, String bookId) {
         checkIfBookIsDeleted(bookRepository.getById(bookId));
@@ -91,7 +92,8 @@ public class DefaultBookService implements BookService {
 
     @Override
     public String returnBook(String lendId) {
-        bookRepository.updateLendOutStatus(bookRepository.returnBookIdFromLendData(lendId));
+        var bookId = bookRepository.returnBookIdFromLendData(lendId);
+        bookRepository.updateDueDate(bookId, null);
         return bookRepository.returnBook(lendId);
     }
 

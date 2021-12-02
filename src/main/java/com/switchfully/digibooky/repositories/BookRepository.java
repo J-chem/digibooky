@@ -14,10 +14,12 @@ public interface BookRepository {
     List<Book> getByAuthor(String firstname, String lastname);
     Book save(Book book);
     String lendBook(BookLentData bookLentData);
-    void updateLendOutStatus(String id);
     String returnBook(String lendId);
     String returnBookIdFromLendData(String lendId);
-
     List<String> getAllLendedBooksIDByUser(String lendOutByUser);
     LocalDate getDueDate(String bookId);
+
+    List<Book> getBy(boolean isOverDue);
+    Book updateBook(Book bookToBeUpdated);
+    void updateDueDate(String bookid, LocalDate dueDate);
 }

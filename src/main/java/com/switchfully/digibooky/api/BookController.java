@@ -67,7 +67,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser,
                                                    @RequestHeader String authorization) {
-        securityService.validateAuthorization(authorization, Features.CONSULT_LENDINGS);
+        securityService.validateAuthorization(authorization, Features.CONSULT_LENDING);
         return bookService.getAllBooksLendOutByUser(lendOutByUser);
     }
 

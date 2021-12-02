@@ -18,7 +18,7 @@ public enum Role {
             LEND_A_BOOK,
             REGISTER_NEW_MEMBER));
 
-    private List<Features> listOfFeatures;
+    private final List<Features> listOfFeatures;
 
     Role(List<Features> listFeatures) {
         listOfFeatures = listFeatures;

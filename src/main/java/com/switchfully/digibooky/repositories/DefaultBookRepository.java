@@ -1,15 +1,12 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -48,7 +45,7 @@ public class DefaultBookRepository implements BookRepository {
         assertStringNotNull(title, "title");
         return books.values()
                 .stream()
-                .filter(book -> book.getTitle().contains(title))
+                .filter(book -> transformToLowerCaseAndNoSpaces(book.getTitle()).contains(transformToLowerCaseAndNoSpaces(title)))
                 .toList();
     }
 
@@ -65,28 +62,36 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> getByAuthor(String firstname, String lastname) {
         assertDataManagementMapIsNotEmpty(books);
-
-        if(lastname == null && firstname == null){
+        if (lastname == null && firstname == null) {
             throw new IllegalArgumentException("Both params can't be null!");
         }
+
         if (lastname == null) {
             return books.values()
                     .stream()
-                    .filter(book -> book.getAuthor().getFirstName().contains(firstname))
+                    .filter(book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getFirstName())
+                            .contains(transformToLowerCaseAndNoSpaces(firstname)))
                     .toList();
         }
         if (firstname == null) {
             return books.values()
                     .stream()
-                    .filter(book -> book.getAuthor().getLastName().contains(lastname))
+                    .filter(book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getLastName())
+                            .contains(transformToLowerCaseAndNoSpaces(lastname)))
                     .toList();
         }
         return books.values()
                 .stream()
-                .filter((book -> book.getAuthor().getFirstName().contains(firstname) && book.getAuthor().getLastName().contains(lastname)))
+                .filter((book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getFirstName())
+                        .contains(transformToLowerCaseAndNoSpaces(firstname)) &&
+                        transformToLowerCaseAndNoSpaces(book.getAuthor().getLastName())
+                        .contains(transformToLowerCaseAndNoSpaces(lastname))))
                 .toList();
     }
 
+    private String transformToLowerCaseAndNoSpaces(String param) {
+        return param.toLowerCase().replaceAll("\\s", "");
+    }
 
     @Override
     public Book save(Book book) {
@@ -117,10 +122,10 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public String returnBookIdFromLendData(String lendId){
+    public String returnBookIdFromLendData(String lendId) {
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
-        if(bookLentData ==null){
+        if (bookLentData == null) {
             throw new NoSuchElementException("There are no books to show");
         }
         return bookLentData.getBookId();
@@ -149,7 +154,6 @@ public class DefaultBookRepository implements BookRepository {
 //            throw new EmptyBooksListException("List of books is empty");
 //        }
 //    }
-
 
 
 }

@@ -16,4 +16,6 @@ public interface BookService {
     String lendBook(User user, String ISBN);
     String returnBook(String lendId);
     List<BookDTO> getAllBooksLendOutByUser(String lendOutByUser);
+    BookDTO deleteBook(String id);
+    BookDTO restoreBook(String id);
 }

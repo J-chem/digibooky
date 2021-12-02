@@ -71,6 +71,7 @@ public class BookController {
         return bookService.getAllBooksLendOutByUser(lendOutByUser);
     }
 
+
     // POST MAPPINGS
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -92,6 +93,23 @@ public class BookController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String returnBook(@PathVariable String lendId) {
         return bookService.returnBook(lendId);
+    }
+
+
+    @PostMapping(path = "/{id}/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDTO softDeleteBook(@PathVariable("id") String id,
+                                 @RequestHeader String authorisation){
+        securityService.validateAuthorization(authorisation, Features.DELETE_A_BOOK);
+        return bookService.deleteBook(id);
+    }
+
+    @PostMapping(path = "/{id}/restore")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDTO restoreDeletedBook(@PathVariable("id") String id,
+                                  @RequestHeader String authorisation){
+        securityService.validateAuthorization(authorisation, Features.RESTORE_A_BOOK);
+        return bookService.restoreBook(id);
     }
 
 }

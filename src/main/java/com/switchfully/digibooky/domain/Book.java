@@ -12,6 +12,7 @@ public class Book {
     private final String title;
     private final Author author;
     private boolean isLentOut;
+    private boolean isSoftDeleted;
 
     public Book(String isbn, String title, Author author) {
         this.id = UUID.randomUUID().toString();
@@ -19,9 +20,20 @@ public class Book {
         this.title = title;
         this.author = author;
         this.isLentOut = false;
+        this.isSoftDeleted = false;
+    }
+
+    public boolean isSoftDeleted() {
+        return isSoftDeleted;
     }
 
     public void setLentOut(boolean isLentOut) {
         this.isLentOut = isLentOut;
     }
+
+    public void setSoftDeleted(boolean softDeleted) {
+        isSoftDeleted = softDeleted;
+    }
+
+
 }

@@ -16,7 +16,8 @@ public class BookConverter {
                 .setTitle(book.getTitle())
                 .setIsbn(book.getIsbn())
                 .setAuthor(book.getAuthor())
-                .setLentOut(book.isLentOut());
+                .setLentOut(book.isLentOut())
+                .setSoftDeleted(book.isSoftDeleted());
     }
 
     public Book convertCreateBookDTOToBook(CreateBookDTO createBookDTO) {

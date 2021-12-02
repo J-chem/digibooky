@@ -1,11 +1,6 @@
 package com.switchfully.digibooky.api;
 
-import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.custom.exceptions.NotUniqueException;
-import com.switchfully.digibooky.custom.exceptions.UnauthorizedException;
-import com.switchfully.digibooky.custom.exceptions.UnknownUserException;
-import com.switchfully.digibooky.custom.exceptions.WrongPasswordException;
-import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
+import com.switchfully.digibooky.custom.exceptions.*;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -58,6 +53,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     protected void securityNumberAlreadyExists (NotUniqueException ssnrae,
                                                 HttpServletResponse response) throws IOException{
         response.sendError(BAD_REQUEST.value(), ssnrae.getMessage());
+    }
+
+    @ExceptionHandler(BookIsNotAvailableException.class)
+    protected void bookIsNotAvailable(BookIsNotAvailableException bina,
+                                      HttpServletResponse response) throws IOException{
+        response.sendError(NOT_FOUND.value(), bina.getMessage());
     }
 
 }

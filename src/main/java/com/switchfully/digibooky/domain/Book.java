@@ -1,8 +1,11 @@
 package com.switchfully.digibooky.domain;
 
+import lombok.Getter;
+
 import java.util.Objects;
 import java.util.UUID;
 
+@Getter
 public class Book {
     private final String id;
     private final String isbn;
@@ -16,26 +19,6 @@ public class Book {
         this.title = title;
         this.author = author;
         this.isLentOut = false;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public boolean isLentOut() {
-        return isLentOut;
     }
 
     public void setLentOut(boolean isLentOut) {

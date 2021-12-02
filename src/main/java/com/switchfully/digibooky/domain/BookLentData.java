@@ -1,8 +1,11 @@
 package com.switchfully.digibooky.domain;
 
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Getter
 public class BookLentData {
 
     public static final int TIME_YOU_CAN_LENT_A_BOOK = 3;
@@ -16,22 +19,6 @@ public class BookLentData {
         this.userId = userId;
         this.bookId = bookId;
         this.dueDate = LocalDate.now().plusWeeks(TIME_YOU_CAN_LENT_A_BOOK);
-    }
-
-    public String getLendingId() {
-        return lendingId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getBookId() {
-        return bookId;
-    }
-
-    public LocalDate getDueDate() {
-        return dueDate;
     }
 
     public void setDate(LocalDate date) {

@@ -4,6 +4,7 @@ public class ObjectNotFoundException extends RuntimeException {
     public ObjectNotFoundException() {
         this("Cannot find object");
     }
+
     public ObjectNotFoundException(String message) {
         super(message);
     }

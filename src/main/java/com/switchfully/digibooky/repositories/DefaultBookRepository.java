@@ -154,8 +154,9 @@ public class DefaultBookRepository implements BookRepository {
     public List<Book> getBy(boolean isOverDue) {
         return books.values()
                 .stream()
-                .filter(Book::isLentOut)
-                .filter(book -> book.getDueDate().compareTo(LocalDate.now()) < 0)
+                .collect(Collectors.partitioningBy(book -> book.getDueDate().compareTo(LocalDate.now()) < 0))
+                .get(isOverDue)
+                .stream()
                 .toList();
     }
 

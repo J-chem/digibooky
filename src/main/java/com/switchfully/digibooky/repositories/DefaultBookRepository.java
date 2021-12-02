@@ -45,7 +45,7 @@ public class DefaultBookRepository implements BookRepository {
         assertStringNotNull(title, "title");
         return books.values()
                 .stream()
-                .filter(book -> book.getTitle().contains(title))
+                .filter(book -> transformToLowerCaseAndNoSpaces(book.getTitle()).contains(transformToLowerCaseAndNoSpaces(title)))
                 .toList();
     }
 
@@ -62,26 +62,35 @@ public class DefaultBookRepository implements BookRepository {
     @Override
     public List<Book> getByAuthor(String firstname, String lastname) {
         assertDataManagementMapIsNotEmpty(books);
-
         if (lastname == null && firstname == null) {
             throw new IllegalArgumentException("Both params can't be null!");
         }
+
         if (lastname == null) {
             return books.values()
                     .stream()
-                    .filter(book -> book.getAuthor().getFirstName().contains(firstname))
+                    .filter(book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getFirstName())
+                            .contains(transformToLowerCaseAndNoSpaces(firstname)))
                     .toList();
         }
         if (firstname == null) {
             return books.values()
                     .stream()
-                    .filter(book -> book.getAuthor().getLastName().contains(lastname))
+                    .filter(book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getLastName())
+                            .contains(transformToLowerCaseAndNoSpaces(lastname)))
                     .toList();
         }
         return books.values()
                 .stream()
-                .filter((book -> book.getAuthor().getFirstName().contains(firstname) && book.getAuthor().getLastName().contains(lastname)))
+                .filter((book -> transformToLowerCaseAndNoSpaces(book.getAuthor().getFirstName())
+                        .contains(transformToLowerCaseAndNoSpaces(firstname)) &&
+                        transformToLowerCaseAndNoSpaces(book.getAuthor().getLastName())
+                        .contains(transformToLowerCaseAndNoSpaces(lastname))))
                 .toList();
+    }
+
+    private String transformToLowerCaseAndNoSpaces(String param) {
+        return param.toLowerCase().replaceAll("\\s", "");
     }
 
     @Override

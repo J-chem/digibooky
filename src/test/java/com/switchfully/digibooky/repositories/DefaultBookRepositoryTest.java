@@ -22,15 +22,18 @@ class DefaultBookRepositoryTest {
     private DefaultBookRepository bookRepository;
     private Book book1;
     private Book book2;
+    //private Book book3;
     private Author author1;
     private Author author2;
+    //private Author author3;
     private String id1;
 
     @BeforeEach
     void beforeEach() {
         bookRepository = new DefaultBookRepository();
         author1 = new Author("test", "test");
-        author2 = new Author("test2", "test2");
+        author2 = new Author("tEst2", "test2");
+
         book1 = new Book("isbn1", "test", author1);
         book2 = new Book("isbn2", "test2", author2);
         id1 = idOfBook1();
@@ -268,6 +271,20 @@ class DefaultBookRepositoryTest {
         @DisplayName("Get by firstname (lastname is null")
         void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist() {
             assertThat(bookRepository.getByAuthor("test2", null)).isEqualTo(List.of(book2));
+        }
+
+        @Test
+        @DisplayName("Get by firstname (lastname is null) - Ignores Upper Cases")
+        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist_IgnoresUpperCase() {
+            assertThat(bookRepository.getByAuthor("TeSt2", null)).isEqualTo(List.of(book2));
+            System.out.println(book2.getAuthor().getFirstName() + " " + book2.getAuthor().getLastName());
+        }
+
+        @Test
+        @DisplayName("Get by firstname (lastname is null) - Ignores Upper Cases 2")
+        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist_IgnoresUpperCase2(){
+            System.out.println(book2.getAuthor().getFirstName() + " " + book2.getAuthor().getLastName());
+            assertThat(bookRepository.getByAuthor("TEST2", null)).isEqualTo(List.of(book2));
         }
 
         @Test

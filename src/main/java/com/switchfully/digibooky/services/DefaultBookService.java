@@ -1,12 +1,12 @@
 package com.switchfully.digibooky.services;
 
-import com.switchfully.digibooky.custom.exceptions.BookIsNotAvailableException;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.repositories.BookRepository;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
+import com.switchfully.digibooky.services.validators.BookValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,10 +17,12 @@ public class DefaultBookService implements BookService {
 
     private final BookRepository bookRepository;
     private final BookConverter bookConverter;
+    private final BookValidator bookValidator;
 
-    public DefaultBookService(BookRepository bookRepository, BookConverter bookConverter) {
+    public DefaultBookService(BookRepository bookRepository, BookConverter bookConverter, BookValidator bookValidator) {
         this.bookRepository = bookRepository;
         this.bookConverter = bookConverter;
+        this.bookValidator = bookValidator;
     }
 
     @Override
@@ -66,7 +68,7 @@ public class DefaultBookService implements BookService {
 
     @Override
     public String lendBook(User user, String bookid) {
-        assertLentOutStatus(bookRepository.getById(bookid).isLentOut());
+        bookValidator.assertLentOutStatus(bookRepository.getById(bookid)); //isBookAlreadyLentout? No --> proceed
         bookRepository.updateLendOutStatus(bookid);
         BookLentData bookLentData = new BookLentData(user.getId(), bookid);
         bookRepository.updateDueDate(bookid, bookLentData.getDueDate());
@@ -94,11 +96,5 @@ public class DefaultBookService implements BookService {
     public List<BookDTO> getBy(boolean isOverDue) {
         List<Book> books = bookRepository.getBy(isOverDue);
         return bookConverter.convertListOfBookInBookDto(books);
-    }
-
-    private void assertLentOutStatus(boolean isLentOut) {
-        if (isLentOut) {
-            throw new BookIsNotAvailableException("Sorry but this book is not available");
-        }
     }
 }

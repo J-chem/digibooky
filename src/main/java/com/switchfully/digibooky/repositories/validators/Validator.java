@@ -1,11 +1,9 @@
 package com.switchfully.digibooky.repositories.validators;
 
 import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
-import com.switchfully.digibooky.domain.Author;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class Validator {

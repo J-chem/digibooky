@@ -107,15 +107,24 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public void updateLendOutStatus(String id) {
+    public void updateDueDate(String bookId, LocalDate dueDate) {
         assertDataManagementMapIsNotEmpty(books);
-        assertStringNotNull(id, "id");
-        Book book = books.get(id);
+        assertStringNotNull(bookId, "book_id");
+        updateLendOutStatus(bookId);
+        var book = books.get(bookId);
+        book.setDueDate(dueDate);
+        books.put(bookId, book);
+    }
+
+    @Override
+    public void updateLendOutStatus(String bookId) {
+        Book book = books.get(bookId);
         book.setLentOut(!book.isLentOut());
     }
 
     @Override
     public String returnBook(String lendId) {
+        assertStringNotNull(lendId, "lending_id");
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
         return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "You're on time" : "You are late whit your books";
@@ -123,6 +132,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public String returnBookIdFromLendData(String lendId) {
+        assertStringNotNull(lendId, "lending_id");
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
         if (bookLentData == null) {
@@ -141,6 +151,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public LocalDate getDueDate(String bookId) {
+        assertStringNotNull(bookId, "book_id");
         return lentData.values()
                 .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))
@@ -158,12 +169,5 @@ public class DefaultBookRepository implements BookRepository {
                 .get(isOverDue)
                 .stream()
                 .toList();
-    }
-
-    @Override
-    public void updateDueDate(String bookId, LocalDate dueDate) {
-        var book = books.get(bookId);
-        book.setDueDate(dueDate);
-        books.put(bookId, book);
     }
 }

@@ -67,7 +67,6 @@ public class DefaultBookService implements BookService {
     @Override
     public String lendBook(User user, String bookId) {
         assertLentOutStatus(bookRepository.getById(bookId).isLentOut());
-        bookRepository.updateLendOutStatus(bookId);
         BookLentData bookLentData = new BookLentData(user.getId(), bookId);
         bookRepository.updateDueDate(bookId, bookLentData.getDueDate());
         return bookRepository.lendBook(bookLentData);

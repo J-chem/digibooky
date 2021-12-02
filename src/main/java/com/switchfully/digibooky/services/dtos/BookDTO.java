@@ -1,33 +1,15 @@
 package com.switchfully.digibooky.services.dtos;
 
 import com.switchfully.digibooky.domain.Author;
+import lombok.Getter;
 
+@Getter
 public class BookDTO {
     private String id;
     private String isbn;
     private String title;
     private Author author;
     private boolean isLentOut;
-
-    public String getId() {
-        return id;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public boolean isLentOut() {
-        return isLentOut;
-    }
 
     public BookDTO setId(String id) {
         this.id = id;

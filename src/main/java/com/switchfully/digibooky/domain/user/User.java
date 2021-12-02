@@ -1,10 +1,14 @@
 package com.switchfully.digibooky.domain.user;
 
 import com.switchfully.digibooky.security.Role;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.util.Objects;
 import java.util.UUID;
 
+@Getter
+@EqualsAndHashCode
 public class User {
 
     private final String id;
@@ -78,41 +82,6 @@ public class User {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getSocialSecurityNumber() {
-        return socialSecurityNumber;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
     @Override
     public boolean equals(Object o) {

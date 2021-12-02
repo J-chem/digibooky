@@ -2,11 +2,13 @@ package com.switchfully.digibooky.services.dtos;
 
 import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.security.Role;
+import lombok.Builder;
+import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+@Getter
+@Builder
 public class CreateUserDTO {
     private final Role role;
     private final Address address;
@@ -31,33 +33,4 @@ public class CreateUserDTO {
         this.email = Objects.requireNonNull(email);
     }
 
-    public String getSocialSecurityNumber() {
-        return socialSecurityNumber;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {return lastName;}
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }

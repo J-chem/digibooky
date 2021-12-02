@@ -1,8 +1,11 @@
 package com.switchfully.digibooky.domain;
 
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
+@Getter
 public class BookLentData {
 
     private final String lendingId;
@@ -15,22 +18,6 @@ public class BookLentData {
         this.userId = userId;
         this.bookId = bookId;
         this.dueDate = LocalDate.now().plusWeeks(3);
-    }
-
-    public String getLendingId() {
-        return lendingId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getBookId() {
-        return bookId;
-    }
-
-    public LocalDate getDueDate() {
-        return dueDate;
     }
 
     public void setDate(LocalDate date) {

@@ -1,7 +1,10 @@
 package com.switchfully.digibooky.domain.user;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.Objects;
 
+@EqualsAndHashCode
 public class Address {
     private final String streetName;
     private final int streetNumber;
@@ -54,21 +57,5 @@ public class Address {
         public Address build() {
             return new Address(this);
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address = (Address) o;
-        return streetNumber == address.streetNumber &&
-                postalCode == address.postalCode &&
-                streetName.equals(address.streetName) &&
-                city.equals(address.city);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(streetName, streetNumber, postalCode, city);
     }
 }

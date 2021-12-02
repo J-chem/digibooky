@@ -2,11 +2,9 @@ package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -179,7 +177,7 @@ class DefaultBookRepositoryTest {
 
     @Nested
     @DisplayName("Return a book")
-    class returnABook{
+    class returnABook {
 
         @Test
         void returnABookOnTime() {
@@ -202,10 +200,11 @@ class DefaultBookRepositoryTest {
 
     @Nested
     @DisplayName("return book id from lend data")
-    class returnBookIdFromLendData{
+    class returnBookIdFromLendData {
         String lendId;
+
         @BeforeEach
-        void setup(){
+        void setup() {
             bookRepository.save(book1);
             lendId = bookRepository.lendBook(new BookLentData("User1", book1.getId()));
         }
@@ -225,25 +224,26 @@ class DefaultBookRepositoryTest {
 
     @Nested
     @DisplayName("get all lended books by UserID")
-    class GetLendedBooksByUserId{
+    class GetLendedBooksByUserId {
         @BeforeEach
-        void setup(){
+        void setup() {
             bookRepository.save(book1);
             bookRepository.lendBook(new BookLentData("User1", book1.getId()));
         }
 
         @Test
         @DisplayName("Get all lended books by UserId")
-        void givenUserGetAllLendedBooks(){
+        void givenUserGetAllLendedBooks() {
             assertThat(bookRepository.getAllLendedBooksIDByUser("User1")).contains(book1.getId());
         }
 
         @Test
         @DisplayName("Get all lended books by UserId no books are lent out by user")
-        void givenUserGetAllLendedBooks_NoBooksAreLedOutByUser(){
+        void givenUserGetAllLendedBooks_NoBooksAreLedOutByUser() {
             assertThat(bookRepository.getAllLendedBooksIDByUser("anotherUser")).isEmpty();
         }
     }
+
     @Nested
     @DisplayName("Get books by author")
     class GetByAuthor {
@@ -308,21 +308,41 @@ class DefaultBookRepositoryTest {
 
     @Nested
     @DisplayName("Get due date")
-    class GetDueDate{
+    class GetDueDate {
         @BeforeEach
-        void setup(){
+        void setup() {
             bookRepository.save(book1);
             bookRepository.lendBook(new BookLentData("User1", book1.getId()));
         }
 
         @Test
-        void getDueDateForLentBook(){
+        void getDueDateForLentBook() {
             assertThat(bookRepository.getDueDate(book1.getId())).isEqualTo(LocalDate.now().plusDays(21));
         }
 
         @Test
-        void getNullDueDateForNoLentBook(){
+        void getNullDueDateForNoLentBook() {
             assertThatThrownBy(() -> bookRepository.getDueDate(book2.getId())).isInstanceOf(NoSuchElementException.class).hasMessage("Due date not find.");
+        }
+    }
+
+    @Nested
+    @DisplayName("Get over due books")
+    class GetOverDueBooks {
+        @BeforeEach
+        void setUp() {
+            bookRepository.save(book1);
+            bookRepository.lendBook(new BookLentData("User1", book1.getId()));
+        }
+
+        @Test
+        void getOverDueBooks_ReturnsEmptyList() {
+            assertThat(bookRepository.getBy(true)).isEmpty();
+        }
+
+        @Test
+        void getNotOverDueBooks_returnsListWithBook1() {
+            assertThat(bookRepository.getBy(false)).containsExactly(book1);
         }
     }
 }

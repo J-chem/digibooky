@@ -135,13 +135,14 @@ public class DefaultBookRepository implements BookRepository {
     public List<String> getAllLendedBooksIDByUser(String lendOutByUser) {
         return lentData.values().stream()
                 .filter(data -> data.getUserId().equals(lendOutByUser))
-                .map(book -> book.getBookId())
+                .map(BookLentData::getBookId)
                 .collect(Collectors.toList());
     }
 
     @Override
     public LocalDate getDueDate(String bookId) {
-        return lentData.values().stream()
+        return lentData.values()
+                .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))
                 .map(lentData -> lentData.getDueDate())
                 .sorted()
@@ -149,11 +150,25 @@ public class DefaultBookRepository implements BookRepository {
                 .orElseThrow(() -> new NoSuchElementException("Due date not find."));
     }
 
-//    public void assertBooksIsEmpty() {
-//        if (books.isEmpty()){
-//            throw new EmptyBooksListException("List of books is empty");
-//        }
-//    }
+    @Override
+    public List<Book> getBy(boolean isOverDue) {
+        Map<Boolean, List<BookLentData>> dueAndOverDueBooks = collectByOverDueAndNotOverDue();
+        return getBooksByDueAndNotOverDue(isOverDue, dueAndOverDueBooks);
+    }
 
+    private List<Book> getBooksByDueAndNotOverDue(boolean isOverDue, Map<Boolean, List<BookLentData>> dueAndOverDueBooks) {
+        return dueAndOverDueBooks.get(isOverDue)
+                .stream()
+                .map(BookLentData::getBookId)
+                .flatMap(id -> books.values()
+                        .stream()
+                        .filter(book -> book.getId().equals(id)))
+                .toList();
+    }
 
+    private Map<Boolean, List<BookLentData>> collectByOverDueAndNotOverDue() {
+        return lentData.values()
+                .stream()
+                .collect(Collectors.partitioningBy(date -> date.getDueDate().compareTo(LocalDate.now()) < 0));
+    }
 }

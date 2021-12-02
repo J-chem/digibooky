@@ -107,11 +107,14 @@ class DefaultBookRepositoryTest {
     @Nested
     @DisplayName("Update a book")
     class UpdateBook {
-        @Test
-        @DisplayName("Update a book")
-        void whenUpdateLendStatus_thenBookDBIsUpdated() {
-            bookRepository.save(book1);
 
+        @BeforeEach
+        void setUp() {
+            bookRepository.save(book1);
+        }
+
+        @Test
+        void whenUpdateLendStatus_thenBookDBIsUpd() {
             bookRepository.updateLendOutStatus(id1);
             Book book = bookRepository.getById(id1);
             assertThat(book.isLentOut()).isTrue();
@@ -120,6 +123,15 @@ class DefaultBookRepositoryTest {
             book = bookRepository.getById(id1);
             assertThat(book.isLentOut()).isFalse();
         }
+
+
+        @Test
+        void updateBook() {
+            Book bookToUpdate = new Book(book1.getIsbn(), book1.getTitle(), book1.getAuthor());
+            Book bookUpdated = bookRepository.updateBook(bookToUpdate);
+            assertThat(bookUpdated).isEqualTo(bookToUpdate);
+        }
+
     }
 
     @Nested
@@ -282,7 +294,7 @@ class DefaultBookRepositoryTest {
 
         @Test
         @DisplayName("Get by firstname (lastname is null) - Ignores Upper Cases 2")
-        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist_IgnoresUpperCase2(){
+        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist_IgnoresUpperCase2() {
             System.out.println(book2.getAuthor().getFirstName() + " " + book2.getAuthor().getLastName());
             assertThat(bookRepository.getByAuthor("TEST2", null)).isEqualTo(List.of(book2));
         }

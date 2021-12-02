@@ -162,8 +162,8 @@ public class DefaultBookRepository implements BookRepository {
                 .stream()
                 .map(BookLentData::getBookId)
                 .flatMap(id -> books.values()
-                        .stream()
-                        .filter(book -> book.getId().equals(id)))
+                                    .stream()
+                                    .filter(book -> book.getId().equals(id)))
                 .toList();
     }
 

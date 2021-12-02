@@ -25,6 +25,9 @@ public class SecurityService {
     }
 
     public User validateAuthorization(String authorization, Features feature) {
+        if(authorization == null){
+            throw new UnauthorizedException();
+        }
         SecureUser usernamePassword = getUsernamePassword(authorization);
         User user = userRepository.getUser(usernamePassword.getUsername());
         if(user == null) {

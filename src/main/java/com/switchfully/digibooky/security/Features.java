@@ -6,5 +6,6 @@ public enum Features {
     LEND_A_BOOK,
     REGISTER_NEW_LIBRARIAN,
     REGISTER_NEW_MEMBER,
-    GET_ALL_MEMBERS;
+    GET_ALL_MEMBERS,
+    UPDATE_A_BOOK;
 }

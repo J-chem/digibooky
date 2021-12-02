@@ -1,8 +1,8 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Book;
-import com.switchfully.digibooky.domain.BookLentData;
+import com.switchfully.digibooky.domain.book.Book;
+import com.switchfully.digibooky.domain.book.BookLentData;
 import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +12,8 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.switchfully.digibooky.repositories.validators.Validator.assertAllParamsNotNull;
 import static com.switchfully.digibooky.repositories.validators.Validator.assertDataManagementMapIsNotEmpty;
-import static com.switchfully.digibooky.repositories.validators.Validator.assertStringNotNull;
 
 @Repository
 public class DefaultBookRepository implements BookRepository {
@@ -114,20 +114,12 @@ public class DefaultBookRepository implements BookRepository {
                               @NonNull LocalDate dueDate) {
         assertDataManagementMapIsNotEmpty(books);
 
-        updateLendOutStatus(bookId);
         var book = books.get(bookId);
         book.setDueDate(dueDate);
-        books.put(bookId, book);
-    }
-
-    @Override
-    public void updateLendOutStatus(@NonNull String bookId) {
-        assertDataManagementMapIsNotEmpty(books);
-
-        Book book = books.get(bookId);
         book.setLentOut(!book.isLentOut());
         books.put(bookId, book);
     }
+
 
 
     @Override
@@ -158,8 +150,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public LocalDate getDueDate(String bookId) {
-        assertStringNotNull(bookId, "book_id");
+    public LocalDate getDueDate(@NonNull String bookId) {
         return lentData.values()
                 .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))

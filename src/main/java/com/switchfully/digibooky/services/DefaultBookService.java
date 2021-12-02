@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.services;
 
+import com.switchfully.digibooky.custom.exceptions.BookIsNotAvailableException;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
 import com.switchfully.digibooky.domain.user.User;
@@ -19,7 +20,7 @@ public class DefaultBookService implements BookService {
     private final BookConverter bookConverter;
     private final BookValidator bookValidator;
 
-    public DefaultBookService(BookRepository bookRepository, BookConverter bookConverter, BookValidator bookValidator) {
+    public DefaultBookService(BookRepository bookRepository, BookConverter bookConverter) {
         this.bookRepository = bookRepository;
         this.bookConverter = bookConverter;
         this.bookValidator = bookValidator;

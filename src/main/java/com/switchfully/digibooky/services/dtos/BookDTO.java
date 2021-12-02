@@ -1,6 +1,6 @@
 package com.switchfully.digibooky.services.dtos;
 
-import com.switchfully.digibooky.domain.Author;
+import com.switchfully.digibooky.domain.book.Author;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +14,7 @@ public class BookDTO {
     private String title;
     private Author author;
     private boolean isLentOut;
+    private boolean isSoftDeleted;
     private LocalDate dueDate;
 
 
@@ -44,6 +45,11 @@ public class BookDTO {
 
     public BookDTO setDueDate(LocalDate dueDate){
         this.dueDate = dueDate;
+        return this;
+    }
+
+    public BookDTO setSoftDeleted(boolean softDeleted) {
+        isSoftDeleted = softDeleted;
         return this;
     }
 }

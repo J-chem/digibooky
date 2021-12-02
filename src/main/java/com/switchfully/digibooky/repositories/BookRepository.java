@@ -1,9 +1,7 @@
 package com.switchfully.digibooky.repositories;
 
-import com.switchfully.digibooky.domain.Author;
-import com.switchfully.digibooky.domain.Book;
-import com.switchfully.digibooky.domain.BookLentData;
-import com.switchfully.digibooky.services.dtos.BookDTO;
+import com.switchfully.digibooky.domain.book.Book;
+import com.switchfully.digibooky.domain.book.BookLentData;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,11 +14,12 @@ public interface BookRepository {
     List<Book> getByAuthor(String firstname, String lastname);
     Book save(Book book);
     String lendBook(BookLentData bookLentData);
-    void updateLendOutStatus(String id);
     String returnBook(String lendId);
     String returnBookIdFromLendData(String lendId);
     List<String> getAllLendedBooksIDByUser(String lendOutByUser);
     LocalDate getDueDate(String bookId);
+
     List<Book> getBy(boolean isOverDue);
+    Book updateBook(Book bookToBeUpdated);
     void updateDueDate(String bookid, LocalDate dueDate);
 }

@@ -2,9 +2,9 @@ package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Author;
-import com.switchfully.digibooky.domain.Book;
-import com.switchfully.digibooky.domain.BookLentData;
+import com.switchfully.digibooky.domain.book.Author;
+import com.switchfully.digibooky.domain.book.Book;
+import com.switchfully.digibooky.domain.book.BookLentData;
 import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.domain.user.User.Builder;
@@ -135,19 +135,33 @@ class DefaultBookRepositoryTest {
     @Nested
     @DisplayName("Update a book")
     class UpdateBook {
-        @Test
-        @DisplayName("Update a book")
-        void whenUpdateLendStatus_thenBookDBIsUpdated() {
-            bookRepository.save(book1);
 
-            bookRepository.updateLendOutStatus(id1);
+        @BeforeEach
+        void setUp() {
+            bookRepository.save(book1);
+        }
+
+        @Test
+        void whenUpdateLendStatus_thenBookDBIsUpd() {
+            bookRepository.updateDueDate(book1.getId(), LocalDate.now());
             Book book = bookRepository.getById(id1);
             assertThat(book.isLentOut()).isTrue();
+            assertThat(book.getDueDate()).isEqualTo(LocalDate.now());
 
-            bookRepository.updateLendOutStatus(id1);
+            bookRepository.updateDueDate(book1.getId(), null);
             book = bookRepository.getById(id1);
             assertThat(book.isLentOut()).isFalse();
+            assertThat(book.getDueDate()).isNull();
         }
+
+
+        @Test
+        void updateBook() {
+            Book bookToUpdate = new Book(book1.getIsbn(), book1.getTitle(), book1.getAuthor());
+            Book bookUpdated = bookRepository.updateBook(bookToUpdate);
+            assertThat(bookUpdated).isEqualTo(bookToUpdate);
+        }
+
     }
 
     @Nested
@@ -310,7 +324,7 @@ class DefaultBookRepositoryTest {
 
         @Test
         @DisplayName("Get by firstname (lastname is null) - Ignores Upper Cases 2")
-        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist_IgnoresUpperCase2(){
+        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist_IgnoresUpperCase2() {
             System.out.println(book2.getAuthor().getFirstName() + " " + book2.getAuthor().getLastName());
             assertThat(bookRepository.getByAuthor("TEST2", null)).isEqualTo(List.of(book2));
         }

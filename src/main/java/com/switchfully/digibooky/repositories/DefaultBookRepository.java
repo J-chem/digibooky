@@ -7,11 +7,13 @@ import lombok.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.switchfully.digibooky.repositories.validators.Validator.*;
+import static com.switchfully.digibooky.repositories.validators.Validator.assertDataManagementMapIsNotEmpty;
+import static com.switchfully.digibooky.repositories.validators.Validator.assertStringNotNull;
 
 @Repository
 public class DefaultBookRepository implements BookRepository {
@@ -32,7 +34,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public Book getById(@NonNull String id) {
+    public Book getById(String id) {
         assertDataManagementMapIsNotEmpty(books);
 
         if (!books.containsKey(id)) {
@@ -42,7 +44,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Book> getByTitle(@NonNull String title) {
+    public List<Book> getByTitle(String title) {
         assertDataManagementMapIsNotEmpty(books);
 
         return books.values()
@@ -52,7 +54,7 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public List<Book> getByISBN(@NonNull String isbn) {
+    public List<Book> getByISBN(String isbn) {
         assertDataManagementMapIsNotEmpty(books);
 
         return books.values()
@@ -124,7 +126,9 @@ public class DefaultBookRepository implements BookRepository {
 
         Book book = books.get(bookId);
         book.setLentOut(!book.isLentOut());
+        books.put(bookId, book);
     }
+
 
     @Override
     public String returnBook(@NonNull String lendId) {
@@ -154,7 +158,8 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public LocalDate getDueDate(@NonNull String bookId) {
+    public LocalDate getDueDate(String bookId) {
+        assertStringNotNull(bookId, "book_id");
         return lentData.values()
                 .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))
@@ -163,6 +168,7 @@ public class DefaultBookRepository implements BookRepository {
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Due date not found"));
     }
+
 
     @Override
     public List<Book> getBy(boolean isOverDue) {
@@ -173,4 +179,12 @@ public class DefaultBookRepository implements BookRepository {
                 .stream()
                 .toList();
     }
+
+    @Override
+    public Book updateBook(Book bookToBeUpdated) {
+        books.put(bookToBeUpdated.getId(), bookToBeUpdated);
+        return bookToBeUpdated;
+    }
+
+
 }

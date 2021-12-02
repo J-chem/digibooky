@@ -1,6 +1,6 @@
 package com.switchfully.digibooky.services;
 
-import com.switchfully.digibooky.domain.Book;
+import com.switchfully.digibooky.domain.book.Book;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,9 @@ public class BookConverter {
                 .setTitle(book.getTitle())
                 .setIsbn(book.getIsbn())
                 .setAuthor(book.getAuthor())
-                .setLentOut(book.isLentOut());
+                .setLentOut(book.isLentOut())
+                .setDueDate(book.getDueDate())
+                .setSoftDeleted(book.isSoftDeleted());
     }
 
     public Book convertCreateBookDTOToBook(CreateBookDTO createBookDTO) {

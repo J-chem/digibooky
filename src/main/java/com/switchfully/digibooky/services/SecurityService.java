@@ -25,7 +25,7 @@ public class SecurityService {
     }
 
     public User validateAuthorization(String authorization, Features feature) {
-        if(authorization == null){
+        if(authorization == null) {
             throw new UnauthorizedException();
         }
         SecureUser usernamePassword = getUsernamePassword(authorization);

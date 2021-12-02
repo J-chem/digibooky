@@ -6,16 +6,9 @@ import com.switchfully.digibooky.services.BookService;
 import com.switchfully.digibooky.services.SecurityService;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
+import com.switchfully.digibooky.services.dtos.UpdateBookDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -66,8 +59,8 @@ public class BookController {
     @GetMapping(params = "lendOutByUser")
     @ResponseStatus(HttpStatus.OK)
     public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser,
-                                                   @RequestHeader String authorization) {
-        securityService.validateAuthorization(authorization, Features.CONSULT_LENDING);
+                                                   @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Features.CONSULT_LENDINGS);
         return bookService.getAllBooksLendOutByUser(lendOutByUser);
     }
 
@@ -79,7 +72,6 @@ public class BookController {
         return bookService.getBy(isOverDue);
     }
 
-
     // POST MAPPINGS
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -89,18 +81,49 @@ public class BookController {
         return bookService.save(createBookDto);
     }
 
-    @PostMapping(path = "/{bookid}/lendOut")
+    @PostMapping(path = "/{id}/lendOut")
     @ResponseStatus(HttpStatus.CREATED)
-    public String lendABook(@PathVariable("bookid") String bookid,
+    public String lendABook(@PathVariable("id") String id,
                             @RequestHeader String authorization) {
         User user = securityService.validateAuthorization(authorization, Features.LEND_A_BOOK);
-        return bookService.lendBook(user, bookid);
+        return bookService.lendBook(user, id);
     }
 
     @PostMapping(path = "/{lendId}/returnBook")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String returnBook(@PathVariable String lendId) {
         return bookService.returnBook(lendId);
+    }
+
+
+    @PostMapping(path = "/{id}/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDTO softDeleteBook(@PathVariable("id") String id,
+                                 @RequestHeader String authorisation){
+        securityService.validateAuthorization(authorisation, Features.DELETE_A_BOOK);
+        return bookService.deleteBook(id);
+    }
+
+    @PostMapping(path = "/{id}/restore")
+    @ResponseStatus(HttpStatus.OK)
+    public BookDTO restoreDeletedBook(@PathVariable("id") String id,
+                                  @RequestHeader String authorisation){
+        securityService.validateAuthorization(authorisation, Features.RESTORE_A_BOOK);
+        return bookService.restoreBook(id);
+    }
+
+    //PUT MAPPING
+    @PutMapping(path = "/{bookId}", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDTO putBook(@PathVariable String bookId,
+                           @RequestBody UpdateBookDTO updateBookDTO,
+                           @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Features.UPDATE_A_BOOK);
+        if(!updateBookDTO.getId().equals(bookId)){
+            throw new IllegalArgumentException("Book id don't corresponds whit the book");
+        }
+
+        return bookService.updateBook(updateBookDTO);
     }
 
 }

@@ -2,24 +2,26 @@ package com.switchfully.digibooky.services.dtos;
 
 import com.switchfully.digibooky.domain.book.Author;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-public class CreateBookDTO {
-    private String isbn;
+@Setter
+public class UpdateBookDTO {
+    private String id;
     private String title;
     private Author author;
 
-    public CreateBookDTO setIsbn(String isbn) {
-        this.isbn = isbn;
+    public UpdateBookDTO setId(String id) {
+        this.id = id;
         return this;
     }
 
-    public CreateBookDTO setTitle(String title) {
+    public UpdateBookDTO setTitle(String title) {
         this.title = title;
         return this;
     }
 
-    public CreateBookDTO setAuthor(Author author) {
+    public UpdateBookDTO setAuthor(Author author) {
         this.author = author;
         return this;
     }

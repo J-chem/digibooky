@@ -21,6 +21,10 @@ public class DefaultUserRepository implements UserRepository {
     public DefaultUserRepository() {
         usersById = new ConcurrentHashMap<>();
         //creating dummy data
+        addAdmin();
+    }
+
+    private void addAdmin() {
         User user = new User.Builder("Maxim",
                 "Verbeeck",
                 new Address.Builder()

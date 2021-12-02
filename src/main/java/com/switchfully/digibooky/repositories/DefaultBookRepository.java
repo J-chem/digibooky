@@ -7,6 +7,7 @@ import com.switchfully.digibooky.domain.BookLentData;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -131,6 +132,16 @@ public class DefaultBookRepository implements BookRepository {
                 .filter(data -> data.getUserId().equals(lendOutByUser))
                 .map(book -> book.getBookId())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public LocalDate getDueDate(String bookId) {
+        return lentData.values().stream()
+                .filter(lentData -> lentData.getBookId().equals(bookId))
+                .map(lentData -> lentData.getDueDate())
+                .sorted()
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Due date not find."));
     }
 
 //    public void assertBooksIsEmpty() {

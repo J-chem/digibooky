@@ -8,6 +8,7 @@ import java.util.UUID;
 @Getter
 public class BookLentData {
 
+    public static final int TIME_YOU_CAN_LENT_A_BOOK = 3;
     private final String lendingId;
     private final String userId;
     private final String bookId;
@@ -17,7 +18,7 @@ public class BookLentData {
         this.lendingId = UUID.randomUUID().toString();
         this.userId = userId;
         this.bookId = bookId;
-        this.dueDate = LocalDate.now().plusWeeks(3);
+        this.dueDate = LocalDate.now().plusWeeks(TIME_YOU_CAN_LENT_A_BOOK);
     }
 
     public void setDate(LocalDate date) {

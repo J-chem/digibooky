@@ -63,6 +63,14 @@ public class BookController {
         return bookService.getByAuthor(firstname, lastname);
     }
 
+    @GetMapping(params = "lendOutByUser")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser,
+                                                   @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Features.CONSULT_LENDINGS);
+        return bookService.getAllBooksLendOutByUser(lendOutByUser);
+    }
+
     // POST MAPPINGS
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -86,11 +94,4 @@ public class BookController {
         return bookService.returnBook(lendId);
     }
 
-    @GetMapping(params = "lendOutByUser")
-    @ResponseStatus(HttpStatus.OK)
-    public List<BookDTO> getAllBookLendOutByUserID(@RequestParam String lendOutByUser,
-                                                   @RequestHeader String authorization){
-        securityService.validateAuthorization(authorization, Features.CONSULT_LENDINGS);
-        return bookService.getAllBooksLendOutByUser(lendOutByUser);
-    }
 }

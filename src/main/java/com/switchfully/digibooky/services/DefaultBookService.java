@@ -75,7 +75,6 @@ public class DefaultBookService implements BookService {
     @Override
     public String returnBook(String lendId) {
         var bookId = bookRepository.returnBookIdFromLendData(lendId);
-        bookRepository.updateLendOutStatus(bookId);
         bookRepository.updateDueDate(bookId, null);
         return bookRepository.returnBook(lendId);
     }

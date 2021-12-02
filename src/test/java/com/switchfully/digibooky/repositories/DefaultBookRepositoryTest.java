@@ -136,14 +136,15 @@ class DefaultBookRepositoryTest {
         @DisplayName("Update a book")
         void whenUpdateLendStatus_thenBookDBIsUpdated() {
             bookRepository.save(book1);
-
-            bookRepository.updateLendOutStatus(id1);
+            bookRepository.updateDueDate(book1.getId(), LocalDate.now());
             Book book = bookRepository.getById(id1);
             assertThat(book.isLentOut()).isTrue();
+            assertThat(book.getDueDate()).isEqualTo(LocalDate.now());
 
-            bookRepository.updateLendOutStatus(id1);
+            bookRepository.updateDueDate(book1.getId(), null);
             book = bookRepository.getById(id1);
             assertThat(book.isLentOut()).isFalse();
+            assertThat(book.getDueDate()).isNull();
         }
     }
 

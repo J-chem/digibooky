@@ -110,17 +110,12 @@ public class DefaultBookRepository implements BookRepository {
     public void updateDueDate(String bookId, LocalDate dueDate) {
         assertDataManagementMapIsNotEmpty(books);
         assertStringNotNull(bookId, "book_id");
-        updateLendOutStatus(bookId);
         var book = books.get(bookId);
         book.setDueDate(dueDate);
+        book.setLentOut(!book.isLentOut());
         books.put(bookId, book);
     }
 
-    @Override
-    public void updateLendOutStatus(String bookId) {
-        Book book = books.get(bookId);
-        book.setLentOut(!book.isLentOut());
-    }
 
     @Override
     public String returnBook(String lendId) {

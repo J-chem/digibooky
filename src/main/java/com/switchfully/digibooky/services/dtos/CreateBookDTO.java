@@ -1,6 +1,6 @@
 package com.switchfully.digibooky.services.dtos;
 
-import com.switchfully.digibooky.domain.Author;
+import com.switchfully.digibooky.domain.book.Author;
 import lombok.Getter;
 
 @Getter

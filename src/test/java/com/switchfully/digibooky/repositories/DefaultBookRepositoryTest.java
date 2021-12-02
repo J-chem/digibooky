@@ -2,9 +2,9 @@ package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.EmptyBooksListException;
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Author;
-import com.switchfully.digibooky.domain.Book;
-import com.switchfully.digibooky.domain.BookLentData;
+import com.switchfully.digibooky.domain.book.Author;
+import com.switchfully.digibooky.domain.book.Book;
+import com.switchfully.digibooky.domain.book.BookLentData;
 import com.switchfully.digibooky.domain.user.Address;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.domain.user.User.Builder;

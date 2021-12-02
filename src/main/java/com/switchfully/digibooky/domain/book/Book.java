@@ -1,9 +1,8 @@
-package com.switchfully.digibooky.domain;
+package com.switchfully.digibooky.domain.book;
 
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter

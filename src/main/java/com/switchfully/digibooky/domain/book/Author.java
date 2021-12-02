@@ -1,4 +1,4 @@
-package com.switchfully.digibooky.domain;
+package com.switchfully.digibooky.domain.book;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

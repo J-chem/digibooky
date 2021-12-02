@@ -27,7 +27,8 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> getAllUsers() {
+    public List<UserDTO> getAllUsers(@RequestHeader String authorization) {
+        securityService.validateAuthorization(authorization, Features.GET_ALL_MEMBERS);
         return userService.getAllUsers();
     }
 

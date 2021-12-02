@@ -3,6 +3,7 @@ package com.switchfully.digibooky.services;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
+import com.switchfully.digibooky.services.dtos.UpdateBookDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,4 +33,5 @@ public class BookConverter {
                 .map(this::convertBookToBookDTO)
                 .toList();
     }
+
 }

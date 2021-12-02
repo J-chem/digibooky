@@ -21,5 +21,6 @@ public interface BookRepository {
     List<String> getAllLendedBooksIDByUser(String lendOutByUser);
     LocalDate getDueDate(String bookId);
     List<Book> getBy(boolean isOverDue);
+    Book updateBook(Book bookToBeUpdated);
     void updateDueDate(String bookid, LocalDate dueDate);
 }

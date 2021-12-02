@@ -7,6 +7,7 @@ import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.repositories.BookRepository;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
+import com.switchfully.digibooky.services.dtos.UpdateBookDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -92,6 +93,15 @@ public class DefaultBookService implements BookService {
     public List<BookDTO> getBy(boolean isOverDue) {
         List<Book> books = bookRepository.getBy(isOverDue);
         return bookConverter.convertListOfBookInBookDto(books);
+    }
+
+    @Override
+    public BookDTO updateBook(UpdateBookDTO updateBookDTO) {
+        Book bookToBeUpdated = bookRepository.getById(updateBookDTO.getId());
+        bookToBeUpdated.setAuthor(updateBookDTO.getAuthor());
+        bookToBeUpdated.setTitle(updateBookDTO.getTitle());
+        return bookConverter.convertBookToBookDTO(bookRepository.updateBook(bookToBeUpdated));
+
     }
 
     private void assertLentOutStatus(boolean isLentOut) {

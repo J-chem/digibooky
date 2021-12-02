@@ -10,8 +10,8 @@ import java.util.UUID;
 public class Book {
     private final String id;
     private final String isbn;
-    private final String title;
-    private final Author author;
+    private String title;
+    private Author author;
     private boolean isLentOut;
     private LocalDate dueDate;
 
@@ -33,4 +33,11 @@ public class Book {
     }
 
 
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

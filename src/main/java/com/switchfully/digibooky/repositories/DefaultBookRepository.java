@@ -165,4 +165,10 @@ public class DefaultBookRepository implements BookRepository {
                 .stream()
                 .toList();
     }
+
+    @Override
+    public Book updateBook(Book bookToBeUpdated) {
+        books.put(bookToBeUpdated.getId(), bookToBeUpdated);
+        return bookToBeUpdated;
+    }
 }

@@ -56,7 +56,7 @@ class DefaultBookRepositoryTest {
         bookConverter = new BookConverter();
         bookRepository = new DefaultBookRepository();
         bookService = new DefaultBookService(bookRepository, bookConverter);
-                author1 = new Author("test", "test");
+        author1 = new Author("test", "test");
         author2 = new Author("tEst2", "test2");
 
         book1 = new Book("isbn1", "test", author1);
@@ -132,10 +132,14 @@ class DefaultBookRepositoryTest {
     @Nested
     @DisplayName("Update a book")
     class UpdateBook {
-        @Test
-        @DisplayName("Update a book")
-        void whenUpdateLendStatus_thenBookDBIsUpdated() {
+
+        @BeforeEach
+        void setUp() {
             bookRepository.save(book1);
+        }
+
+        @Test
+        void whenUpdateLendStatus_thenBookDBIsUpd() {
             bookRepository.updateDueDate(book1.getId(), LocalDate.now());
             Book book = bookRepository.getById(id1);
             assertThat(book.isLentOut()).isTrue();
@@ -146,6 +150,15 @@ class DefaultBookRepositoryTest {
             assertThat(book.isLentOut()).isFalse();
             assertThat(book.getDueDate()).isNull();
         }
+
+
+        @Test
+        void updateBook() {
+            Book bookToUpdate = new Book(book1.getIsbn(), book1.getTitle(), book1.getAuthor());
+            Book bookUpdated = bookRepository.updateBook(bookToUpdate);
+            assertThat(bookUpdated).isEqualTo(bookToUpdate);
+        }
+
     }
 
     @Nested
@@ -308,7 +321,7 @@ class DefaultBookRepositoryTest {
 
         @Test
         @DisplayName("Get by firstname (lastname is null) - Ignores Upper Cases 2")
-        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist_IgnoresUpperCase2(){
+        void whenGettingABookByFirstName_lastNameIsNull_returnExpectedBooklist_IgnoresUpperCase2() {
             System.out.println(book2.getAuthor().getFirstName() + " " + book2.getAuthor().getLastName());
             assertThat(bookRepository.getByAuthor("TEST2", null)).isEqualTo(List.of(book2));
         }

@@ -23,4 +23,5 @@ public interface BookRepository {
     LocalDate getDueDate(String bookId);
     List<Book> getBy(boolean isOverDue);
     Book updateBook(Book bookToBeUpdated);
+    void updateDueDate(String bookid, LocalDate dueDate);
 }

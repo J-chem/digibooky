@@ -107,15 +107,24 @@ public class DefaultBookRepository implements BookRepository {
     }
 
     @Override
-    public void updateLendOutStatus(String id) {
+    public void updateDueDate(String bookId, LocalDate dueDate) {
         assertDataManagementMapIsNotEmpty(books);
-        assertStringNotNull(id, "id");
-        Book book = books.get(id);
+        assertStringNotNull(bookId, "book_id");
+        updateLendOutStatus(bookId);
+        var book = books.get(bookId);
+        book.setDueDate(dueDate);
+        books.put(bookId, book);
+    }
+
+    @Override
+    public void updateLendOutStatus(String bookId) {
+        Book book = books.get(bookId);
         book.setLentOut(!book.isLentOut());
     }
 
     @Override
     public String returnBook(String lendId) {
+        assertStringNotNull(lendId, "lending_id");
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
         return (LocalDate.now().compareTo(bookLentData.getDueDate()) <= 0) ? "You're on time" : "You are late whit your books";
@@ -123,6 +132,7 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public String returnBookIdFromLendData(String lendId) {
+        assertStringNotNull(lendId, "lending_id");
         assertDataManagementMapIsNotEmpty(lentData);
         BookLentData bookLentData = lentData.get(lendId);
         if (bookLentData == null) {
@@ -141,10 +151,11 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public LocalDate getDueDate(String bookId) {
+        assertStringNotNull(bookId, "book_id");
         return lentData.values()
                 .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))
-                .map(lentData -> lentData.getDueDate())
+                .map(BookLentData::getDueDate)
                 .sorted()
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Due date not find."));
@@ -152,29 +163,17 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public List<Book> getBy(boolean isOverDue) {
-        Map<Boolean, List<BookLentData>> dueAndOverDueBooks = collectByOverDueAndNotOverDue();
-        return getBooksByDueAndNotOverDue(isOverDue, dueAndOverDueBooks);
+        return books.values()
+                .stream()
+                .collect(Collectors.partitioningBy(book -> book.getDueDate().compareTo(LocalDate.now()) < 0))
+                .get(isOverDue)
+                .stream()
+                .toList();
     }
 
     @Override
     public Book updateBook(Book bookToBeUpdated) {
         books.put(bookToBeUpdated.getId(), bookToBeUpdated);
         return bookToBeUpdated;
-    }
-
-    private List<Book> getBooksByDueAndNotOverDue(boolean isOverDue, Map<Boolean, List<BookLentData>> dueAndOverDueBooks) {
-        return dueAndOverDueBooks.get(isOverDue)
-                .stream()
-                .map(BookLentData::getBookId)
-                .flatMap(id -> books.values()
-                        .stream()
-                        .filter(book -> book.getId().equals(id)))
-                .toList();
-    }
-
-    private Map<Boolean, List<BookLentData>> collectByOverDueAndNotOverDue() {
-        return lentData.values()
-                .stream()
-                .collect(Collectors.partitioningBy(date -> date.getDueDate().compareTo(LocalDate.now()) < 0));
     }
 }

@@ -5,6 +5,12 @@ import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
 import com.switchfully.digibooky.domain.Author;
 import com.switchfully.digibooky.domain.Book;
 import com.switchfully.digibooky.domain.BookLentData;
+import com.switchfully.digibooky.domain.user.Address;
+import com.switchfully.digibooky.domain.user.User;
+import com.switchfully.digibooky.domain.user.User.Builder;
+import com.switchfully.digibooky.security.Role;
+import com.switchfully.digibooky.services.BookConverter;
+import com.switchfully.digibooky.services.DefaultBookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,6 +26,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class DefaultBookRepositoryTest {
 
     private DefaultBookRepository bookRepository;
+    private DefaultBookService bookService;
+    private BookConverter bookConverter;
+    private User user;
     private Book book1;
     private Book book2;
     //private Book book3;
@@ -30,8 +39,24 @@ class DefaultBookRepositoryTest {
 
     @BeforeEach
     void beforeEach() {
+        user = new Builder("Maxim",
+                "Verbeeck",
+                new Address.Builder()
+                        .withCity("NY")
+                        .withPostalCode(2000)
+                        .withStreetNumber(13)
+                        .withStreetName("Walibi")
+                        .build(),
+                Role.ADMIN)
+                .withEmail("banana@hotmail.com")
+                .withSocialSecurityNumber("12345")
+                .withPassword("monkey")
+                .withUsername("HulaBaloo")
+                .build();
+        bookConverter = new BookConverter();
         bookRepository = new DefaultBookRepository();
-        author1 = new Author("test", "test");
+        bookService = new DefaultBookService(bookRepository, bookConverter);
+                author1 = new Author("test", "test");
         author2 = new Author("tEst2", "test2");
 
         book1 = new Book("isbn1", "test", author1);
@@ -344,7 +369,7 @@ class DefaultBookRepositoryTest {
         @BeforeEach
         void setUp() {
             bookRepository.save(book1);
-            bookRepository.lendBook(new BookLentData("User1", book1.getId()));
+            bookService.lendBook(user, book1.getId());
         }
 
         @Test

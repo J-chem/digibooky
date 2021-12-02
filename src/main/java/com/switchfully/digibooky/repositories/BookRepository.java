@@ -1,8 +1,7 @@
 package com.switchfully.digibooky.repositories;
 
-import com.switchfully.digibooky.domain.Author;
-import com.switchfully.digibooky.domain.Book;
-import com.switchfully.digibooky.domain.BookLentData;
+import com.switchfully.digibooky.domain.book.Book;
+import com.switchfully.digibooky.domain.book.BookLentData;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.switchfully.digibooky.domain.book;
 
+import com.switchfully.digibooky.domain.book.Author;
 import lombok.Getter;
 
 import java.time.LocalDate;

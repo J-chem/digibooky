@@ -1,12 +1,13 @@
 package com.switchfully.digibooky.services;
 
 import com.switchfully.digibooky.custom.exceptions.BookIsNotAvailableException;
-import com.switchfully.digibooky.domain.Book;
-import com.switchfully.digibooky.domain.BookLentData;
+import com.switchfully.digibooky.domain.book.Book;
+import com.switchfully.digibooky.domain.book.BookLentData;
 import com.switchfully.digibooky.domain.user.User;
 import com.switchfully.digibooky.repositories.BookRepository;
 import com.switchfully.digibooky.services.dtos.BookDTO;
 import com.switchfully.digibooky.services.dtos.CreateBookDTO;
+import com.switchfully.digibooky.services.dtos.UpdateBookDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -80,11 +81,11 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public String lendBook(User user, String id) {
-        checkIfBookIsDeleted(bookRepository.getById(id));
-        assertLentOutStatus(bookRepository.getById(id).isLentOut());
-        bookRepository.updateLendOutStatus(id);
-        BookLentData bookLentData = new BookLentData(user.getId(), id);
+    public String lendBook(User user, String bookId) {
+        checkIfBookIsDeleted(bookRepository.getById(bookId));
+        assertLentOutStatus(bookRepository.getById(bookId).isLentOut());
+        BookLentData bookLentData = new BookLentData(user.getId(), bookId);
+        bookRepository.updateDueDate(bookId, bookLentData.getDueDate());
         return bookRepository.lendBook(bookLentData);
     }
 
@@ -102,6 +103,20 @@ public class DefaultBookService implements BookService {
                 .filter(book -> !book.isSoftDeleted())
                 .map(book -> bookConverter.convertBookToBookDTO(book))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BookDTO updateBook(UpdateBookDTO updateBookDTO) {
+        Book bookToBeUpdated = bookRepository.getById(updateBookDTO.getId());
+        bookToBeUpdated.setAuthor(updateBookDTO.getAuthor());
+        bookToBeUpdated.setTitle(updateBookDTO.getTitle());
+        return bookConverter.convertBookToBookDTO(bookRepository.updateBook(bookToBeUpdated));
+    }
+
+    @Override
+    public List<BookDTO> getBy(boolean isOverDue) {
+        List<Book> books = bookRepository.getBy(isOverDue);
+        return bookConverter.convertListOfBookInBookDto(books);
     }
 
     private void checkIfBookIsDeleted(Book book) {

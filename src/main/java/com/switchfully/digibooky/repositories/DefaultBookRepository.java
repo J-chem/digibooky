@@ -1,16 +1,18 @@
 package com.switchfully.digibooky.repositories;
 
 import com.switchfully.digibooky.custom.exceptions.ObjectNotFoundException;
-import com.switchfully.digibooky.domain.Book;
-import com.switchfully.digibooky.domain.BookLentData;
+import com.switchfully.digibooky.domain.book.Book;
+import com.switchfully.digibooky.domain.book.BookLentData;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.switchfully.digibooky.repositories.validators.Validator.*;
+import static com.switchfully.digibooky.repositories.validators.Validator.assertDataManagementMapIsNotEmpty;
+import static com.switchfully.digibooky.repositories.validators.Validator.assertStringNotNull;
 
 @Repository
 public class DefaultBookRepository implements BookRepository {
@@ -149,11 +151,22 @@ public class DefaultBookRepository implements BookRepository {
                 .orElseThrow(() -> new NoSuchElementException("Due date not find."));
     }
 
-//    public void assertBooksIsEmpty() {
-//        if (books.isEmpty()){
-//            throw new EmptyBooksListException("List of books is empty");
-//        }
-//    }
+
+    @Override
+    public List<Book> getBy(boolean isOverDue) {
+        return books.values()
+                .stream()
+                .collect(Collectors.partitioningBy(book -> book.getDueDate().compareTo(LocalDate.now()) < 0))
+                .get(isOverDue)
+                .stream()
+                .toList();
+    }
+
+    @Override
+    public Book updateBook(Book bookToBeUpdated) {
+        books.put(bookToBeUpdated.getId(), bookToBeUpdated);
+        return bookToBeUpdated;
+    }
 
 
 }

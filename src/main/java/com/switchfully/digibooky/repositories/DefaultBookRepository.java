@@ -144,7 +144,7 @@ public class DefaultBookRepository implements BookRepository {
         return lentData.values()
                 .stream()
                 .filter(lentData -> lentData.getBookId().equals(bookId))
-                .map(lentData -> lentData.getDueDate())
+                .map(BookLentData::getDueDate)
                 .sorted()
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Due date not find."));
@@ -152,23 +152,17 @@ public class DefaultBookRepository implements BookRepository {
 
     @Override
     public List<Book> getBy(boolean isOverDue) {
-        Map<Boolean, List<BookLentData>> dueAndOverDueBooks = collectByOverDueAndNotOverDue();
-        return getBooksByDueAndNotOverDue(isOverDue, dueAndOverDueBooks);
-    }
-
-    private List<Book> getBooksByDueAndNotOverDue(boolean isOverDue, Map<Boolean, List<BookLentData>> dueAndOverDueBooks) {
-        return dueAndOverDueBooks.get(isOverDue)
+        return books.values()
                 .stream()
-                .map(BookLentData::getBookId)
-                .flatMap(id -> books.values()
-                        .stream()
-                        .filter(book -> book.getId().equals(id)))
+                .filter(Book::isLentOut)
+                .filter(book -> book.getDueDate().compareTo(LocalDate.now()) < 0)
                 .toList();
     }
 
-    private Map<Boolean, List<BookLentData>> collectByOverDueAndNotOverDue() {
-        return lentData.values()
-                .stream()
-                .collect(Collectors.partitioningBy(date -> date.getDueDate().compareTo(LocalDate.now()) < 0));
+    @Override
+    public void updateDueDate(String bookId, LocalDate dueDate) {
+        var book = books.get(bookId);
+        book.setDueDate(dueDate);
+        books.put(bookId, book);
     }
 }

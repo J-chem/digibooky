@@ -35,7 +35,9 @@ public class UserController {
     @PostMapping(path = "/register-user", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO createNewUser(@RequestBody CreateUserDTO createUserDTO,
-                                @RequestHeader String authorization){
+                                @RequestHeader(required = false) String authorization){
+
+        // HOW DO YOU CREATE A MEMBER - S6A
         if(createUserDTO.getRole().equals(Role.LIBRARIAN)){
             securityService.validateAuthorization(authorization, Features.REGISTER_NEW_LIBRARIAN);
         }

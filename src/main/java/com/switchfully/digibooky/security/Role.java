@@ -11,6 +11,7 @@ public enum Role {
     LIBRARIAN(List.of(
             REGISTER_NEW_BOOK,
             CONSULT_LENDINGS,
+            GET_OVERDUE,
             UPDATE_A_BOOK,
             DELETE_A_BOOK,
             RESTORE_A_BOOK)),

@@ -111,8 +111,8 @@ public class DefaultBookService implements BookService {
     }
 
     @Override
-    public BookDTO updateBook(UpdateBookDTO updateBookDTO) {
-        Book bookToBeUpdated = bookRepository.getById(updateBookDTO.getId());
+    public BookDTO updateBook(String bookId, UpdateBookDTO updateBookDTO) {
+        Book bookToBeUpdated = bookRepository.getById(bookId);
         bookToBeUpdated.setAuthor(updateBookDTO.getAuthor());
         bookToBeUpdated.setTitle(updateBookDTO.getTitle());
         return bookConverter.convertBookToBookDTO(bookRepository.updateBook(bookToBeUpdated));

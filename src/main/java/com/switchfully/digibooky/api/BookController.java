@@ -119,11 +119,8 @@ public class BookController {
                            @RequestBody UpdateBookDTO updateBookDTO,
                            @RequestHeader String authorization){
         securityService.validateAuthorization(authorization, Features.UPDATE_A_BOOK);
-        if(!updateBookDTO.getId().equals(bookId)){
-            throw new IllegalArgumentException("Book id don't corresponds whit the book");
-        }
 
-        return bookService.updateBook(updateBookDTO);
+        return bookService.updateBook(bookId, updateBookDTO);
     }
 
 }

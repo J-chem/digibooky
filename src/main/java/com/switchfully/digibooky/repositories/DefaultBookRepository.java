@@ -169,7 +169,14 @@ public class DefaultBookRepository implements BookRepository {
     public List<Book> getBy(boolean isOverDue) {
         return books.values()
                 .stream()
-                .collect(Collectors.partitioningBy(book -> book.getDueDate().compareTo(LocalDate.now()) < 0))
+                .collect(Collectors.partitioningBy(book -> {
+                    var date = book.getDueDate();
+                    boolean result = false;
+                    if (date != null) {
+                        result = date.compareTo(LocalDate.now()) < 0;
+                    }
+                    return result;
+                }))
                 .get(isOverDue)
                 .stream()
                 .toList();
